@@ -77,6 +77,8 @@ public abstract class User{
                     loginState = true;
                     Log.d("Login","Success L");
                     callBack.onSuccess();
+                }else{
+                    callBack.onFail("wrong password or role");
                 }
                 Log.d("Login","still running? : yes" + pw+role);
             }
