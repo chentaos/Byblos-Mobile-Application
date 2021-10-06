@@ -23,53 +23,13 @@ public abstract class User{
     public String role; // flag of the database?
     //private Service[] serviceTypes;
     //private Account[] userList;
-    boolean aexist;
+    protected boolean exist;
     //public String userInterface;
     // public abstract void updateServiceList(); dont need.Asynchronous.
     private boolean loginState = false; // not necessary now
 
 
-    public boolean login(String userName,String pw){
-
-        boolean exist=false;
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Users");
-
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //snapshot.getChildrenCount();
-                Log.d("Login","login fail0");
-                if(!snapshot.hasChild(userName)){
-                    aexist=false;
-                    Log.d("Login","login fail1");
-                }
-                snapshot = snapshot.child(userName);
-                String passwd = snapshot.child("passwd").getValue(String.class);
-                String role1 = snapshot.child("role").getValue(String.class);
-
-                if(passwd == null|| role1 == null){
-                    throw new NoSuchElementException("found the username in database but no passwd or role elements");
-                }
-
-                if(passwd.equals(pw) && role1.equals(role)){
-                    loginState = true;
-                    Log.d("Login","Success L");
-                    aexist=true;
-                }else{
-                    aexist=false;
-                }
-                Log.d("Login","still running? : yes" + pw+role);
-            }
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("Login","fail");
-            }
-        });
-        Log.d("Login","login fail11");
-        return exist;
-    }
+    public abstract boolean login(String userName, String pw, FirebaseDatabase instance);
 
     public void login(String userName, String pw,ListenerCallBack callBack){
         //Query qUserName =
@@ -170,6 +130,8 @@ public abstract class User{
 //        }
         //myRef.removeEventListener(temp);
     }
+
+    public abstract boolean register(String userName, String pw, FirebaseDatabase ins);
 
     public void register(String userName, String pw, ListenerCallBack callBack){
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Users");

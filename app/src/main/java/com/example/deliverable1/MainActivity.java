@@ -42,6 +42,10 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivity extends AppCompatActivity {
 
     private User user;
+    private FirebaseDatabase dbInstance;
+    private DatabaseReference adminRef;
+    private DatabaseReference employeeRef;
+    private DatabaseReference customerRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        FirebaseDatabase database = FirebaseDatabase.getInstance();
 //        DatabaseReference myRef = database.getReference("Users");
+
 
 
 
@@ -114,6 +119,15 @@ public class MainActivity extends AppCompatActivity {
         //myRef.setValue("admin");
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        dbInstance=FirebaseDatabase.getInstance();
+//        adminRef=dbInstance.getReference("User/Admin");
+//        employeeRef=dbInstance.getReference("User/Employee");
+//        customerRef=dbInstance.getReference("User/Customer");
+    }
+
     public void loginOnClick(View view) {
         String userName = ((EditText)findViewById(R.id.userName)).getText().toString().trim();
         String password = ((EditText)findViewById(R.id.password)).getText().toString().trim();
@@ -139,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        if(user.login(userName,password)){
+        if(user.login(userName,password,dbInstance)){
+            Log.d("Login","login success");
             loadUserMainPage();
         }else{
             Log.d("Login","login fail2");
@@ -168,18 +183,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // user login
-        user.register(userName, password, new ListenerCallBack() {
-            @Override
-            public void onSuccess() {
-                Toast.makeText(MainActivity.this,"registered",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFail(String errorInfo) {
-                Log.d("Login","register fail");
-                Toast.makeText(MainActivity.this,errorInfo,Toast.LENGTH_SHORT).show();
+//        user.register(userName, password, new ListenerCallBack() {
+//            @Override
+//            public void onSuccess() {
+//                Toast.makeText(MainActivity.this,"registered",Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFail(String errorInfo) {
+//                Log.d("Login","register fail");
+//                Toast.makeText(MainActivity.this,errorInfo,Toast.LENGTH_SHORT).show();
+//                nameT.setText("");
+//            }
+//        });
+        if(!user.register(userName,password,dbInstance)){
+            Log.d("Login","register fail");
+                Toast.makeText(MainActivity.this,"register failed",Toast.LENGTH_SHORT).show();
                 nameT.setText("");
-            }
-        });
+                //password to "" too
+        }else{
+            Toast.makeText(MainActivity.this,"registered",Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
