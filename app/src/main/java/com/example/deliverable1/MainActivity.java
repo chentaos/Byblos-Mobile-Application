@@ -202,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 nameT.setText("");
                 //password to "" too
         }else{
+            loadUserMainPage();
             Toast.makeText(MainActivity.this,"registered",Toast.LENGTH_SHORT).show();
         }
 
