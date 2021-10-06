@@ -125,19 +125,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // user login
-        user.login(userName, password, new ListenerCallBack() {
-            @Override
-            public void onSuccess() {
-                user.userName = userName;
-                loadUserMainPage();
-            }
+//        user.login(userName, password, new ListenerCallBack() {
+//            @Override
+//            public void onSuccess() {
+//                user.userName = userName;
+//                loadUserMainPage();
+//            }
+//
+//            @Override
+//            public void onFail(String errorInfo) {
+//                Log.d("Login","login fail");
+//                Toast.makeText(MainActivity.this,errorInfo,Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
-            @Override
-            public void onFail(String errorInfo) {
-                Log.d("Login","login fail");
-                Toast.makeText(MainActivity.this,errorInfo,Toast.LENGTH_SHORT).show();
-            }
-        });
+        if(user.login(userName,password)){
+            loadUserMainPage();
+        }else{
+            Log.d("Login","login fail2");
+            Toast.makeText(MainActivity.this,"failed2",Toast.LENGTH_SHORT).show();
+        }
 
     }
 
