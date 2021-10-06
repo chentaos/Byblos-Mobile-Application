@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         user.login(userName, password, new ListenerCallBack() {
             @Override
             public void onSuccess() {
-                user.userName = userName;
+                user.setUserName(userName);
                 loadUserMainPage();
             }
 
