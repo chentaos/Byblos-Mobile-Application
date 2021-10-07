@@ -12,6 +12,7 @@ import android.view.View;
 
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private User user;
     ProgressBar progressB;
 
+    private enum AccountType {admin,customer,employee};
+    private AccountType type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,37 +40,52 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
                     case R.id.radioAdmin:
-                        user = new Admin();
+                        type=AccountType.admin;
                         break;
                     case R.id.radioEmployee:
-                        user = new Employee();
+                        type=AccountType.employee;
                         break;
                     case R.id.radioCustomer:
-                        user = new Customer();
+                        type=AccountType.customer;
                         break;
-                    default:
-                        //?
                 }
             }
         });
+
+        //Set a button clicked
+        RadioButton a=(RadioButton) findViewById(R.id.radioAdmin);
+        a.setChecked(true);
     }
 
 
-    public void loginOnClick(View view) {
 
+    public void loginOnClick(View view) {
         String userName = ((EditText)findViewById(R.id.userName)).getText().toString().trim();
         String password = ((EditText)findViewById(R.id.password)).getText().toString().trim();
 
         //or use setError to specify where is missing.
-        if(user == null || userName.isEmpty() || password.isEmpty()){
-           Toast.makeText(getApplicationContext(),"information not filled",Toast.LENGTH_SHORT).show();
+        if(userName.isEmpty()){
+           Toast.makeText(getApplicationContext(),"User name not filled",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(password.isEmpty()){
+            Toast.makeText(getApplicationContext(),"password not filled",Toast.LENGTH_SHORT).show();
             return;
         }
 
         progressB.setVisibility(View.VISIBLE);
 
-        user.setUserName(userName);
-        user.setPasswd(password);
+        switch(type){
+            case admin:
+                user=new Admin(userName,password);
+                break;
+            case customer:
+                user=new Customer(userName,password);
+                break;
+            case employee:
+                user=new Employee(userName,password);
+                break;
+        }
 
         // user login
         user.login(new ListenerCallBack() {
@@ -79,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFail(String errorInfo) {
-                Log.d("Login","login fail");
                 Toast.makeText(MainActivity.this,errorInfo,Toast.LENGTH_SHORT).show();
                 progressB.setVisibility(View.INVISIBLE);
             }
@@ -87,20 +104,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void registerOnClick(View view) {
+
         //TODO: move to a new page for registration
         EditText nameT = findViewById(R.id.userName);
+        EditText passT=findViewById(R.id.password);
         String userName = nameT.getText().toString().trim();
-        String password = ((EditText)findViewById(R.id.password)).getText().toString().trim();
+        String password = passT.getText().toString().trim();
 
-        //or use setError to specify where is missing.
-        if(user == null || userName.isEmpty() || password.isEmpty()){
-            Toast.makeText(getApplicationContext(),"information not filled",Toast.LENGTH_SHORT).show();
+        if(userName.isEmpty()){
+            Toast.makeText(getApplicationContext(),"User name not filled",Toast.LENGTH_SHORT).show();
             return;
         }
-        progressB.setVisibility(View.VISIBLE);
+        if(password.isEmpty()){
+            Toast.makeText(getApplicationContext(),"password not filled",Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        user.setUserName(userName);
-        user.setPasswd(password);
+        switch(type){
+            case admin:
+                user=new Admin(userName,password);
+                break;
+            case customer:
+                user=new Customer(userName,password);
+                break;
+            case employee:
+                user=new Employee(userName,password);
+                break;
+        }
+        progressB.setVisibility(View.VISIBLE);
 
         //user login
         user.register(new ListenerCallBack() {
@@ -108,6 +139,8 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess() {
                 Toast.makeText(MainActivity.this,"registered",Toast.LENGTH_SHORT).show();
                 progressB.setVisibility(View.INVISIBLE);
+
+                //loadUserMainPage();
             }
 
             @Override
@@ -115,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Login","register fail");
                 Toast.makeText(MainActivity.this,errorInfo,Toast.LENGTH_SHORT).show();
                 nameT.setText("");
+                passT.setText("");
                 progressB.setVisibility(View.INVISIBLE);
             }
         });

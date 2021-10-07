@@ -16,7 +16,8 @@ import java.util.NoSuchElementException;
 public abstract class User{
 
     protected String userName;
-
+    protected String role;
+    private String passwd;
     /*TODO:
            - When User click register, start a second page.Let User input more information, then
            return the information and fill the information in the user instance.
@@ -29,8 +30,7 @@ public abstract class User{
     public String firstName = "unset";
     public String lastName = "unset";
 
-    private String role;
-    private String passwd;
+
 
     public DatabaseReference myRef; //User has a database reference.
 
@@ -38,14 +38,18 @@ public abstract class User{
         // for firebase to auto map when retrieving data.
     }
 
+    public User(String name, String passwd){
+        this.userName=name;
+        this.passwd=passwd;
+    }
+
     public User(String role){
         this.role = role;
-        myRef = FirebaseDatabase.getInstance().getReference("Users/" + role);
+
     }
 
     public void login(ListenerCallBack callBack) {
-
-
+        myRef = FirebaseDatabase.getInstance().getReference("Users/" + role);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
