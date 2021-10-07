@@ -10,30 +10,39 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class User implements Serializable {
+public abstract class User {
 
-    private String firstName ;
-    private String lastName ;
-    private String userName;
+    public String firstName ;
+    public String lastName ;
+    public String userName;
     private String password;
-    protected DatabaseReference myRef; //User has a database reference.
-    
+    DatabaseReference myRef; //User has a database reference.
+
+    // might need this to retrieve data.
+    public User(){
+
+    }
+
     public User(String name, String passwd) {
+        myRef = FirebaseDatabase.getInstance().getReference();
         this.userName = name;
         this.password = passwd;
     }
 
-    public void login( ListenerCallBack callBack) {
+    /**
+     * login method, the reference path is already specified at construction method of each subclasses.
+     * @param callBack
+     */
+    public void login(ListenerCallBack callBack) {
 //        callBack.onSuccess();
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("Login", "see " + userName + snapshot);
+                //Log.d("Login", "see " + userName + snapshot);
 
                 if (!snapshot.hasChild(userName)) {
                     callBack.onFail("User doesn't exist");
@@ -41,13 +50,14 @@ public abstract class User implements Serializable {
                 }
 
                 snapshot = snapshot.child(userName);
-                String pw = snapshot.child("password").getValue(String.class);
+                String pw = snapshot.child("passwd").getValue(String.class);
 
                 if (password.equals(pw)) {
-                    Log.d("Login", "Login success");
+
                     firstName = snapshot.child("firstName").getValue(String.class);
                     lastName = snapshot.child("lastName").getValue(String.class);
-                    callBack.onSuccess();
+                    callBack.onSuccess();  //if we find the matched result, call success callback.
+
                 } else {
                     callBack.onFail("wrong password or role");
                 }
@@ -61,10 +71,14 @@ public abstract class User implements Serializable {
     }
 
 
-    //need more information
-    public void checkAccountExist( ListenerCallBack callBack) {
-//        callBack.onSuccess();
+    /**
+     *
+     * @param callBack
+     */
+    public void register(String firstName, String lastName, ListenerCallBack callBack){
 
+        this.firstName = firstName;
+        this.lastName = lastName;
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -73,7 +87,7 @@ public abstract class User implements Serializable {
                     callBack.onFail("Account existed");
                     return;
                 }
-
+                myRef.child(userName).setValue(toMap());
                 callBack.onSuccess();
             }
 
@@ -84,31 +98,13 @@ public abstract class User implements Serializable {
         });
     }
 
-    public void register(String firstName,String lastName){
-        this.lastName=lastName;
-        this.firstName=firstName;
-        myRef.child(userName).setValue(toMap());
-        
-//        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                myRef.child(userName).setValue(toMap());
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.d("Login", "fail");
-//            }
-//        });
-    }
-
     public String welcomeMSG(){
         return String.format("Welcome %s!\n You have successfully logged in as a ", firstName);
     }
 
     private Map<String, Object> toMap() {
         Map<String, Object> m = new HashMap<>();
-        m.put("password", password);
+        m.put("passwd", password);
         m.put("firstName", firstName);
         m.put("lastName", lastName);
         m.put("userName", userName);

@@ -1,5 +1,4 @@
 package com.example.deliverable1;
-import account.*;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ public class UserMainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_user_main_menu);
 
         TextView eT = findViewById(R.id.welcomeText);
-        User user= (User) getIntent().getSerializableExtra("User");
-        eT.setText(user.welcomeMSG());
+        eT.setText(getIntent().getStringExtra("welcomeMSG"));
     }
 }

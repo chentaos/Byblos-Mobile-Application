@@ -1,7 +1,5 @@
 package com.example.deliverable1;
 
-import account.*;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -25,10 +23,8 @@ public class RegisterPageActivity extends AppCompatActivity {
     }
 
     public void continueRegister(View view){
-        String firstName=firsrName.getText().toString().trim();
-        String lastName=firsrName.getText().toString().trim();
-        String msg;
-        User user;
+        String firstName= this.firsrName.getText().toString().trim();
+        String lastName = this.lastName.getText().toString().trim();
 
         if(firstName.isEmpty()){
             Toast.makeText(getApplication(),"Fisrt name can't be empty",Toast.LENGTH_SHORT).show();
@@ -40,16 +36,10 @@ public class RegisterPageActivity extends AppCompatActivity {
         }
 
         Intent i=getIntent();
-        user=(User)i.getSerializableExtra("User");
-        user.register(firstName,lastName);
-        Toast.makeText(getApplicationContext(),"Register sucess",Toast.LENGTH_SHORT).show();
-        loadUserMainPage(user);
-    }
-
-    private void loadUserMainPage(User user) {
-        Intent intent = new Intent(RegisterPageActivity.this, UserMainMenu.class);
-        intent.putExtra("User", user);
-        startActivity(intent);
+        i.putExtra("firstName",firstName);
+        i.putExtra("lastName",lastName);
+        setResult(RESULT_OK, i);
+        finish();
     }
 
 }

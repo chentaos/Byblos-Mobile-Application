@@ -4,10 +4,13 @@ import account.*;
 
 import android.content.Intent;
 
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 
 import android.widget.EditText;
@@ -15,8 +18,6 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
-import com.google.firebase.database.FirebaseDatabase;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -59,14 +60,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //Set a button clicked
+        //Set a default button clicked
         RadioButton a = (RadioButton) findViewById(R.id.radioAdmin);
         a.setChecked(true);
     }
 
 
     public void loginOnClick(View view) {
-        String userName = ((EditText) findViewById(R.id.userName)).getText().toString().trim();
+        EditText name = findViewById(R.id.userName);
+        String userName = name.getText().toString().trim();
         String password = ((EditText) findViewById(R.id.password)).getText().toString().trim();
 
         //or use setError to specify where is missing.
@@ -81,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
 
         progressB.setVisibility(View.VISIBLE);
         specifyAccount(userName, password);
-        this.user.login( new ListenerCallBack() {
+
+        user.login( new ListenerCallBack() {
             @Override
             public void onSuccess() {
                 progressB.setVisibility(View.INVISIBLE);
@@ -89,16 +92,21 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFail(String errorInfo) {
+            public void onFail(String errInfo) {
                 progressB.setVisibility(View.INVISIBLE);
-                Toast.makeText(MainActivity.this, errorInfo, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, errInfo, Toast.LENGTH_SHORT).show();
+                name.setText("");
             }
         });
     }
 
+    /**
+     * when User click register, start a new page to collect more data.
+     * call login after register successfully.
+     * @param view
+     */
     public void registerOnClick(View view) {
 
-        //TODO: move to a new page for registration
         EditText nameT = findViewById(R.id.userName);
         EditText passT = findViewById(R.id.password);
         String userName = nameT.getText().toString().trim();
@@ -116,37 +124,59 @@ public class MainActivity extends AppCompatActivity {
         progressB.setVisibility(View.VISIBLE);
         specifyAccount(userName, password);
 
-        //user login
-        user.checkAccountExist( new ListenerCallBack() {
-            @Override
-            public void onSuccess() {
-                Toast.makeText(MainActivity.this, "Account created", Toast.LENGTH_SHORT).show();
-                progressB.setVisibility(View.INVISIBLE);
-                loadRegisterPage();
-            }
+        //for user to input more information.
+        loadRegisterPage();
 
-            @Override
-            public void onFail(String errorInfo) {
-                progressB.setVisibility(View.INVISIBLE);
-//                Log.d("Login","register fail");
-                Toast.makeText(MainActivity.this, errorInfo, Toast.LENGTH_SHORT).show();
-                nameT.setText("");
-                passT.setText("");
-            }
-        });
     }
+
+    /**
+     *  callback of the new register page.
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 0){
+            String lastName =  data.getStringExtra("lastName");
+            String firstName = data.getStringExtra("firstName");
+
+            //if register successfully load the main page.
+            user.register(firstName, lastName,new ListenerCallBack(){
+
+                @Override
+                public void onSuccess() {
+                    Log.d("Login","register success");
+                    progressB.setVisibility(View.INVISIBLE);
+                    loadUserMainPage();
+
+                }
+
+                @Override
+                public void onFail(String errInfo) {
+                    Log.d("Login","register fail");
+                    Toast.makeText(MainActivity.this, errInfo,Toast.LENGTH_SHORT).show();
+                    EditText nameT = findViewById(R.id.userName);
+                    nameT.setText("");
+                    progressB.setVisibility(View.INVISIBLE);
+
+                }
+            });
+        }
+
+    }
+
 
     // start a new page.
     private void loadUserMainPage() {
         Intent intent = new Intent(MainActivity.this, UserMainMenu.class);
-        intent.putExtra("User", user);
+        intent.putExtra("welcomeMSG", user.welcomeMSG());
         startActivity(intent);
     }
 
     private void loadRegisterPage(){
         Intent intent=new Intent(MainActivity.this,RegisterPageActivity.class);
-        intent.putExtra("User", user);
-        startActivity(intent);
+        startActivityForResult(intent,0); //deprecated. new use can be found at https://developer.android.com/training/basics/intents/result#java
+
     }
 
     private void specifyAccount(String userName, String password) {
@@ -159,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case employee:
                 this.user = new Employee(userName, password);
-                break;
         }
     }
 }

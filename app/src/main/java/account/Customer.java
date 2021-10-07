@@ -7,7 +7,7 @@ public class Customer extends User {
 
     public Customer(String userName, String password) {
         super(userName, password);
-        this.myRef= FirebaseDatabase.getInstance().getReference("User/Customer");
+        this.myRef= myRef.child("Users/Customer");
     }
 
 
