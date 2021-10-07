@@ -1,16 +1,17 @@
 package account;
 
 
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Customer extends User {
-    //    @Override
-//    public void updateServiceList() {
-// set a listener for that.
-//    }
 
-    public Customer(){
-        super("Customer");
-
+    public Customer(String userName, String password) {
+        super(userName, password);
+        this.myRef= FirebaseDatabase.getInstance().getReference("User/Customer");
     }
 
+
+    public String welcomeMSG() {
+        return super.welcomeMSG()+"Customer.";
+    }
 }

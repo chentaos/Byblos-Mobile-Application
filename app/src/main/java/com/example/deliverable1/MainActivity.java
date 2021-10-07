@@ -3,23 +3,29 @@ package com.example.deliverable1;
 import account.*;
 
 import android.content.Intent;
-import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
-
 
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private User user;
-    ProgressBar progressB;
+    private ProgressBar progressB;
+
+    private enum AccountType {admin, customer, employee}
+    private AccountType type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,48 +35,53 @@ public class MainActivity extends AppCompatActivity {
         progressB = findViewById(R.id.progressBar);
         progressB.setVisibility(View.INVISIBLE);
 
-
         //handle radioButtons, add a listener and change User whenever the user type changes.
         RadioGroup rg = findViewById(R.id.radioGroup);
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i){
+                switch (i) {
                     case R.id.radioAdmin:
-                        user = new Admin();
+                        type = AccountType.admin;
                         break;
                     case R.id.radioEmployee:
-                        user = new Employee();
+                        type = AccountType.employee;
                         break;
                     case R.id.radioCustomer:
-                        user = new Customer();
+                        type = AccountType.customer;
                         break;
-                    default:
-                        //?
                 }
             }
         });
     }
 
 
-    public void loginOnClick(View view) {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //Set a button clicked
+        RadioButton a = (RadioButton) findViewById(R.id.radioAdmin);
+        a.setChecked(true);
+    }
 
-        String userName = ((EditText)findViewById(R.id.userName)).getText().toString().trim();
-        String password = ((EditText)findViewById(R.id.password)).getText().toString().trim();
+
+    public void loginOnClick(View view) {
+        String userName = ((EditText) findViewById(R.id.userName)).getText().toString().trim();
+        String password = ((EditText) findViewById(R.id.password)).getText().toString().trim();
 
         //or use setError to specify where is missing.
-        if(user == null || userName.isEmpty() || password.isEmpty()){
-           Toast.makeText(getApplicationContext(),"information not filled",Toast.LENGTH_SHORT).show();
+        if (userName.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "User name not filled", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (password.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "password not filled", Toast.LENGTH_SHORT).show();
             return;
         }
 
         progressB.setVisibility(View.VISIBLE);
-
-        user.setUserName(userName);
-        user.setPasswd(password);
-
-        // user login
-        user.login(new ListenerCallBack() {
+        specifyAccount(userName, password);
+        this.user.login( new ListenerCallBack() {
             @Override
             public void onSuccess() {
                 progressB.setVisibility(View.INVISIBLE);
@@ -79,52 +90,76 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFail(String errorInfo) {
-                Log.d("Login","login fail");
-                Toast.makeText(MainActivity.this,errorInfo,Toast.LENGTH_SHORT).show();
                 progressB.setVisibility(View.INVISIBLE);
+                Toast.makeText(MainActivity.this, errorInfo, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void registerOnClick(View view) {
+
         //TODO: move to a new page for registration
         EditText nameT = findViewById(R.id.userName);
+        EditText passT = findViewById(R.id.password);
         String userName = nameT.getText().toString().trim();
-        String password = ((EditText)findViewById(R.id.password)).getText().toString().trim();
+        String password = passT.getText().toString().trim();
 
-        //or use setError to specify where is missing.
-        if(user == null || userName.isEmpty() || password.isEmpty()){
-            Toast.makeText(getApplicationContext(),"information not filled",Toast.LENGTH_SHORT).show();
+        if (userName.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "User name not filled", Toast.LENGTH_SHORT).show();
             return;
         }
-        progressB.setVisibility(View.VISIBLE);
+        if (password.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "password not filled", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        user.setUserName(userName);
-        user.setPasswd(password);
+        progressB.setVisibility(View.VISIBLE);
+        specifyAccount(userName, password);
 
         //user login
-        user.register(new ListenerCallBack() {
+        user.checkAccountExist( new ListenerCallBack() {
             @Override
             public void onSuccess() {
-                Toast.makeText(MainActivity.this,"registered",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Account created", Toast.LENGTH_SHORT).show();
                 progressB.setVisibility(View.INVISIBLE);
+                loadRegisterPage();
             }
 
             @Override
             public void onFail(String errorInfo) {
-                Log.d("Login","register fail");
-                Toast.makeText(MainActivity.this,errorInfo,Toast.LENGTH_SHORT).show();
-                nameT.setText("");
                 progressB.setVisibility(View.INVISIBLE);
+//                Log.d("Login","register fail");
+                Toast.makeText(MainActivity.this, errorInfo, Toast.LENGTH_SHORT).show();
+                nameT.setText("");
+                passT.setText("");
             }
         });
     }
 
     // start a new page.
-    public void loadUserMainPage(){
+    private void loadUserMainPage() {
         Intent intent = new Intent(MainActivity.this, UserMainMenu.class);
-        intent.putExtra("welcomeMSG",user.welcomeMSG());
+        intent.putExtra("User", user);
         startActivity(intent);
     }
 
+    private void loadRegisterPage(){
+        Intent intent=new Intent(MainActivity.this,RegisterPageActivity.class);
+        intent.putExtra("User", user);
+        startActivity(intent);
+    }
+
+    private void specifyAccount(String userName, String password) {
+        switch (type) {
+            case admin:
+                this.user = new Admin(userName, password);
+                break;
+            case customer:
+                this.user = new Customer(userName, password);
+                break;
+            case employee:
+                this.user = new Employee(userName, password);
+                break;
+        }
+    }
 }
