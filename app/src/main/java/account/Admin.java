@@ -6,7 +6,7 @@ public class Admin extends User {
 
     public Admin(String userName, String password) {
         super(userName, password);
-        this.role = "Admin";
+        this.dbPath = "Admin";
     }
 
 
@@ -15,6 +15,10 @@ public class Admin extends User {
         callBack.onFail("Admin is not allowed to register");
     }
 
+
+    public String welcomeMSG() {
+        return super.welcomeMSG()+"Admin";
+    }
 
 //    private User[] getUserList() {
 //        return new User[0];

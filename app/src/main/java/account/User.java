@@ -10,36 +10,29 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
-public abstract class User {
+public abstract class User implements Serializable {
 
-    public String firstName = "unset";
-    public String lastName = "unset";
-    protected String userName;
+    private String firstName ;
+    private String lastName ;
+    private String userName;
+    private String password;
+    private DatabaseReference myRef; //User has a database reference.
 
-    private String passwd;
-    protected String role;
-
-    public DatabaseReference myRef; //User has a database reference.
-    /*TODO:
-           - When User click register, start a second page.Let User input more information, then
-           return the information and fill the information in the user instance.
-           - Map the keys and values and then upload to database.
-           - change the welcome MSG; change userName to the first name of the user.
-           -
-     */
+    protected String dbPath;
 
     public User(String name, String passwd) {
         this.userName = name;
-        this.passwd = passwd;
+        this.password = passwd;
     }
 
     public void login(FirebaseDatabase ins, ListenerCallBack callBack) {
-        myRef = ins.getReference("User/" + role);
-
+//        callBack.onSuccess();
+        
+        myRef = ins.getReference("User/" + dbPath);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -53,7 +46,7 @@ public abstract class User {
                 snapshot = snapshot.child(userName);
                 String pw = snapshot.child("password").getValue(String.class);
 
-                if (passwd.equals(pw)) {
+                if (password.equals(pw)) {
                     Log.d("Login", "Login success");
                     //TODO: when finish the register page, remove the comment below.
                     // firstName = snapshot.child("firstName").getValue(String.class);
@@ -74,26 +67,19 @@ public abstract class User {
 
 
     //need more information
-    public void register(FirebaseDatabase ins, ListenerCallBack callBack) {
+    public void checkAccountExist(FirebaseDatabase ins, ListenerCallBack callBack) {
+//        callBack.onSuccess();
 
-        DatabaseReference myRef = ins.getReference("User/" + role);
-
+        myRef = ins.getReference("User/" + dbPath);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //snapshot.getChildrenCount();
-
                 if (snapshot.hasChild(userName)) {
                     callBack.onFail("Account existed");
                     return;
                 }
 
-                //if non such username exist, then create a new child.
-                //TODO: use toMap() to assign instead of this.
-                myRef.child(userName).setValue(toMap());
-                Log.d("Login", "Success R");
                 callBack.onSuccess();
-                myRef.removeEventListener(this); //delete this listener. dont know if necessary,(need test);
             }
 
             @Override
@@ -103,33 +89,29 @@ public abstract class User {
         });
     }
 
-    public String welcomeMSG() {
-        return String.format("Welcome %s! You are logged in as %s.", firstName, role);
+    public void register(String firstName,String lastName){
+        this.lastName=lastName;
+        this.firstName=firstName;
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                myRef.child(userName).setValue(toMap());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Login", "fail");
+            }
+        });
     }
 
-    /**
-     * set methods
-     */
-    public void setUserName(String name) {
-        userName = name;
+    public String welcomeMSG(){
+        return String.format("Welcome %s!\n You have successfully logged in as a ", firstName);
     }
-
-    public void setfirstName(String name) {
-        firstName = name;
-    }
-
-    public void setLastName(String name) {
-        lastName = name;
-    }
-
-    public void setPasswd(String pw) {
-        passwd = pw;
-    }
-
 
     private Map<String, Object> toMap() {
         Map<String, Object> m = new HashMap<>();
-        m.put("password", passwd);
+        m.put("password", password);
         m.put("firstName", firstName);
         m.put("lastName", lastName);
         m.put("userName", userName);

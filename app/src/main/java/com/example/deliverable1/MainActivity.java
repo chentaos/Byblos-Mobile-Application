@@ -3,11 +3,11 @@ package com.example.deliverable1;
 import account.*;
 
 import android.content.Intent;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 
 import android.widget.EditText;
@@ -120,12 +120,12 @@ public class MainActivity extends AppCompatActivity {
         specifyAccount(userName, password);
 
         //user login
-        user.register(dbInstance, new ListenerCallBack() {
+        user.checkAccountExist(dbInstance, new ListenerCallBack() {
             @Override
             public void onSuccess() {
-                Toast.makeText(MainActivity.this, "Register success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Account created", Toast.LENGTH_SHORT).show();
                 progressB.setVisibility(View.INVISIBLE);
-                loadUserMainPage();
+                loadRegisterPage();
             }
 
             @Override
@@ -142,7 +142,13 @@ public class MainActivity extends AppCompatActivity {
     // start a new page.
     private void loadUserMainPage() {
         Intent intent = new Intent(MainActivity.this, UserMainMenu.class);
-        intent.putExtra("welcomeMSG", user.welcomeMSG());
+        intent.putExtra("User", user);
+        startActivity(intent);
+    }
+
+    private void loadRegisterPage(){
+        Intent intent=new Intent(MainActivity.this,RegisterPageActivity.class);
+        intent.putExtra("User", user);
         startActivity(intent);
     }
 
