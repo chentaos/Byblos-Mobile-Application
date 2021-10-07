@@ -1,174 +1,157 @@
 package account;
 
-import android.provider.ContactsContract;
-
+import android.util.Log;
 import androidx.annotation.NonNull;
 
-import com.example.deliverable1.MainActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import android.util.Log;
-import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 public abstract class User{
+
     protected String userName;
-    protected String password;
 
-    //public String role; // flag of the database?
+    /*TODO:
+           - When User click register, start a second page.Let User input more information, then
+           return the information and fill the information in the user instance.
+           - Map the keys and values and then upload to database.
+           - change the welcome MSG; change userName to the first name of the user.
+           -
 
-    //private Service[] serviceTypes;
-    //private Account[] userList;
 
-    //public String userInterface;
-    // public abstract void updateServiceList(); dont need.Asynchronous.
-    //private boolean loginState = false; // not necessary now
+     */
+    public String firstName = "unset";
+    public String lastName = "unset";
 
-    public User(){ }
+    private String role;
+    private String passwd;
 
-    public abstract void login(String userName, String pw,ListenerCallBack callBack);
+    public DatabaseReference myRef; //User has a database reference.
 
-//    public void login(String userName, String pw,ListenerCallBack callBack) throws IllegalArgumentException{
-//        //Query qUserName =
-//
-//        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Users");
-//
-////        myRef.child(userName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-////            @Override
-////            public void onComplete(@NonNull Task<DataSnapshot> task) {
-////                if (!task.isSuccessful()) {
-////                    Log.e("firebase", "Error getting data", task.getException());
-////                }
-////                else {
-////                    String passwd = task.getResult().child("passwd").getValue(String.class);
-////                    String role1 = task.getResult().child("role").getValue(String.class);
-////                    if(passwd == null|| role1 == null){
-////                        return;
-////                    }
-////                    if(passwd.equals(pw) && role1.equals(role)){
-////                        loginState = true;
-////                        Log.d("Login","Success");
-////
-////                    }
-////                    Log.d("Login",pw+role);
-////                }
-////            }
-////        });
-//////
-//
-//        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                //snapshot.getChildrenCount();
-//
-//                if(!snapshot.hasChild(userName)){
-//                    callBack.onFail("wrong password or username");
-//                    return;
-//                }
-//                snapshot = snapshot.child(userName);
-//                String passwd = snapshot.child("passwd").getValue(String.class);
-//                String role1 = snapshot.child("role").getValue(String.class);
-//
-//                if(passwd == null|| role1 == null){
-//                    throw new NoSuchElementException("found the username in database but no passwd or role elements");
-//                }
-//
-//                if(passwd.equals(pw)){
-//
-//                    Log.d("Login","Success L");
-//                    callBack.onSuccess();
-//                }else{
-//                    callBack.onFail("wrong password or role");
-//                }
-//                Log.d("Login","still running? : yes" + pw+role);
-//            }
-//
-//
-//        @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.d("Login","fail");
-//            }
-//        });
-//
-//
-//
-////        Q: is there a synchronous method for retrieving data from database
-//        //if(!loginState){
-//        ////            throw new IllegalArgumentException("wrong username or password");
-//        ////        }
-//        // this if statement always runs first.
-//
-//        //another way to check if input matches the database, using Query.
-////        Query qUserName = myRef.orderByKey().equalTo(userName);
-////        //qUserName.orderByChild("role").equalTo(role); can't embed search?
-////        ValueEventListener temp = qUserName.addValueEventListener(new ValueEventListener() {
-////            @Override
-////            public void onDataChange(@NonNull DataSnapshot snapshot) {
-////                for(DataSnapshot t:snapshot.getChildren()){
-////                    String a = t.child("role").getValue(String.class);
-////                    String b = t.child("passwd").getValue(String.class);
-////                    Log.d("Login",t.getKey().toString() + "  "+ t.child("passwd").getValue().toString());
-////                    if(t.child("role").getValue().toString().equals(role)){//checkrole
-////                        if(t.child("passwd").getValue().toString().equals(pw)){//checkPw
-////                            loginState = true;
-////                            Log.d("Login","success");
-////                        }
-////                    }
-////                }
-////            }
-////
-////            @Override
-////            public void onCancelled(@NonNull DatabaseError error) {
-////                Log.d("Login","fail");
-////            }
-////        });
-////        if(!loginState){
-////            throw new IllegalArgumentException("wrong username or password");
-////        }
-//        //myRef.removeEventListener(temp);
-//    }
+    public User(){
+        // for firebase to auto map when retrieving data.
+    }
 
-    public abstract void register(String userName, String pw, ListenerCallBack callBack);
+    public User(String role){
+        this.role = role;
+        myRef = FirebaseDatabase.getInstance().getReference("Users/" + role);
+    }
 
-//    public void register(String userName, String pw, ListenerCallBack callBack){
-//        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Users");
-//        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                //snapshot.getChildrenCount();
-//
-//                if(snapshot.hasChild(userName)){
-//                    callBack.onFail("username already existed");
-//                    return;
-//                }
-//                //if non such username exist, then create a new child.
-//                myRef.child(userName+"/passwd").setValue(pw);
-//                myRef.child(userName+"/role").setValue(role);
-//
-//                Log.d("Login","Success R");
-//                callBack.onSuccess();
-//            }
-//
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.d("Login","fail");
-//            }
-//        });
-//    }
+    public void login(ListenerCallBack callBack) {
 
-    public abstract String welcomeMSG();
 
-    public void setUserName(String name){
-        userName=name;
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("Login", "see "+ userName + snapshot);
+
+                if (!snapshot.hasChild(userName)) {
+                    callBack.onFail("wrong password or username");
+                    return;
+                }
+
+                snapshot = snapshot.child(userName);
+                String pw = snapshot.child("passwd").getValue(String.class);
+
+                if (pw == null) {
+                    throw new NoSuchElementException("found the username in database but no passwd"); //seems not possible.
+                }
+
+                if (passwd.equals(pw)) {
+
+                    Log.d("Login", "Success L");
+                    //TODO: when finish the register page, remove the comment below.
+                   // firstName = snapshot.child("firstName").getValue(String.class);
+                    //lastName = snapshot.child("lastName").getValue(String.class);
+
+                    callBack.onSuccess();
+
+                    myRef.removeEventListener(this); //delete this listener. dont know if necessary,(need test);
+
+                } else {
+                    callBack.onFail("wrong password or role");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Login", "fail");
+            }
+        });
     }
 
 
+
+    //need more information
+    public void register(ListenerCallBack callBack){
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //snapshot.getChildrenCount();
+
+                if(snapshot.hasChild(userName)){
+                    callBack.onFail("username already existed");
+                    return;
+                }
+
+                //if non such username exist, then create a new child.
+                //TODO: use toMap() to assign instead of this.
+                myRef.child(userName).setValue(toMap());
+
+                Log.d("Login","Success R");
+                callBack.onSuccess();
+                myRef.removeEventListener(this); //delete this listener. dont know if necessary,(need test);
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Login","fail");
+            }
+        });
+    }
+
+
+    public String welcomeMSG(){
+        return String.format("Welcome %s! You are logged in as %s.",firstName,role);
+    }
+
+    /**
+     * set methods
+     *
+     */
+    public void setUserName(String name){
+        userName=name;
+    }
+    public void setfirstName(String name){
+        firstName = name;
+    }
+    public void setLastName(String name){
+        lastName = name;
+    }
+    public void setPasswd(String pw) {
+        passwd = pw;
+    }
+
+    /**
+     * use to register.
+     *
+     */
+    private Map<String,Object> toMap(){
+        Map<String, Object> m = new HashMap<>();
+        m.put("passwd",passwd);
+        m.put("firstName",firstName);
+        m.put("lastName",lastName);
+        m.put("userName",userName);
+        //enough for now.
+
+        return m;
+    }
 }
