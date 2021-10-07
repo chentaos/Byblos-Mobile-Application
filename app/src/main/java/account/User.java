@@ -20,19 +20,16 @@ public abstract class User implements Serializable {
     private String lastName ;
     private String userName;
     private String password;
-    private DatabaseReference myRef; //User has a database reference.
-
-    protected String dbPath;
-
+    protected DatabaseReference myRef; //User has a database reference.
+    
     public User(String name, String passwd) {
         this.userName = name;
         this.password = passwd;
     }
 
-    public void login(FirebaseDatabase ins, ListenerCallBack callBack) {
+    public void login( ListenerCallBack callBack) {
 //        callBack.onSuccess();
 
-        myRef = ins.getReference("User/" + dbPath);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -65,10 +62,10 @@ public abstract class User implements Serializable {
 
 
     //need more information
-    public void checkAccountExist(FirebaseDatabase ins, ListenerCallBack callBack) {
+    public void checkAccountExist( ListenerCallBack callBack) {
 //        callBack.onSuccess();
 
-        myRef = ins.getReference("User/" + dbPath);
+
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

@@ -1,12 +1,14 @@
 package account;
 
 
+import com.google.firebase.database.FirebaseDatabase;
+
 public class Admin extends User {
 
 
     public Admin(String userName, String password) {
         super(userName, password);
-        this.dbPath = "Admin";
+        this.myRef= FirebaseDatabase.getInstance().getReference("User/Admin");
     }
 
 

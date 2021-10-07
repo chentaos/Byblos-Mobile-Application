@@ -22,7 +22,6 @@ import com.google.firebase.database.FirebaseDatabase;
 public class MainActivity extends AppCompatActivity {
 
     private User user;
-    private FirebaseDatabase dbInstance;
     private ProgressBar progressB;
 
     private enum AccountType {admin, customer, employee}
@@ -60,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        dbInstance = FirebaseDatabase.getInstance();
-
         //Set a button clicked
         RadioButton a = (RadioButton) findViewById(R.id.radioAdmin);
         a.setChecked(true);
@@ -84,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         progressB.setVisibility(View.VISIBLE);
         specifyAccount(userName, password);
-        this.user.login(dbInstance, new ListenerCallBack() {
+        this.user.login( new ListenerCallBack() {
             @Override
             public void onSuccess() {
                 progressB.setVisibility(View.INVISIBLE);
@@ -120,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         specifyAccount(userName, password);
 
         //user login
-        user.checkAccountExist(dbInstance, new ListenerCallBack() {
+        user.checkAccountExist( new ListenerCallBack() {
             @Override
             public void onSuccess() {
                 Toast.makeText(MainActivity.this, "Account created", Toast.LENGTH_SHORT).show();
