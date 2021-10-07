@@ -10,6 +10,6 @@ public class Customer extends User {
 
 
     public String welcomeMSG() {
-        return super.welcomeMSG()+"Customer";
+        return super.welcomeMSG()+"Customer.";
     }
 }

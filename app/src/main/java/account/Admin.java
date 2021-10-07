@@ -17,7 +17,7 @@ public class Admin extends User {
 
 
     public String welcomeMSG() {
-        return super.welcomeMSG()+"Admin";
+        return super.welcomeMSG()+"Admin.";
     }
 
 //    private User[] getUserList() {

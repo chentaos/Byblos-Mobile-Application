@@ -31,7 +31,7 @@ public abstract class User implements Serializable {
 
     public void login(FirebaseDatabase ins, ListenerCallBack callBack) {
 //        callBack.onSuccess();
-        
+
         myRef = ins.getReference("User/" + dbPath);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
