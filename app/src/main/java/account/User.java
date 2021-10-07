@@ -92,17 +92,19 @@ public abstract class User implements Serializable {
     public void register(String firstName,String lastName){
         this.lastName=lastName;
         this.firstName=firstName;
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                myRef.child(userName).setValue(toMap());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("Login", "fail");
-            }
-        });
+        myRef.child(userName).setValue(toMap());
+        
+//        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                myRef.child(userName).setValue(toMap());
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.d("Login", "fail");
+//            }
+//        });
     }
 
     public String welcomeMSG(){
