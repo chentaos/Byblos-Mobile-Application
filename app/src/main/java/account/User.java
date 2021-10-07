@@ -48,10 +48,8 @@ public abstract class User implements Serializable {
 
                 if (password.equals(pw)) {
                     Log.d("Login", "Login success");
-                    //TODO: when finish the register page, remove the comment below.
-                    // firstName = snapshot.child("firstName").getValue(String.class);
-                    //lastName = snapshot.child("lastName").getValue(String.class);
-
+                    firstName = snapshot.child("firstName").getValue(String.class);
+                    lastName = snapshot.child("lastName").getValue(String.class);
                     callBack.onSuccess();
                 } else {
                     callBack.onFail("wrong password or role");
