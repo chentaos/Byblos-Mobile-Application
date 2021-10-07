@@ -16,3 +16,9 @@ methods:
 
 Confusing about the Android UI. Dont know how to do it properly to interact with User class. Maybe because it is asynchrounous programing and I am still thinking in a synchrounous way.
 >>>>>>> deliverable1_V0.5
+
+Version 0.6
+![image](https://github.com/SEG2105-uottawa/seg2105f21-project-project_gr13/blob/main/datastructure2.png) 
+Datastructure updated
+add a new page for users to input their information.
+
