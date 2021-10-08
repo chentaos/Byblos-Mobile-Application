@@ -15,11 +15,11 @@ import java.util.Map;
 
 public abstract class User {
 
-    public String firstName ;
-    public String lastName ;
-    public String userName;
+    private String firstName ;
+    private String lastName ;
+    private String userName;
     private String password;
-    DatabaseReference myRef; //User has a database reference.
+    private DatabaseReference myRef; //User has a database reference.
 
     // might need this to retrieve data.
     public User(){
@@ -109,5 +109,45 @@ public abstract class User {
         m.put("lastName", lastName);
         m.put("userName", userName);
         return m;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public DatabaseReference getMyRef() {
+        return myRef;
+    }
+
+    public void setMyRef(DatabaseReference myRef) {
+        this.myRef = myRef;
     }
 }

@@ -10,8 +10,8 @@ import android.widget.Toast;
 
 public class RegisterPageActivity extends AppCompatActivity {
 
-    EditText firsrName;
-    EditText lastName;
+    private EditText firsrName;
+    private EditText lastName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

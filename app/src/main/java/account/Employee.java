@@ -8,7 +8,7 @@ public class Employee extends User {
 
     public Employee(String name,String password){
         super(name,password);
-        this.myRef= myRef.child("Users/Employee");
+        setMyRef(getMyRef().child("Users/Employee"));
     }
 
     @Override

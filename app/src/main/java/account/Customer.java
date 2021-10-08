@@ -7,7 +7,7 @@ public class Customer extends User {
 
     public Customer(String userName, String password) {
         super(userName, password);
-        this.myRef= myRef.child("Users/Customer");
+        setMyRef(getMyRef().child("Users/Customer"));
     }
 
 

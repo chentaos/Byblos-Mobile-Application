@@ -11,7 +11,7 @@ public class Admin extends User {
 
     public Admin(String userName, String password) {
         super(userName, password);
-        this.myRef= myRef.child("Users/Admin");
+        setMyRef(getMyRef().child("Users/Admin"));
     }
 
 
