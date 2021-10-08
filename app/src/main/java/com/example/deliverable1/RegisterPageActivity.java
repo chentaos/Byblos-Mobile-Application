@@ -25,7 +25,13 @@ public class RegisterPageActivity extends AppCompatActivity {
     public void continueRegister(View view){
         String firstName= this.firsrName.getText().toString().trim();
         String lastName = this.lastName.getText().toString().trim();
+        boolean firstNameValidation = this.firsrName.getText().toString().matches("^[a-zA-Z]+$");
+        boolean lastNameValidation = this.lastName.getText().toString().matches("^[a-zA-Z]+$");
 
+        if(!firstNameValidation || !lastNameValidation){
+            Toast.makeText(getApplication(),"Name can't be number",Toast.LENGTH_SHORT).show();
+            return;
+        }
         if(firstName.isEmpty()){
             Toast.makeText(getApplication(),"Fisrt name can't be empty",Toast.LENGTH_SHORT).show();
             return;
