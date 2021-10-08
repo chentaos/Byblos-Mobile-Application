@@ -8,7 +8,9 @@ public class Admin extends User {
     public Admin(){
 
     }
-
+    /**
+     *  constructor for Admin user account.
+     */
     public Admin(String userName, String password) {
         super(userName, password);
         setMyRef(getMyRef().child("Users/Admin"));

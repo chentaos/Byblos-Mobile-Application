@@ -178,7 +178,9 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent,0); //deprecated. new use can be found at https://developer.android.com/training/basics/intents/result#java
 
     }
-
+    /**
+     *  this method specifies the type of account.
+     */
     private void specifyAccount(String userName, String password) {
         switch (type) {
             case admin:

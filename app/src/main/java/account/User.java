@@ -104,7 +104,9 @@ public abstract class User {
             }
         });
     }
-
+    /**
+     *  welcome message once succesfully logged in.
+     */
     public String welcomeMSG(){
         return String.format("Welcome %s!\n You have successfully logged in as a ", firstName);
     }
