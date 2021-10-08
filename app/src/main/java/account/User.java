@@ -32,6 +32,12 @@ public abstract class User {
         this.password = passwd;
     }
 
+    public User(String name, String passwd, FirebaseDatabase firebaseDatabase) {
+        myRef = firebaseDatabase.getReference();
+        this.userName = name;
+        this.password = passwd;
+    }
+
     /**
      * login method, the reference path is already specified at construction method of each subclasses.
      * @param callBack
@@ -88,6 +94,7 @@ public abstract class User {
                     return;
                 }
                 myRef.child(userName).setValue(toMap());
+
                 callBack.onSuccess();
             }
 
