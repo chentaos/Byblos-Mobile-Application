@@ -18,15 +18,15 @@ public class RegisterPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_page);
 
-        firsrName= (EditText) findViewById(R.id.firstName);
-        lastName= (EditText) findViewById(R.id.lastName);
+        firsrName = findViewById(R.id.firstName);
+        lastName = findViewById(R.id.lastName);
     }
 
     public void continueRegister(View view){
         String firstName= this.firsrName.getText().toString().trim();
         String lastName = this.lastName.getText().toString().trim();
-        boolean firstNameValidation = this.firsrName.getText().toString().matches("^[a-zA-Z]+$");
-        boolean lastNameValidation = this.lastName.getText().toString().matches("^[a-zA-Z]+$");
+        boolean firstNameValidation = firstName.matches("^[a-zA-Z]+$");
+        boolean lastNameValidation = lastName.matches("^[a-zA-Z]+$");
 
         if(!firstNameValidation || !lastNameValidation){
             Toast.makeText(getApplication(),"Name can't be number",Toast.LENGTH_SHORT).show();
