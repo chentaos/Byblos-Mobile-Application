@@ -1,3 +1,16 @@
+# Android Project: Byblos Mobile Application Group13
+### Member: 
+Chu, Yuanhao  
+Dou, Xingwei  
+Jin, Chentao  
+Kamara, Mikhail  
+Kiri, Lootii   
+
+## UML
+https://github.com/SEG2105-uottawa/seg2105f21-project-project_gr13/blob/main/UML_D1.pdf
+## Datastructure in Firebase  
+![image](https://github.com/SEG2105-uottawa/seg2105f21-project-project_gr13/blob/main/datastructure2.png)
+
 ## Draft code(Version 0.5)
 
 Using only realtime database
@@ -15,10 +28,6 @@ methods:
 
 
 Confusing about the Android UI. Dont know how to do it properly to interact with User class. Maybe because it is asynchrounous programing and I am still thinking in a synchrounous way.
-### UML:
-![image](https://github.com/SEG2105-uottawa/seg2105f21-project-project_gr13/blob/main/uml.png)
-
->>>>>>> deliverable1_V0.5
 
 ## Version 0.6  
 ![image](https://github.com/SEG2105-uottawa/seg2105f21-project-project_gr13/blob/main/datastructure2.png)   
