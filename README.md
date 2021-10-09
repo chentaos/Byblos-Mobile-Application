@@ -8,6 +8,8 @@ Kiri, Lootii
 
 ## UML
 https://github.com/SEG2105-uottawa/seg2105f21-project-project_gr13/blob/main/UML_D1.pdf
+## Datastructure in Firebase  
+![image](https://github.com/SEG2105-uottawa/seg2105f21-project-project_gr13/blob/main/datastructure2.png)
 
 ## Draft code(Version 0.5)
 
