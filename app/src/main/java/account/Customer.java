@@ -13,10 +13,11 @@ public class Customer extends User {
         setMyRef(getMyRef().child("Users/Customer"));
     }
 
-    public Customer(String userName, String password, FirebaseDatabase firebaseDatabase) {
-        super(userName, password, firebaseDatabase);
-//        this.myRef= myRef.child("Users/Customer");
-    }
+//dont need unit test now
+//    public Customer(String userName, String password, FirebaseDatabase firebaseDatabase) {
+//        super(userName, password, firebaseDatabase);
+////        this.myRef= myRef.child("Users/Customer");
+//    }
 
     public String welcomeMSG() {
         return super.welcomeMSG()+"Customer.";
