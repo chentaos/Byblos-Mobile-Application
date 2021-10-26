@@ -168,7 +168,14 @@ public class MainActivity extends AppCompatActivity {
 
     // start a new page.
     private void loadUserMainPage() {
-        Intent intent = new Intent(MainActivity.this, UserMainMenu.class);
+        Intent intent;
+
+        if(type==AccountType.admin){
+                   intent = new Intent(MainActivity.this, AdminDashboard.class);
+        }else{
+           intent = new Intent(MainActivity.this, UserMainMenu.class);
+        }
+
         intent.putExtra("welcomeMSG", user.welcomeMSG());
         startActivity(intent);
     }

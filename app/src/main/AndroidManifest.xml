@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Deliverable1">
         <activity
+            android:name=".AdminDashboard"
+            android:exported="true" />
+        <activity
             android:name=".RegisterPageActivity"
             android:exported="true" />
         <activity
