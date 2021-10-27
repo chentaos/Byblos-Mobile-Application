@@ -94,9 +94,7 @@
                 android:ems="10"
                 android:hint="@string/enter_hourly_rate"
                 android:inputType="textPersonName"
-                android:minHeight="48dp"
-                android:textColorHint="#3E3636"
-                android:autofillHints="" />
+                android:minHeight="48dp" />
 
             <Switch
                 android:id="@+id/movingAssistanceSwitch"
