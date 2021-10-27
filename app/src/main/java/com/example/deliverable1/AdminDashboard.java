@@ -21,6 +21,6 @@ public class AdminDashboard extends AppCompatActivity {
     public void openServiceOnClick(View view){
         Intent intent;
         intent = new Intent(AdminDashboard.this, ServiceDashboard.class);
-
+        startActivity(intent);
     }
 }
