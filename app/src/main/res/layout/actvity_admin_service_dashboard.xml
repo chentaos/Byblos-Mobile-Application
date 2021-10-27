@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtViewCarRental"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/car_rental"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/editTextTextPersonName2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/enter_hourly_rate"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                tools:ignore="DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck" />
+
+            <Switch
+                android:id="@+id/carRentalSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/show_service" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtViewTruckRental"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/truck_rental"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/truckRateEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/enter_hourly_rate"
+                android:inputType="textPersonName"
+                android:minHeight="48dp" />
+
+            <Switch
+                android:id="@+id/truckRentalSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/show_service" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtMovingAssistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/moving_assistance"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/editTextTextPersonName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/enter_hourly_rate"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:textColorHint="#3E3636"
+                android:autofillHints="" />
+
+            <Switch
+                android:id="@+id/movingAssistanceSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/show_service" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

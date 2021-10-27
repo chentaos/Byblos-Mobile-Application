@@ -2,7 +2,9 @@ package com.example.deliverable1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class AdminDashboard extends AppCompatActivity {
@@ -14,5 +16,11 @@ public class AdminDashboard extends AppCompatActivity {
 
         TextView text = findViewById(R.id.adminWelcomeMsg);
         text.setText(getIntent().getStringExtra("welcomeMSG"));
+    }
+
+    public void openServiceOnClick(View view){
+        Intent intent;
+        intent = new Intent(AdminDashboard.this, ServiceDashboard.class);
+
     }
 }
