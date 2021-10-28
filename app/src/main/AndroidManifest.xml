@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Deliverable1">
         <activity
+            android:name=".AdminAccountManager"
+            android:exported="false" />
+        <activity
             android:name=".AdminDashboard"
             android:exported="true" />
         <activity
