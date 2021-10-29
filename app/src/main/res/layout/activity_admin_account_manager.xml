@@ -12,13 +12,32 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/userList"
+        <RadioGroup
             android:layout_width="match_parent"
-            android:layout_height="658dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/eRadio"
+                android:layout_width="214dp"
+                android:layout_height="wrap_content"
+                android:text="Employee" />
+
+            <RadioButton
+                android:id="@+id/cRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Customer" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/userListLayout"
+            android:layout_width="match_parent"
+            android:layout_height="611dp"
+            android:orientation="horizontal">
 
             <ListView
+                android:id="@+id/userList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -34,19 +53,17 @@
                 android:id="@+id/preButton"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
-                android:text="previous"
-               />
+                android:layout_weight="1"
+                android:text="previous" />
 
             <Button
                 android:id="@+id/nextButton"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
-                android:text="Next"
-                />
+                android:layout_weight="1"
+                android:text="Next" />
         </LinearLayout>
 
     </LinearLayout>

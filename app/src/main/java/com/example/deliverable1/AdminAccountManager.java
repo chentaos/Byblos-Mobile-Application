@@ -5,6 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 import account.Admin;
 import account.Employee;
@@ -24,29 +28,11 @@ public class AdminAccountManager extends AppCompatActivity {
         u.getNextpage(new ListenerCallBack() {
             @Override
             public void onSuccess() {
-                u.getNextpage(new ListenerCallBack() {
-                    @Override
-                    public void onSuccess() {
-                        u.getPrevPage(new ListenerCallBack() {
-                            @Override
-                            public void onSuccess() {
-                                // Matryoshka coding.
-                                u.delete("123");
-                            }
+                ArrayList userList = u.getList();
 
-                            @Override
-                            public void onFail(String errInfo) {
-
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onFail(String errInfo) {
-
-                    }
-                });
+                ArrayAdapter<Employee> adapter = new ArrayAdapter<Employee>(this,android.R.layout.simple_expandable_list_item_1,userList);
+                ListView userlistVIew = findViewById(R.id.userList);
+                userlistVIew.setAdapter(adapter);
             }
 
             @Override
@@ -54,6 +40,7 @@ public class AdminAccountManager extends AppCompatActivity {
 
             }
         });
+
 
 
 

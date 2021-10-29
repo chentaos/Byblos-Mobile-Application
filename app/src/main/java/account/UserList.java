@@ -8,5 +8,4 @@ public interface UserList<E extends User> {
     void getPrevPage(ListenerCallBack callBack);
     ArrayList<E> getList();
     void delete(String userName);
-
 }
