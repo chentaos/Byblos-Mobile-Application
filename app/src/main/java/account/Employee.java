@@ -22,4 +22,9 @@ public class Employee extends User {
 
         return super.welcomeMSG()+"Employee.";
     }
+
+    public String toString(){
+        String result = getUserName();
+        return result;
+    }
 }

@@ -166,7 +166,11 @@ public class Admin extends User {
             mdb.child(userName).removeValue();
             //also delete the array list.
         }
+
+
     }
+
+
 
     // maybe unsuitable using the word iterator, but it works like a iterator.
     public AccList<Employee> getEmployeeAccManager() {

@@ -28,7 +28,7 @@ public class AdminAccountManager extends AppCompatActivity {
         u.getNextpage(new ListenerCallBack() {
             @Override
             public void onSuccess() {
-                ArrayList userList = u.getList();
+                ArrayList<Employee> userList = u.getList();
 
                 ArrayAdapter<Employee> adapter = new ArrayAdapter<Employee>(this,android.R.layout.simple_expandable_list_item_1,userList);
                 ListView userlistVIew = findViewById(R.id.userList);
