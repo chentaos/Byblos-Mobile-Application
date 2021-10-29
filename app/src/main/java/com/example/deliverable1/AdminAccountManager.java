@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import account.Admin;
 import account.Employee;
@@ -56,7 +57,14 @@ public class AdminAccountManager extends AppCompatActivity {
 
 
 
+
     }
     //TODO: srcollable/can go nextpage UI to show list.
+    public void preOnClick(View view){
 
+    }
+
+    public void nextOnClick(View view){
+
+    }
 }

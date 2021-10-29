@@ -72,7 +72,6 @@ public class Admin extends User {
                             E temp = t.getValue(c); // getValue here cant not use generic, ****. Solution at https://stackoverflow.com/questions/48237786/best-practice-for-using-generics-with-firebase-snapshot-getvalue
                             userlist.add(temp);
                             Log.d("ww", temp.getUserName());
-
                         }
                         callBack.onSuccess();
                         //getMyRef().removeEventListener(this); // If I dont remove the listener, it will be call again after database changes.//just use singlevaluelistener.
@@ -95,7 +94,6 @@ public class Admin extends User {
             qName.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                     for (DataSnapshot t : snapshot.getChildren()) {
                         //Log.d("ww", t.toString());
                         E temp = t.getValue(c); // getValue here cant not use generic, ****. Solution at https://stackoverflow.com/questions/48237786/best-practice-for-using-generics-with-firebase-snapshot-getvalue
