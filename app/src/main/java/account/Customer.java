@@ -4,6 +4,9 @@ package account;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Customer extends User {
+    public Customer() {
+
+    }
 
     /**
      *  constructor for the customer User account.

@@ -44,7 +44,7 @@ public class Admin extends User {
     //D2
     private class AccList<E extends User> implements UserList<E> {
 
-        private ArrayList<E> userlist;
+        private ArrayList<User> userlist;
         private DatabaseReference mdb;
         private String currentUserNamePointer;
 
@@ -52,7 +52,7 @@ public class Admin extends User {
 
         public AccList(String category, Class<E> c) {
             this.c = c;
-            userlist = new ArrayList<E>();
+            userlist = new ArrayList<User>();
             mdb = FirebaseDatabase.getInstance().getReference().child("Users/" + category);
             currentUserNamePointer = null;
         }
@@ -88,9 +88,9 @@ public class Admin extends User {
 
             Log.d("ww", "getnextpage2");
             // get the last element of the previous data and clear the list.
-            currentUserNamePointer = userlist.get(pageLength - 1).getUserName();
+            currentUserNamePointer = userlist.get(userlist.size() - 1).getUserName();
             userlist.clear();
-            Query qName = mdb.orderByKey().startAfter(currentUserNamePointer).limitToFirst(10);
+            Query qName = mdb.orderByKey().startAfter(currentUserNamePointer).limitToFirst(pageLength);
             qName.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -103,6 +103,7 @@ public class Admin extends User {
                     }
 
                     if (userlist.size() == 0) {
+                        Log.d("ww","onFailNext");
                         callBack.onFail("on the last page");
                     } else {
                         Log.d("ww", String.valueOf(userlist.size()));
@@ -122,11 +123,15 @@ public class Admin extends User {
         @Override
         public void getPrevPage(ListenerCallBack callBack) {
             //get the first element of the psaklsgjslkdajgdm data and clear the list.
+            if(userlist.size() == 0){
+                callBack.onFail("First page");
+                return;
+            }
             currentUserNamePointer = userlist.get(0).getUserName();
             userlist.clear();
 
             Log.d("ww", "getpreviouspage");
-            Query qName = mdb.orderByKey().endBefore(currentUserNamePointer).limitToLast(10);
+            Query qName = mdb.orderByKey().endBefore(currentUserNamePointer).limitToLast(pageLength);
             qName.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -140,6 +145,7 @@ public class Admin extends User {
                     }
 
                     if (userlist.size() == 0) {
+                        Log.d("ww","onFailPre");
                         callBack.onFail("on the first page");
                     } else {
                         Log.d("ww", String.valueOf(userlist.size()));
@@ -157,7 +163,7 @@ public class Admin extends User {
         }
 
         @Override
-        public ArrayList<E> getList() {
+        public ArrayList<User> getList() {
             return userlist;
         }
 

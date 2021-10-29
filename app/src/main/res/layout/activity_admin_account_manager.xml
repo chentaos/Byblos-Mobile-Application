@@ -13,6 +13,7 @@
         android:orientation="vertical">
 
         <RadioGroup
+            android:id="@+id/accRadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -36,6 +37,7 @@
             android:layout_height="611dp"
             android:orientation="horizontal">
 
+
             <ListView
                 android:id="@+id/userList"
                 android:layout_width="match_parent"
@@ -55,7 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:text="previous" />
+                android:text="previous"
+                android:onClick="preOnClick"/>
 
             <Button
                 android:id="@+id/nextButton"
@@ -63,7 +66,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:text="Next" />
+                android:text="Next"
+                android:onClick="nextOnClick"/>
         </LinearLayout>
 
     </LinearLayout>
