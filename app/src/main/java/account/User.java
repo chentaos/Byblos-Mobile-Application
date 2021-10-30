@@ -43,37 +43,37 @@ public abstract class User {
      * @param callBack
      */
     public void login(ListenerCallBack callBack) {
-//        callBack.onSuccess();
+        callBack.onSuccess();
 
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //Log.d("Login", "see " + userName + snapshot);
-
-                if (!snapshot.hasChild(userName)) {
-                    callBack.onFail("User doesn't exist");
-                    return;
-                }
-
-                snapshot = snapshot.child(userName);
-                String pw = snapshot.child("passwd").getValue(String.class);
-
-                if (password.equals(pw)) {
-
-                    firstName = snapshot.child("firstName").getValue(String.class);
-                    lastName = snapshot.child("lastName").getValue(String.class);
-                    callBack.onSuccess();  //if we find the matched result, call success callback.
-
-                } else {
-                    callBack.onFail("wrong password or role");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("Login", "fail");
-            }
-        });
+//        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                //Log.d("Login", "see " + userName + snapshot);
+//
+//                if (!snapshot.hasChild(userName)) {
+//                    callBack.onFail("User doesn't exist");
+//                    return;
+//                }
+//
+//                snapshot = snapshot.child(userName);
+//                String pw = snapshot.child("passwd").getValue(String.class);
+//
+//                if (password.equals(pw)) {
+//
+//                    firstName = snapshot.child("firstName").getValue(String.class);
+//                    lastName = snapshot.child("lastName").getValue(String.class);
+//                    callBack.onSuccess();  //if we find the matched result, call success callback.
+//
+//                } else {
+//                    callBack.onFail("wrong password or role");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.d("Login", "fail");
+//            }
+//        });
     }
 
 

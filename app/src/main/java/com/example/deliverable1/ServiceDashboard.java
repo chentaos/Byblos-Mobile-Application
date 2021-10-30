@@ -1,5 +1,6 @@
 package com.example.deliverable1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -71,6 +72,7 @@ public class ServiceDashboard extends AppCompatActivity {
               updateSwitchText(carRentalSwitch, isChecked);
               carRentalService.setActivated(isChecked);
               carRentalService.writeToDB();
+              goToEdit();
             }
         });
 
@@ -101,5 +103,10 @@ public class ServiceDashboard extends AppCompatActivity {
         } else {
             s.setText(R.string.activate_service);
         }
+    }
+
+    private void goToEdit(){
+        Intent i=new Intent(ServiceDashboard.this,ServiceRequirementEdit.class);
+        startActivity(i);
     }
 }

@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Deliverable1">
         <activity
+            android:name=".ServiceRequirementEdit"
+            android:exported="true" />
+        <activity
             android:name=".AdminDashboard"
             android:exported="true" />
         <activity
@@ -21,7 +24,6 @@
         <activity
             android:name=".ServiceDashboard"
             android:exported="true" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
