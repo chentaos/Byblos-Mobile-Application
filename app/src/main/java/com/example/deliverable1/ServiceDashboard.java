@@ -83,6 +83,7 @@ public class ServiceDashboard extends AppCompatActivity {
                 updateSwitchText(truckRentalSwitch, isChecked);
                 truckRentalService.setActivated(isChecked);
                 truckRentalService.writeToDB();
+                goToEdit();
             }
         });
 
@@ -92,6 +93,7 @@ public class ServiceDashboard extends AppCompatActivity {
                 updateSwitchText(movingAssistanceSwitch, isChecked);
                 movingAssistanceService.setActivated(isChecked);
                 movingAssistanceService.writeToDB();
+                goToEdit();
             }
         });
 
