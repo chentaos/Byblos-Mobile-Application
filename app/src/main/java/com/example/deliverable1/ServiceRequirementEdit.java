@@ -2,7 +2,10 @@ package com.example.deliverable1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -24,6 +27,14 @@ public class ServiceRequirementEdit extends AppCompatActivity {
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice,requirements);
         requirement.setAdapter(adapter);
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     public void save(View view){
         finish();
