@@ -148,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("Login","register success");
                     progressB.setVisibility(View.INVISIBLE);
                     loadUserMainPage();
-
                 }
 
                 @Override

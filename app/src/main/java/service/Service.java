@@ -1,6 +1,7 @@
 package service;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -13,18 +14,18 @@ import com.google.firebase.database.ValueEventListener;
 import account.ListenerCallBack;
 
 public class Service {
-    Boolean isActivated = false;
-    String name;
+    private Boolean isActivated = false;
+    private double hourlyRate=0;
+    private String name;
     private DatabaseReference myRef;
 
     public Service(){
 
     }
 
-     public Service(String name, Boolean isActivated){
+     public Service(String name){
         myRef = FirebaseDatabase.getInstance().getReference().child("Services");
         this.name = name;
-        this.isActivated = isActivated;
      }
 
     public void updateFromDB(ListenerCallBack callBack) {
@@ -35,22 +36,16 @@ public class Service {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //Log.d("Login", "see " + userName + snapshot);
 
-                if (!snapshot.hasChild(name)) {
-                    myRef.child(name).setValue(new Service(name, false));
-                }
-
-                isActivated = snapshot.child(name).child("activated").getValue(Boolean.class);
-                callBack.onSuccess();
-
-//                if (password.equals(pw)) {
-//
-//                    firstName = snapshot.child("firstName").getValue(String.class);
-//                    lastName = snapshot.child("lastName").getValue(String.class);
-//                    callBack.onSuccess();  //if we find the matched result, call success callback.
-//
-//                } else {
-//                    callBack.onFail("wrong password or role");
+//                if (!snapshot.hasChild(name)) {
+//                    myRef.child(name).setValue(this);
 //                }
+                snapshot = snapshot.child(name);
+                Number num = (Number) snapshot.child("rate").getValue();
+                if (num != null) {
+                    hourlyRate = num.doubleValue();
+                }
+                isActivated = hourlyRate == 0 ? false:true;
+                callBack.onSuccess();
             }
 
             @Override
@@ -62,6 +57,7 @@ public class Service {
 
     public void writeToDB() {
         myRef.child(name).setValue(this);
+        Log.d("writetodb","here");
     }
 
     public void setActivated(Boolean activated) {
@@ -70,5 +66,11 @@ public class Service {
 
     public boolean isActivated() {
         return isActivated;
+    }
+
+    public void setRate(double rate){ hourlyRate=rate;}
+
+    public double getRate() {
+        return hourlyRate;
     }
 }
