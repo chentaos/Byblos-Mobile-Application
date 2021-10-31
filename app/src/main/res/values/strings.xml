@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Deliverable1</string>
+    <string name="app_name">Deliverable2</string>
     <string name="title_activity_admin_dashboard">AdminDashboard</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

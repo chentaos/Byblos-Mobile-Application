@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -69,7 +70,17 @@ public class AdminAccountManager extends AppCompatActivity {
                 return true;
             }
         });
+
+        userlistVIew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getBaseContext(),"Long press to delete account",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
+
+
 
     private void showDeleteDialog(final String userName) {
 
