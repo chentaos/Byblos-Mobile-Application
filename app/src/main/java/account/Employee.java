@@ -9,6 +9,9 @@ public class Employee extends User {
     /**
      *  Constructor for Employee user account.
      */
+    public Employee(){
+
+    }
     public Employee(String name,String password){
         super(name,password);
         setMyRef(getMyRef().child("Users/Employee"));
@@ -19,4 +22,5 @@ public class Employee extends User {
 
         return super.welcomeMSG()+"Employee.";
     }
+
 }

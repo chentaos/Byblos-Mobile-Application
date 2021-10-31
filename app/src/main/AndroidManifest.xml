@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Deliverable1">
         <activity
+            android:name=".AdminAccountManager"
+            android:exported="false" />
+        <activity
             android:name=".ServiceRequirementEdit"
             android:exported="true" />
         <activity

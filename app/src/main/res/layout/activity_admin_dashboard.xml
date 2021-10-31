@@ -41,7 +41,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:text="Manage Account"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:onClick="accountManageOnclick"/>
 
     </LinearLayout>
 </RelativeLayout>
