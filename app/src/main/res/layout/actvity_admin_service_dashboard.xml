@@ -57,14 +57,11 @@
                 android:singleLine="false"
                 tools:ignore="DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck" />
 
-            <Switch
-                android:id="@+id/carRentalSwitch"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/service1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minHeight="48dp"
-                android:text="@string/activate_service"
-                android:textSize="16sp" />
+                android:text="Button" />
 
         </LinearLayout>
 
@@ -95,14 +92,11 @@
                 android:inputType="numberDecimal"
                 android:minHeight="48dp" />
 
-            <Switch
-                android:id="@+id/truckRentalSwitch"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/service2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minHeight="48dp"
-                android:text="@string/activate_service"
-                android:textSize="16sp" />
+                android:text="Button" />
         </LinearLayout>
 
         <LinearLayout
@@ -111,6 +105,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="5dp"
             android:background="@drawable/customborder"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -133,14 +128,11 @@
                 android:inputType="numberDecimal"
                 android:minHeight="48dp" />
 
-            <Switch
-                android:id="@+id/movingAssistanceSwitch"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/service3"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minHeight="48dp"
-                android:text="@string/activate_service"
-                android:textSize="16sp" />
+                android:text="Button" />
         </LinearLayout>
 
     </LinearLayout>

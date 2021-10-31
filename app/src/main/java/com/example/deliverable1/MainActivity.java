@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -67,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
             count++;
         }
     }
-
 
     public void loginOnClick(View view) {
         EditText name = findViewById(R.id.userName);
