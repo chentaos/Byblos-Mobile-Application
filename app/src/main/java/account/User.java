@@ -111,7 +111,8 @@ public abstract class User {
         return String.format("Welcome %s!\n You have successfully logged in as a ", firstName);
     }
 
-    private Map<String, Object> toMap() {
+    // Made public for unitTest
+    public Map<String, Object> toMap() {
         Map<String, Object> m = new HashMap<>();
         m.put("passwd", password);
         m.put("firstName", firstName);
