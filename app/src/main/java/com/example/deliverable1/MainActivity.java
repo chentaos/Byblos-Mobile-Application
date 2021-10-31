@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private enum AccountType {admin, customer, employee}
     private AccountType type;
-
+    private int count=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +61,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //Set a default button clicked
-        RadioButton a = (RadioButton) findViewById(R.id.radioAdmin);
-        a.setChecked(true);
+        if(count==0){
+            RadioButton a = (RadioButton) findViewById(R.id.radioAdmin);
+            a.setChecked(true);
+            count++;
+        }
     }
 
 
@@ -139,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == 0){
             String lastName =  data.getStringExtra("lastName");
             String firstName = data.getStringExtra("firstName");
+
 
             //if register successfully load the main page.
             user.register(firstName, lastName,new ListenerCallBack(){
