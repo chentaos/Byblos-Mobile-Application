@@ -11,4 +11,10 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_admin_create_service">AdminCreateService</string>
     <string name="title_activity_admin_account_manage">AdminAccountManage</string>
+    <string name="car_rental">Car rental</string>
+    <string name="activate_service">Activate service</string>
+    <string name="deactivate_service">Deactivate service</string>
+    <string name="moving_assistance">Moving assistance:</string>
+    <string name="enter_hourly_rate">Enter hourly rate</string>
+    <string name="truck_rental">Truck rental:</string>
 </resources>

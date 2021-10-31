@@ -16,6 +16,13 @@ public class AdminDashboard extends AppCompatActivity {
 
         TextView text = findViewById(R.id.adminWelcomeMsg);
         text.setText(getIntent().getStringExtra("welcomeMSG"));
+
+    }
+
+    public void openServiceOnClick(View view){
+        Intent intent;
+        intent = new Intent(AdminDashboard.this, ServiceDashboard.class);
+        startActivity(intent);
     }
 
     public void accountManageOnclick(View view) {

@@ -13,6 +13,9 @@
             android:name=".AdminAccountManager"
             android:exported="false" />
         <activity
+            android:name=".ServiceRequirementEdit"
+            android:exported="true" />
+        <activity
             android:name=".AdminDashboard"
             android:exported="true" />
         <activity
@@ -20,6 +23,9 @@
             android:exported="true" />
         <activity
             android:name=".UserMainMenu"
+            android:exported="true" />
+        <activity
+            android:name=".ServiceDashboard"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
