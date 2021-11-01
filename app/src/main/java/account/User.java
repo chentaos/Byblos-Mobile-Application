@@ -159,4 +159,8 @@ public abstract class User {
     public void setMyRef(DatabaseReference myRef) {
         this.myRef = myRef;
     }
+
+    public String toString(){
+        return getUserName();
+    }
 }

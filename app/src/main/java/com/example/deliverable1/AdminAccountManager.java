@@ -5,36 +5,35 @@ import account.*;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 
-import account.Admin;
-import account.Employee;
-import account.ListenerCallBack;
-import account.UserList;
+import java.util.ArrayList;
 
 public class AdminAccountManager extends AppCompatActivity {
     ListView userlistVIew;
-    Admin admin = new Admin();
+    Admin admin;
     UserList u;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_account_manager);
+
+        admin = new Admin();
         userlistVIew = findViewById(R.id.userList);
         RadioGroup rg = findViewById(R.id.accRadioGroup);
+
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -44,7 +43,6 @@ public class AdminAccountManager extends AppCompatActivity {
                         break;
                     case R.id.cRadio:
                         u = admin.getCustomerAccManager();
-                        break;
                 }
 
                 u.getNextpage(new ListenerCallBack() {
@@ -59,22 +57,18 @@ public class AdminAccountManager extends AppCompatActivity {
                     }
                 });
             }
+
         });
 
-        userlistVIew.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ArrayList<User> userList = u.getList();
-                User user = userList.get(i);
-                showDeleteDialog(user.getUserName());
-                return true;
-            }
-        });
+
 
         userlistVIew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(),"Long press to delete account",Toast.LENGTH_SHORT).show();
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ArrayList<User> userList = u.getList();
+                User user = userList.get(i);
+                showDeleteDialog(user);
             }
         });
     }
@@ -82,7 +76,7 @@ public class AdminAccountManager extends AppCompatActivity {
 
 
 
-    private void showDeleteDialog(final String userName) {
+    private void showDeleteDialog(final User user) {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -99,16 +93,15 @@ public class AdminAccountManager extends AppCompatActivity {
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                     b.dismiss();
-
             }
         });
 
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                u.delete(userName);
+                u.delete(user);
+                showList();
                 b.dismiss();
             }
         });
@@ -116,10 +109,7 @@ public class AdminAccountManager extends AppCompatActivity {
 
     public void showList(){
         ArrayList<User> list = u.getList();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AdminAccountManager.this,android.R.layout.simple_expandable_list_item_1);
-        for(User u1 : list){
-            adapter.add(u1.getUserName());
-        }
+        ArrayAdapter<User> adapter = new ArrayAdapter<>(AdminAccountManager.this,android.R.layout.simple_expandable_list_item_1, list);
         userlistVIew.setAdapter(adapter);
 
     }
@@ -128,14 +118,13 @@ public class AdminAccountManager extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //Set a default button clicked
-        RadioButton a = (RadioButton) findViewById(R.id.eRadio);
+        RadioButton a = findViewById(R.id.eRadio);
         a.setChecked(true);
 
 
     }
 
 
-    //TODO: srcollable/can go nextpage UI to show list.
     public void preOnClick(View view){
         u.getPrevPage(new ListenerCallBack() {
             @Override
@@ -145,7 +134,7 @@ public class AdminAccountManager extends AppCompatActivity {
 
             @Override
             public void onFail(String errInfo) {
-
+                Toast.makeText(AdminAccountManager.this, errInfo, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -159,7 +148,7 @@ public class AdminAccountManager extends AppCompatActivity {
 
             @Override
             public void onFail(String errInfo) {
-
+                Toast.makeText(AdminAccountManager.this, errInfo, Toast.LENGTH_SHORT).show();
             }
         });
     }

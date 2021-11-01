@@ -59,8 +59,8 @@ public class Admin extends User {
 
         @Override
         public void getNextpage(ListenerCallBack callBack) {
-            Log.d("ww", "getnextpage");
-            if (userlist.size() == 0) {
+
+            if (userlist.size() == 0 && currentUserNamePointer == null) {
 
                 Query qName = mdb.orderByKey().limitToFirst(pageLength);
 
@@ -73,8 +73,12 @@ public class Admin extends User {
                             userlist.add(temp);
                             Log.d("ww", temp.getUserName());
                         }
+
                         callBack.onSuccess();
-                        //getMyRef().removeEventListener(this); // If I dont remove the listener, it will be call again after database changes.//just use singlevaluelistener.
+                        if(userlist.size() == 0){
+                            callBack.onFail("no user data");
+                            return;
+                        }
                     }
 
                     @Override
@@ -86,14 +90,20 @@ public class Admin extends User {
                 return;
             }
 
-            Log.d("ww", "getnextpage2");
-            // get the last element of the previous data and clear the list.
             currentUserNamePointer = userlist.get(userlist.size() - 1).getUserName();
-            userlist.clear();
+            // get the last element of the previous data and clear the list.
             Query qName = mdb.orderByKey().startAfter(currentUserNamePointer).limitToFirst(pageLength);
             qName.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    if(snapshot.hasChildren()){
+                        userlist.clear();
+                    }else{
+                        callBack.onFail("on the last page");
+                        return;
+                    }
+
                     for (DataSnapshot t : snapshot.getChildren()) {
                         //Log.d("ww", t.toString());
                         E temp = t.getValue(c); // getValue here cant not use generic, ****. Solution at https://stackoverflow.com/questions/48237786/best-practice-for-using-generics-with-firebase-snapshot-getvalue
@@ -101,15 +111,7 @@ public class Admin extends User {
                         Log.d("ww", temp.getUserName());
 
                     }
-
-                    if (userlist.size() == 0) {
-                        Log.d("ww","onFailNext");
-                        callBack.onFail("on the last page");
-                    } else {
-                        Log.d("ww", String.valueOf(userlist.size()));
-                        callBack.onSuccess();
-                    }
-                    //getMyRef().removeEventListener(this); // If I dont remove the listener, it will be call again after database changes.//just use singlevaluelistener.
+                    callBack.onSuccess();
                 }
 
                 @Override
@@ -123,18 +125,23 @@ public class Admin extends User {
         @Override
         public void getPrevPage(ListenerCallBack callBack) {
             //get the first element of the psaklsgjslkdajgdm data and clear the list.
-            if(userlist.size() == 0){
+            if(userlist.size() == 0 && currentUserNamePointer == null){
                 callBack.onFail("First page");
                 return;
             }
             currentUserNamePointer = userlist.get(0).getUserName();
-            userlist.clear();
 
-            Log.d("ww", "getpreviouspage");
             Query qName = mdb.orderByKey().endBefore(currentUserNamePointer).limitToLast(pageLength);
             qName.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    if(snapshot.hasChildren()){
+                        userlist.clear();
+                    }else{
+                        callBack.onFail("already the first page.");
+                        return;
+                    }
 
                     for (DataSnapshot t : snapshot.getChildren()) {
                         //Log.d("ww", t.toString());
@@ -143,15 +150,7 @@ public class Admin extends User {
                         Log.d("ww", temp.getUserName());
 
                     }
-
-                    if (userlist.size() == 0) {
-                        Log.d("ww","onFailPre");
-                        callBack.onFail("on the first page");
-                    } else {
-                        Log.d("ww", String.valueOf(userlist.size()));
-                        callBack.onSuccess();
-                    }
-                    //getMyRef().removeEventListener(this); // If I dont remove the listener, it will be call again after database changes.//just use singlevaluelistener.
+                    callBack.onSuccess();
                 }
 
                 @Override
@@ -168,15 +167,17 @@ public class Admin extends User {
         }
 
         @Override
-        public void delete(String userName) {
-            mdb.child(userName).removeValue();
+        public void delete(User user) {
+            mdb.child(user.getUserName()).removeValue();
+            userlist.remove(user);
+
+            if(userlist.size() == 0){
+                currentUserNamePointer = null;
+            }
             //also delete the array list.
         }
 
-
     }
-
-
 
     // maybe unsuitable using the word iterator, but it works like a iterator.
     public AccList<Employee> getEmployeeAccManager() {
@@ -186,16 +187,5 @@ public class Admin extends User {
     public AccList<Customer> getCustomerAccManager() {
         return new AccList<Customer>("Customer", Customer.class);
     }
-
-    //I will implement that inside the acclist, easier to refresh.
-//    public void deleteEmployeeAcc(Employee e,ListenerCallBack callBack){
-//        // assume acc exist(selected from the list), else will need more coding work.
-//        FirebaseDatabase db = FirebaseDatabase.getInstance().getReference().child("")
-//    }
-//
-//    public void deleteCustomerAcc(Customer c,ListenerCallBack callBack){
-//
-//    }
-
 
 }

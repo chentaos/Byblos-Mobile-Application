@@ -19,7 +19,6 @@ public class Employee extends User {
 
     @Override
     public String welcomeMSG() {
-
         return super.welcomeMSG()+"Employee.";
     }
 

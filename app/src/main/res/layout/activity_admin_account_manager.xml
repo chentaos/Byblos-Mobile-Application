@@ -10,7 +10,9 @@
         android:id="@+id/mainFiled"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <RadioGroup
             android:id="@+id/accRadioGroup"
@@ -34,21 +36,21 @@
         <LinearLayout
             android:id="@+id/userListLayout"
             android:layout_width="match_parent"
-            android:layout_height="611dp"
+            android:layout_height="533dp"
             android:orientation="horizontal">
 
 
             <ListView
                 android:id="@+id/userList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="531dp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/buttonField"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="74dp"
             android:orientation="horizontal">
 
             <Button
@@ -57,8 +59,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:text="previous"
-                android:onClick="preOnClick"/>
+                android:onClick="preOnClick"
+                android:text="previous" />
 
             <Button
                 android:id="@+id/nextButton"
@@ -66,8 +68,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:text="Next"
-                android:onClick="nextOnClick"/>
+                android:onClick="nextOnClick"
+                android:text="Next" />
         </LinearLayout>
 
     </LinearLayout>
