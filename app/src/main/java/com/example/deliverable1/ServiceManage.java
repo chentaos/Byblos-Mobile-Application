@@ -69,6 +69,7 @@ public class ServiceManage extends AppCompatActivity {
         Log.i("Servivi",type);
         Toast.makeText(getApplicationContext(),type, Toast.LENGTH_SHORT).show();
         Log.i("Servivi","1");
+        services.clear();
         database1.child(type).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -78,6 +79,7 @@ public class ServiceManage extends AppCompatActivity {
                     Log.i("Servivi",p);
                     services.add(p);
                 }
+                display();
             }
 
             @Override
