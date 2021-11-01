@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceManage extends AppCompatActivity {
@@ -25,7 +27,7 @@ public class ServiceManage extends AppCompatActivity {
     String type="CarRental";
     List<String> services;
     ArrayAdapter<String> adapter;
-    DatabaseReference database;
+    DatabaseReference database1=FirebaseDatabase.getInstance().getReference("Services");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class ServiceManage extends AppCompatActivity {
         setContentView(R.layout.activity_service_manage);
         rg = findViewById(R.id.serviceRadioGroup);
         list = (ListView) findViewById(R.id.serviceList);
+
+        services=new ArrayList<>();
 
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -62,15 +66,15 @@ public class ServiceManage extends AppCompatActivity {
     }
 
     private void store(){
-        database= FirebaseDatabase.getInstance().getReference("Services").child(type);
-
-        database.addValueEventListener(new ValueEventListener() {
+        Log.i("Servivi",type);
+        Toast.makeText(getApplicationContext(),type, Toast.LENGTH_SHORT).show();
+        Log.i("Servivi","1");
+        database1.child(type).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                services.clear();
-
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    String p = postSnapshot.getKey().toString();
+
+                    String p = postSnapshot.getKey();
                     Log.i("Servivi",p);
                     services.add(p);
                 }
@@ -84,7 +88,7 @@ public class ServiceManage extends AppCompatActivity {
     }
 
     private void display(){
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1,services);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,services);
         list.setAdapter(adapter);
     }
 
