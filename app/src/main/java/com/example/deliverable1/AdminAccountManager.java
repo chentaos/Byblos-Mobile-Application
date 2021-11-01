@@ -32,7 +32,7 @@ public class AdminAccountManager extends AppCompatActivity {
 
         admin = new Admin();
         userlistVIew = findViewById(R.id.userList);
-        RadioGroup rg = findViewById(R.id.accRadioGroup);
+        RadioGroup rg = findViewById(R.id.serviceRadioGroup);
 
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override

@@ -55,13 +55,14 @@
                 android:inputType="number|numberDecimal"
                 android:minHeight="48dp"
                 android:singleLine="false"
+                android:text="0"
                 tools:ignore="DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck" />
 
             <Button
                 android:id="@+id/service1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Create" />
 
         </LinearLayout>
 
@@ -90,13 +91,14 @@
                 android:gravity="center"
                 android:hint="@string/enter_hourly_rate"
                 android:inputType="numberDecimal"
-                android:minHeight="48dp" />
+                android:minHeight="48dp"
+                android:text="0" />
 
             <Button
                 android:id="@+id/service2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Create" />
         </LinearLayout>
 
         <LinearLayout
@@ -126,7 +128,8 @@
                 android:gravity="center"
                 android:hint="@string/enter_hourly_rate"
                 android:inputType="numberDecimal"
-                android:minHeight="48dp" />
+                android:minHeight="48dp"
+                android:text="0" />
 
             <Button
                 android:id="@+id/service3"
