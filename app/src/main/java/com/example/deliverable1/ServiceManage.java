@@ -35,10 +35,10 @@ public class ServiceManage extends AppCompatActivity {
 
     ListView list;
     RadioGroup rg;
-    String type="CarRental";
+//    String type="CarRental";
     List<String> services;
     ArrayAdapter<String> adapter;
-    DatabaseReference database1=FirebaseDatabase.getInstance().getReference("Services");
+    DatabaseReference database1=FirebaseDatabase.getInstance().getReference().child("Services");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +48,8 @@ public class ServiceManage extends AppCompatActivity {
         list = (ListView) findViewById(R.id.serviceList);
 
         services=new ArrayList<>();
+        store();
+
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -57,25 +59,6 @@ public class ServiceManage extends AppCompatActivity {
             }
         });
 
-
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i) {
-                    case R.id.RadioService1:
-                        type="CarRental";
-                        break;
-                    case R.id.RadioService2:
-                        type="TruckRental";
-                        break;
-                    case R.id.RadioService3:
-                        type="MovingAssistant";
-                        break;
-                }
-                store();
-//                display();
-            }
-        });
     }
     private void showUpdateDeleteDialog(final String productId){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -89,13 +72,19 @@ public class ServiceManage extends AppCompatActivity {
         final Button buttonDelete = (Button) dialogView.findViewById(R.id.deleteBtn);
         final Button buttonCancel = (Button) dialogView.findViewById(R.id.cancelBtn);
 
-        DatabaseReference dr = database1.child(type).child(productId);
+        DatabaseReference dr = database1.child(productId);
         String name = dr.getKey();
 
         dialogBuilder.setTitle(name);
         final AlertDialog b = dialogBuilder.create();
         b.show();
 
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b.dismiss();
+            }
+        });
 
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,40 +101,41 @@ public class ServiceManage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 deleteService(productId);
+                store();
                 b.dismiss();
             }
         });
     }
 
     private void updateService(String id, double rate) {
-        DatabaseReference dr = database1.child(type).child(id);
+        DatabaseReference dr = database1.child(id);
         dr.child("rate").setValue(rate);
+        store();
     }
 
     private void deleteService(String id) {
-        DatabaseReference dr = database1.child(type).child(id);
+        DatabaseReference dr = database1.child(id);
         dr.removeValue();
+        store();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        RadioButton a = (RadioButton) findViewById(R.id.RadioService1);
-        a.setChecked(true);
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        RadioButton a = (RadioButton) findViewById(R.id.RadioService1);
+//        a.setChecked(true);
+//    }
 
     private void store(){
-        Log.i("Servivi",type);
-        Toast.makeText(getApplicationContext(),type, Toast.LENGTH_SHORT).show();
-        Log.i("Servivi","1");
+
+
         services.clear();
-        database1.child(type).addValueEventListener(new ValueEventListener() {
+        database1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                services.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-
                     String p = postSnapshot.getKey();
-                    Log.i("Servivi",p);
                     services.add(p);
                 }
                 display();

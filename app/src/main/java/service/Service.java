@@ -24,7 +24,7 @@ public class Service {
     public Service(String name,double rate, String type, boolean customerName, boolean DOB, boolean address, boolean email,
                    boolean licensetype, boolean preferredCar, boolean DnT,
                    boolean maxKl, boolean area, boolean moving, boolean mover, boolean box){
-        myRef = FirebaseDatabase.getInstance().getReference().child("Services/"+type);
+        myRef = FirebaseDatabase.getInstance().getReference().child("Services");
         this.customerName=customerName;
         this.DOB=DOB;
         this.address=address;

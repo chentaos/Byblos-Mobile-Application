@@ -81,33 +81,34 @@
 
             <Button
                 android:id="@+id/service1"
-                android:layout_width="120dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="32dp"
                 android:onClick="create"
-                android:text="Create Car Rental"
-                android:textSize="10sp"
+                android:text="Create Service
+"
+                android:textSize="14sp"
                 tools:ignore="TouchTargetSizeCheck" />
 
-            <Button
-                android:id="@+id/service2"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:minHeight="32dp"
-                android:onClick="create"
-                android:text="Create Truck Rental"
-                android:textSize="10sp"
-                tools:ignore="TouchTargetSizeCheck" />
+<!--            <Button-->
+<!--                android:id="@+id/service2"-->
+<!--                android:layout_width="120dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:minHeight="32dp"-->
+<!--                android:onClick="create"-->
+<!--                android:text="Create Truck Rental"-->
+<!--                android:textSize="10sp"-->
+<!--                tools:ignore="TouchTargetSizeCheck" />-->
 
-            <Button
-                android:id="@+id/service3"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:minHeight="32dp"
-                android:onClick="create"
-                android:text="create moving Assistant"
-                android:textSize="10sp"
-                tools:ignore="TouchTargetSizeCheck" />
+<!--            <Button-->
+<!--                android:id="@+id/service3"-->
+<!--                android:layout_width="140dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:minHeight="32dp"-->
+<!--                android:onClick="create"-->
+<!--                android:text="create moving Assistant"-->
+<!--                android:textSize="10sp"-->
+<!--                tools:ignore="TouchTargetSizeCheck" />-->
         </LinearLayout>
 
     </LinearLayout>
