@@ -86,7 +86,7 @@ public class AdminAccountManager extends AppCompatActivity {
         final Button buttonCancel = (Button) dialogView.findViewById(R.id.cancelBtn);
         final Button buttonDelete = (Button) dialogView.findViewById(R.id.deleteBtn);
 
-        dialogBuilder.setTitle("fuc");
+        dialogBuilder.setTitle(user.getUserName());
         final AlertDialog b = dialogBuilder.create();
         b.show();
 
