@@ -14,14 +14,14 @@ import com.google.firebase.database.ValueEventListener;
 import account.ListenerCallBack;
 
 public class Service {
+    private DatabaseReference myRef;
     private double hourlyRate=0;
     private String name;
-    private DatabaseReference myRef;
     private boolean customerName,DOB,address,email,licensetype,preferredCar,DnT,maxKl,area,moving,mover,box;
 
+    public Service(){}
 
-
-    public Service(String name,double rate, String type, boolean customerName, boolean DOB, boolean address, boolean email,
+    public Service(String name,double rate, boolean customerName, boolean DOB, boolean address, boolean email,
                    boolean licensetype, boolean preferredCar, boolean DnT,
                    boolean maxKl, boolean area, boolean moving, boolean mover, boolean box){
         myRef = FirebaseDatabase.getInstance().getReference().child("Services");
@@ -71,11 +71,14 @@ public class Service {
         myRef.child(name).setValue(this);
     }
 
-
     public void setRate(double rate){ hourlyRate=rate;}
+    public void setName(String name){this.name=name;}
 
     public double getRate() {
         return hourlyRate;
+    }
+    public String getName(){
+        return name;
     }
     public boolean getCustomerName(){return  customerName;}
     public boolean getDOB(){return   DOB;}

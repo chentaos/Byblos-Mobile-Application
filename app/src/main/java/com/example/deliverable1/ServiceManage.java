@@ -35,8 +35,9 @@ public class ServiceManage extends AppCompatActivity {
 
     ListView list;
     RadioGroup rg;
-//    String type="CarRental";
-    List<String> services;
+
+    List<Service> services;
+    List<Service> services2;
     ArrayAdapter<String> adapter;
     DatabaseReference database1=FirebaseDatabase.getInstance().getReference().child("Services");
 
@@ -44,16 +45,14 @@ public class ServiceManage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_manage);
-        rg = findViewById(R.id.serviceRadioGroup);
         list = (ListView) findViewById(R.id.serviceList);
-
         services=new ArrayList<>();
-        store();
 
+        store();
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                String idService = services.get(position);
+                String idService = services.get(position).getName();
                 showUpdateDeleteDialog(idService);
                 return false;
             }
@@ -119,26 +118,22 @@ public class ServiceManage extends AppCompatActivity {
         store();
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        RadioButton a = (RadioButton) findViewById(R.id.RadioService1);
-//        a.setChecked(true);
-//    }
 
     private void store(){
-
-
         services.clear();
         database1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 services.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    String p = postSnapshot.getKey();
-                    services.add(p);
+
+                    Service s=(Service) postSnapshot.getValue(Service.class);
+                    services.add(s);
                 }
-                display();
+                ServiceItem p = new ServiceItem(ServiceManage.this, services);
+                list.setAdapter(p);
+
+
             }
 
             @Override
@@ -148,9 +143,5 @@ public class ServiceManage extends AppCompatActivity {
         });
     }
 
-    private void display(){
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,services);
-        list.setAdapter(adapter);
-    }
 
 }
