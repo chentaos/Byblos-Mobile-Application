@@ -21,25 +21,43 @@ public class Service {
 
     public Service(){}
 
-    public Service(String name,double rate, boolean customerName, boolean DOB, boolean address, boolean email,
-                   boolean licensetype, boolean preferredCar, boolean DnT,
-                   boolean maxKl, boolean area, boolean moving, boolean mover, boolean box){
+//    public Service(String name,double rate, boolean customerName, boolean DOB, boolean address, boolean email,
+//                   boolean licensetype, boolean preferredCar, boolean DnT,
+//                   boolean maxKl, boolean area, boolean moving, boolean mover, boolean box){
+//        myRef = FirebaseDatabase.getInstance().getReference().child("Services");
+//        this.customerName=customerName;
+//        this.DOB=DOB;
+//        this.address=address;
+//        this.email=email;
+//        this.licensetype=licensetype;
+//        this.preferredCar=preferredCar;
+//        this.DnT=DnT;
+//        this.maxKl=maxKl;
+//        this.area=area;
+//        this.moving=moving;
+//        this.mover=mover;
+//        this.box=box;
+//        this.name = name;
+//        this.hourlyRate=rate;
+//     }
+
+    public Service(String name,double rate, boolean[] req){
         myRef = FirebaseDatabase.getInstance().getReference().child("Services");
-        this.customerName=customerName;
-        this.DOB=DOB;
-        this.address=address;
-        this.email=email;
-        this.licensetype=licensetype;
-        this.preferredCar=preferredCar;
-        this.DnT=DnT;
-        this.maxKl=maxKl;
-        this.area=area;
-        this.moving=moving;
-        this.mover=mover;
-        this.box=box;
+        this.customerName=req[0];
+        this.DOB=req[1];
+        this.address=req[2];
+        this.email=req[3];
+        this.licensetype=req[4];
+        this.preferredCar=req[5];
+        this.DnT=req[6];
+        this.maxKl=req[7];
+        this.area=req[8];
+        this.moving=req[9];
+        this.mover=req[10];
+        this.box=req[11];
         this.name = name;
         this.hourlyRate=rate;
-     }
+    }
 
     public void updateFromDB(ListenerCallBack callBack) {
 //        callBack.onSuccess();
