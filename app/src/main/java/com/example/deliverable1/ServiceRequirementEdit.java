@@ -49,7 +49,8 @@ public class ServiceRequirementEdit extends AppCompatActivity {
                     req[0],req[1],req[2],req[3],req[4],req[5],req[6],req[7],req[8],req[9],req[10],req[11]);
             s.writeToDB();
             Log.i("serviceCreate",s.toString());
-                    finish();
+            Toast.makeText(this,"Added successfully",Toast.LENGTH_SHORT).show();
+//                    finish();
         }
     }
 
