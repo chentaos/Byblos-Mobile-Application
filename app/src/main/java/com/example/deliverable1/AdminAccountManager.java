@@ -101,6 +101,19 @@ public class AdminAccountManager extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 u.delete(user);
+                if(u.getList().size() == 0){
+                    u.getNextpage(new ListenerCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            showList();
+                        }
+
+                        @Override
+                        public void onFail(String errInfo) {
+
+                        }
+                    });
+                }
                 showList();
                 b.dismiss();
             }
