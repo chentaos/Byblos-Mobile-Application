@@ -67,10 +67,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean usernameValidate(String name){
+        String matchPattern = "^[A-Za-z0-9_-]+$";
+        return name.matches(matchPattern);
+    }
+
     public void loginOnClick(View view) {
         EditText name = findViewById(R.id.userName);
         String userName = name.getText().toString().trim();
         String password = ((EditText) findViewById(R.id.password)).getText().toString().trim();
+        Log.d("ww",userName+password);
 
         //or use setError to specify where is missing.
         if (userName.isEmpty()) {
@@ -79,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
         }
         if (password.isEmpty()) {
             Toast.makeText(getApplicationContext(), "password not filled", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!usernameValidate(userName)){
+            Toast.makeText(getApplicationContext(), "userName can only include A-Z,a-z,0-9,_,-", Toast.LENGTH_SHORT).show();
+            name.setText("");
             return;
         }
 
@@ -119,6 +130,11 @@ public class MainActivity extends AppCompatActivity {
         }
         if (password.isEmpty()) {
             Toast.makeText(getApplicationContext(), "password not filled", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!usernameValidate(userName)){
+            Toast.makeText(getApplicationContext(), "userName can only include A-Z,a-z,0-9,_,-", Toast.LENGTH_SHORT).show();
+            nameT.setText("");
             return;
         }
 
