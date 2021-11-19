@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
@@ -45,7 +46,7 @@ public class ServiceManage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_manage);
-        list = (ListView) findViewById(R.id.serviceList);
+        list = findViewById(R.id.serviceList);
         services=new ArrayList<>();
 
         store();
@@ -65,11 +66,10 @@ public class ServiceManage extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.activity_service_manage_dialog, null);
         dialogBuilder.setView(dialogView);
 
-
-        final EditText editTextRate = (EditText) dialogView.findViewById(R.id.editNewRate);
-        final Button buttonUpdate = (Button) dialogView.findViewById(R.id.updateBtn);
-        final Button buttonDelete = (Button) dialogView.findViewById(R.id.deleteBtn);
-        final Button buttonCancel = (Button) dialogView.findViewById(R.id.cancelBtn);
+        final EditText editTextRate = dialogView.findViewById(R.id.editNewRate);
+        final Button buttonUpdate = dialogView.findViewById(R.id.updateBtn);
+        final Button buttonDelete = dialogView.findViewById(R.id.deleteBtn);
+        final Button buttonCancel = dialogView.findViewById(R.id.cancelBtn);
 
         DatabaseReference dr = database1.child(productId);
         String name = dr.getKey();
@@ -78,31 +78,24 @@ public class ServiceManage extends AppCompatActivity {
         final AlertDialog b = dialogBuilder.create();
         b.show();
 
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                b.dismiss();
+        buttonCancel.setOnClickListener(view -> b.dismiss());
+
+        buttonUpdate.setOnClickListener(view -> {
+            double rate = Double.parseDouble(editTextRate.getText().toString());
+            if (!TextUtils.isEmpty(name)) {
+                updateService(productId, rate);
             }
+            b.dismiss();
         });
 
-        buttonUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                double rate = Double.parseDouble(editTextRate.getText().toString());
-                if (!TextUtils.isEmpty(name)) {
-                    updateService(productId, rate);
-                    b.dismiss();
-                }
-            }
-        });
-
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buttonDelete.setOnClickListener(v -> {
+            if (services.size() > 3) {
                 deleteService(productId);
                 store();
-                b.dismiss();
+            } else {
+                showNbRequiredServices();
             }
+            b.dismiss();
         });
     }
 
@@ -113,11 +106,27 @@ public class ServiceManage extends AppCompatActivity {
     }
 
     private void deleteService(String id) {
-        DatabaseReference dr = database1.child(id);
-        dr.removeValue();
-        store();
+        database1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long nbServices = snapshot.getChildrenCount();
+                if (nbServices > 3){
+                    DatabaseReference dr = database1.child(id);
+                    dr.removeValue();
+                    store();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
+    private void showNbRequiredServices(){
+        Toast.makeText(this,"Need to always have 3 services",Toast.LENGTH_SHORT).show();
+    }
 
     private void store(){
         services.clear();
@@ -127,7 +136,7 @@ public class ServiceManage extends AppCompatActivity {
                 services.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
 
-                    Service s=(Service) postSnapshot.getValue(Service.class);
+                    Service s= postSnapshot.getValue(Service.class);
                     services.add(s);
                 }
                 ServiceItem p = new ServiceItem(ServiceManage.this, services);
