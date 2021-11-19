@@ -45,16 +45,20 @@ public class ServiceRequirementEdit extends AppCompatActivity {
             }
 
             String type="";
-            Service s=new Service(name.getText().toString(),Double.valueOf(rate.getText().toString()), req);
-            s.writeToDB();
+            Service s=new Service(name.getText().toString(),Double.parseDouble(rate.getText().toString()), req);
+            boolean addedService = s.writeToDB();
+            if (!addedService){
+                Toast.makeText(this,"This service name already exist",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this,"Added successfully",Toast.LENGTH_SHORT).show();
+            }
             Log.i("serviceCreate",s.toString());
-            Toast.makeText(this,"Added successfully",Toast.LENGTH_SHORT).show();
 //                    finish();
         }
     }
 
     private boolean valid(){
-        if(name.getText().toString().isEmpty()||rate.getText().toString().isEmpty()||Double.valueOf(rate.getText().toString())==0){
+        if(name.getText().toString().isEmpty()||rate.getText().toString().isEmpty()||Double.parseDouble(rate.getText().toString())==0){
             Toast.makeText(this,"name and rate must be filled",Toast.LENGTH_SHORT).show();
             return false;
         }
