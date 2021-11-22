@@ -12,6 +12,11 @@ public class EmployeeSetting extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_setting);
+    }
 
+    public void openProfileOnClick(View view){
+        Intent intent;
+        intent = new Intent(EmployeeSetting.this, EditEmployeeProfile.class);
+        startActivity(intent);
     }
 }

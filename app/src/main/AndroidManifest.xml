@@ -10,14 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Deliverable1">
         <activity
+            android:name=".EditEmployeeProfile"
+            android:exported="true" />
+        <activity
             android:name=".EmployeeSetting"
             android:exported="true" />
         <activity
             android:name=".EmployeeMainMenu"
             android:exported="true" />
-<!--        <activity-->
-<!--            android:name=".ServiceItem"-->
-<!--            android:exported="true" />-->
+        <activity
+            android:name=".ServiceItem"
+            android:exported="true" />
         <activity
             android:name=".ServiceManage"
             android:exported="true" />
