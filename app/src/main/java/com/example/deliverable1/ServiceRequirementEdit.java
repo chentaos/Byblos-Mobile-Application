@@ -47,11 +47,13 @@ public class ServiceRequirementEdit extends AppCompatActivity {
             String type="";
             Service s=new Service(name.getText().toString(),Double.parseDouble(rate.getText().toString()), req);
             boolean addedService = s.writeToDB();
+
             if (!addedService){
                 Toast.makeText(this,"This service name already exist",Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this,"Added successfully",Toast.LENGTH_SHORT).show();
             }
+
             Log.i("serviceCreate",s.toString());
 //                    finish();
         }

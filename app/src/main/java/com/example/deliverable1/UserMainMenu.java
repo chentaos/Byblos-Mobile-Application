@@ -15,5 +15,6 @@ public class UserMainMenu extends AppCompatActivity {
 
         TextView eT = findViewById(R.id.welcomeText);
         eT.setText(getIntent().getStringExtra("welcomeMSG"));
+
     }
 }

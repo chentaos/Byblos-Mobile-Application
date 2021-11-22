@@ -20,6 +20,7 @@ public class EmployeeMainMenu extends AppCompatActivity {
     public void openSettingOnClick(View view){
         Intent intent;
         intent = new Intent(EmployeeMainMenu.this, EmployeeSetting.class);
+        intent.putExtra("username", getIntent().getStringExtra("username"));
         startActivity(intent);
     }
 

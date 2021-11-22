@@ -199,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         intent.putExtra("welcomeMSG", user.welcomeMSG());
+        intent.putExtra("username", user.getUserName());
         startActivity(intent);
     }
 

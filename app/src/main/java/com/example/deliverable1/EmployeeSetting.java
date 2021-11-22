@@ -14,4 +14,11 @@ public class EmployeeSetting extends AppCompatActivity{
         setContentView(R.layout.activity_employee_setting);
 
     }
+
+    public void openServicesOnClick(View view){
+        Intent intent;
+        intent = new Intent(EmployeeSetting.this, EmployeeServices.class);
+        intent.putExtra("username", getIntent().getStringExtra("username"));
+        startActivity(intent);
+    }
 }
