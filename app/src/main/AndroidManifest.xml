@@ -10,9 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Deliverable1">
         <activity
-            android:name=".EditEmployeeProfile"
-            android:exported="true" />
-        <activity
             android:name=".EmployeeSetting"
             android:exported="true" />
         <activity

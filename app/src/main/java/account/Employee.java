@@ -2,22 +2,30 @@ package account;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Employee extends User {
 
     private String address;
-    private long phoneNumber;
+    private String phoneNumber;
     /**
      *  Constructor for Employee user account.
      */
+    public Employee(){
+
+    }
 
     public Employee(String userName, String password) {
         super(userName, password);
-        setMyRef(getMyRef().child("Users/Customer"));
+        setMyRef(getMyRef().child("Users/Employee"));
     }
 
-    public Employee(String name,String password, String address, long phoneNumber){
+    public Employee(String name,String password, String address, String phoneNumber){
         super(name,password);
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -29,6 +37,13 @@ public class Employee extends User {
         return super.welcomeMSG()+"Employee.";
     }
 
+    public void setProfile(String address, String phoneNumber){
+            this.phoneNumber = phoneNumber;
+            this.address = address;
+            getMyRef().child(getUserName()).child("PhoneNumber").setValue(phoneNumber);
+            getMyRef().child(getUserName()).child("address").setValue(address);
+    }
+
     public String getAddress() {
         return address;
     }
@@ -37,11 +52,11 @@ public class Employee extends User {
         this.address = address;
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 }

@@ -198,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
            intent = new Intent(MainActivity.this, UserMainMenu.class);
         }
 
+        intent.putExtra("userName", user.getUserName());
         intent.putExtra("welcomeMSG", user.welcomeMSG());
         startActivity(intent);
     }

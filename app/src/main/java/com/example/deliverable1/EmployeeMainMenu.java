@@ -14,12 +14,12 @@ public class EmployeeMainMenu extends AppCompatActivity {
         setContentView(R.layout.avtivty_employee_main_menu);
 
 
-
     }
 
     public void openSettingOnClick(View view){
         Intent intent;
         intent = new Intent(EmployeeMainMenu.this, EmployeeSetting.class);
+        intent.putExtra("userName",getIntent().getStringExtra("userName"));
         startActivity(intent);
     }
 

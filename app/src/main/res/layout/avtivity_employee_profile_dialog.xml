@@ -3,24 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".EditEmployeeProfile">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:layout_marginBottom="30dp"
-            android:gravity="center"
-            android:text="Please Enter your address and phone number"
-            android:textAlignment="center"
-            android:textColor="#070405"
-            android:textSize="24sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,7 +20,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/employeePhoneNumber"
+                android:id="@+id/employeePhoneNumberTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Phone number"
@@ -40,7 +28,7 @@
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/employeeAddress"
+                android:id="@+id/employeePhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
@@ -49,7 +37,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/employeeAdressTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Adress"
@@ -57,7 +45,7 @@
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/lastName"
+                android:id="@+id/employeeAdress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -66,15 +54,27 @@
                 android:textSize="20sp" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/registerProcess"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:onClick="continueRegister"
-            android:text="Submit"
-            android:textSize="20sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/profileSbmitBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="Submit" />
+
+            <Button
+                android:id="@+id/profileCancelBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="cancel" />
+        </LinearLayout>
+
 
     </LinearLayout>
 </RelativeLayout>
