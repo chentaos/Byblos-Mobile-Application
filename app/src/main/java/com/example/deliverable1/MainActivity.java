@@ -188,8 +188,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
 
         if(type==AccountType.admin){
-                   intent = new Intent(MainActivity.this, AdminDashboard.class);
-        }else{
+            intent = new Intent(MainActivity.this, AdminDashboard.class);
+        }
+
+        else if(type==AccountType.employee){
+            intent = new Intent(MainActivity.this, EmployeeMainMenu.class);
+        }
+        else {
            intent = new Intent(MainActivity.this, UserMainMenu.class);
         }
 

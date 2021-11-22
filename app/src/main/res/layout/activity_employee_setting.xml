@@ -7,11 +7,11 @@
     <LinearLayout
         android:layout_width="409dp"
         android:layout_height="729dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="1dp"
         android:gravity="center"
-        tools:layout_editor_absoluteY="1dp"
-        tools:ignore="MissingConstraints">
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
 
 
         <Button
@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginBottom="50dp"
+            android:layout_marginHorizontal="20dp"
             android:text="Work TIme" />
 
         <Button
@@ -26,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginBottom="50dp"
+            android:layout_marginHorizontal="20dp"
             android:text="Services" />
 
         <Button
@@ -33,6 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginBottom="50dp"
+            android:layout_marginHorizontal="20dp"
             android:text="Profile" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
