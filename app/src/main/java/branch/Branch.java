@@ -21,8 +21,11 @@ public class Branch {
 //    private Date endHour;
     private String name;
 
+    public Branch(){}
+
+    //public Branch(String employee, String service, String name, Date startHour, Date endHour){
     public Branch(String employee, String service, String name, Date startHour, Date endHour){
-        myRef = FirebaseDatabase.getInstance().getReference().child("Branches");
+        myRef = FirebaseDatabase.getInstance().getReference().child("Branch");
         this.employee = employee;
         this.service = service;
         this.name = name;
@@ -92,7 +95,7 @@ public class Branch {
 
     @Override
     public String toString() {
-        return "Branches{" +
+        return "Branch{" +
                 ", name='" + name + '\'' +
                 ", myRef=" + myRef +
                 ", employee=" + employee +

@@ -21,4 +21,11 @@ public class EmployeeSetting extends AppCompatActivity{
         intent.putExtra("username", getIntent().getStringExtra("username"));
         startActivity(intent);
     }
+
+    public void openBranchAccountOnClick(View view){
+        Intent intent;
+        intent = new Intent(EmployeeSetting.this, BranchAccount.class);
+        intent.putExtra("username", getIntent().getStringExtra("username"));
+        startActivity(intent);
+    }
 }

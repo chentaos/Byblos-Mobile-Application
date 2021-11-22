@@ -84,25 +84,8 @@ public class Service {
         });
     }
 
-    public Boolean writeToDB() {
-        boolean addedValue = false;
-        final Boolean[] addedElement = {false};
-        myRef.child(name).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.hasChild(name)) {
-                    myRef.child(name).setValue(this);
-                    addedElement[0] = true;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        //myRef.child(name).setValue(this);
-        return addedElement[0];
+    public void writeToDB() {
+        myRef.child(name).setValue(this);
     }
 
     public void setRate(double rate){ hourlyRate=rate;}
