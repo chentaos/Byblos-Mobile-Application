@@ -34,23 +34,10 @@ public class Employee extends User {
         setMyRef(getMyRef().child("Users/Employee"));
     }
 
-//    public void updateInfo(){
-//        myEmRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                address = snapshot.child(getUserName()).child("address").getValue(String.class);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//    }
 
     @Override
     public String welcomeMSG() {
-        return super.welcomeMSG()+"Employee." + address;
+        return super.welcomeMSG()+"Employee." ;
     }
 
     public void setProfile(String address, String phoneNumber){

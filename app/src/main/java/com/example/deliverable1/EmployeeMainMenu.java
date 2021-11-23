@@ -27,8 +27,10 @@ public class EmployeeMainMenu extends AppCompatActivity {
         em.getMyEmRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String address = snapshot.child(userName).child("adress").getValue(String.class);
-                String result = getIntent().getStringExtra("welcomeMSG") + address;
+                String address = snapshot.child(userName).child("address").getValue(String.class);
+                String phoneNumber = snapshot.child(userName).child("PhoneNumber").getValue(String.class);
+                String welcomeMsg = getIntent().getStringExtra("welcomeMSG");
+                String result = welcomeMsg + "\n your address is " + address + "\nyour phone number is "+ phoneNumber;
                 eT.setText(result);
             }
 
