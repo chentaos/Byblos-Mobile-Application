@@ -75,5 +75,9 @@ public class Employee extends User {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public DatabaseReference getMyEmRef() {
+        return myEmRef;
+    }
 }
 
