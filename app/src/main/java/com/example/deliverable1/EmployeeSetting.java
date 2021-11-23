@@ -12,13 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.regex.Pattern;
 
 import account.Employee;
 
 public class EmployeeSetting extends AppCompatActivity{
-    Pattern phoneNumberPattern = Pattern.compile("^\\d{10}$");
-    Pattern addressPattern = Pattern.compile("^\\d+\\s([a-zA-Z]+|[a-zA-Z]+\\\\s[a-zA-Z]+)");
     Button profileBtn;
     String userName;
 

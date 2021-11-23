@@ -34,10 +34,8 @@ public class Employee extends User {
         setMyRef(getMyRef().child("Users/Employee"));
     }
 
-
-    @Override
-    public String welcomeMSG() {
-//        myEmRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//    public void updateInfo(){
+//        myEmRef.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(@NonNull DataSnapshot snapshot) {
 //                address = snapshot.child(getUserName()).child("address").getValue(String.class);
@@ -48,8 +46,11 @@ public class Employee extends User {
 //
 //            }
 //        });
+//    }
 
-        return super.welcomeMSG()+"Employee." ;
+    @Override
+    public String welcomeMSG() {
+        return super.welcomeMSG()+"Employee." + address;
     }
 
     public void setProfile(String address, String phoneNumber){
