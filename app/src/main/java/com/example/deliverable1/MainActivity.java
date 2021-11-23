@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+
         progressB.setVisibility(View.VISIBLE);
         specifyAccount(userName, password);
 

@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+
+import account.Employee;
 
 public class EmployeeMainMenu extends AppCompatActivity {
 
@@ -13,7 +16,11 @@ public class EmployeeMainMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.avtivty_employee_main_menu);
 
+        TextView eT = findViewById(R.id.welcomeText);
+        eT.setText(getIntent().getStringExtra("welcomeMSG"));
 
+//        TextView detailText = findViewById(R.id.detailText);
+//        detailText.setText();
     }
 
     public void openSettingOnClick(View view){

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -13,6 +14,7 @@ public class Employee extends User {
 
     private String address;
     private String phoneNumber;
+    private DatabaseReference myEmRef = getMyRef().child("Users/Employee");
     /**
      *  Constructor for Employee user account.
      */
@@ -32,9 +34,22 @@ public class Employee extends User {
         setMyRef(getMyRef().child("Users/Employee"));
     }
 
+
     @Override
     public String welcomeMSG() {
-        return super.welcomeMSG()+"Employee.";
+//        myEmRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                address = snapshot.child(getUserName()).child("address").getValue(String.class);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
+        return super.welcomeMSG()+"Employee." ;
     }
 
     public void setProfile(String address, String phoneNumber){

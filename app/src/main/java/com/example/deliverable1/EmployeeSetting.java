@@ -5,19 +5,20 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.regex.Pattern;
 
 import account.Employee;
 
 public class EmployeeSetting extends AppCompatActivity{
-
+    Pattern phoneNumberPattern = Pattern.compile("^\\d{10}$");
+    Pattern addressPattern = Pattern.compile("^\\d+\\s([a-zA-Z]+|[a-zA-Z]+\\\\s[a-zA-Z]+)");
     Button profileBtn;
     String userName;
 
@@ -31,8 +32,8 @@ public class EmployeeSetting extends AppCompatActivity{
 
 
         profileBtn = findViewById(R.id.profileBtn);
-        profileBtn.setOnLongClickListener(new View.OnLongClickListener() {
-            public boolean onLongClick(View v) {
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(EmployeeSetting.this);
                 LayoutInflater inflater = getLayoutInflater();
                 final View dialogView = inflater.inflate(R.layout.avtivity_employee_profile_dialog, null);
@@ -51,11 +52,20 @@ public class EmployeeSetting extends AppCompatActivity{
 
                 buttonSubmit.setOnClickListener(view -> {
                     Employee em = new Employee(userName, "aaaa");
-                    em.setProfile(address.getText().toString(),phoneNumber.getText().toString());
+
+                   boolean phoneMathes = phoneNumber.getText().toString().matches("^\\d{10}$");
+                   boolean addressMathes = address.getText().toString().matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)");
+
+                    if(phoneMathes == true && addressMathes==true){
+                        em.setProfile(address.getText().toString(),phoneNumber.getText().toString());
+                    }else{
+                        Toast.makeText(getApplication(),"Wrong format or empty",Toast.LENGTH_SHORT).show();
+                        onClick(v);
+                    }
+
                     b.dismiss();
                 });
 
-                return false;
             }
         });
 
