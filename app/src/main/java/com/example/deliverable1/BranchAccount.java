@@ -43,8 +43,6 @@ public class BranchAccount extends AppCompatActivity {
         services = new ArrayList<>();
         list = findViewById(R.id.services);
         employeeName = getIntent().getStringExtra("username");
-        Toast.makeText(getApplicationContext(), employeeName, Toast.LENGTH_SHORT).show();
-        store();
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             String idService = branches.get(position).getName();
             showUpdateDeleteDialog(idService, branches.get(position).getService());
@@ -58,6 +56,7 @@ public class BranchAccount extends AppCompatActivity {
 
                     Service s= postSnapshot.getValue(Service.class);
                     services.add(s.getName());
+                    store();
                 }
             }
 
@@ -126,7 +125,7 @@ public class BranchAccount extends AppCompatActivity {
                     Branch s= postSnapshot.getValue(Branch.class);
                     branches.add(s);
                 }
-                BranchItem p = new BranchItem(BranchAccount.this, branches);
+                BranchItem p = new BranchItem(BranchAccount.this, branches, services);
                 list.setAdapter(p);
             }
 

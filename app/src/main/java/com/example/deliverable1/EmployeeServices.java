@@ -30,6 +30,7 @@ public class EmployeeServices extends AppCompatActivity {
     ListView list;
     List<Service> services;
     DatabaseReference database1 = FirebaseDatabase.getInstance().getReference().child("Services");
+    DatabaseReference database2 = FirebaseDatabase.getInstance().getReference().child("Branch");
     String employeeName = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,6 @@ public class EmployeeServices extends AppCompatActivity {
         services = new ArrayList<>();
         list = findViewById(R.id.services);
         employeeName = getIntent().getStringExtra("username");
-        Toast.makeText(getApplicationContext(), employeeName, Toast.LENGTH_SHORT).show();
         store();
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -74,23 +74,37 @@ public class EmployeeServices extends AppCompatActivity {
 
         buttonCreate.setOnClickListener(view -> {
             String serviceName = editNewBranchName.getText().toString();
-            if (!TextUtils.isEmpty(serviceName)) {
-                Branch branch = new Branch(employeeName, name, serviceName, null, null);
-                FirebaseDatabase.getInstance().getReference().child("Branch").child(serviceName).setValue(branch);
-//                updateService(productId, rate);
+            if (TextUtils.isEmpty(serviceName)) {
+                errorEmptyService();
+            } else {
+                database2.child(serviceName).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            errorNameAlreadyExist();
+                        } else{
+                            Branch branch = new Branch(employeeName, name, serviceName, null, null);
+                            database2.child(serviceName).setValue(branch);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
             b.dismiss();
         });
 
-//        buttonDelete.setOnClickListener(v -> {
-//            if (services.size() > 3) {
-//                deleteService(productId);
-//                store();
-//            } else {
-//                showNbRequiredServices();
-//            }
-//            b.dismiss();
-//        });
+    }
+
+    private void errorEmptyService(){
+        Toast.makeText(this,"Service name can't be empty",Toast.LENGTH_SHORT).show();
+    }
+
+    private void errorNameAlreadyExist(){
+        Toast.makeText(this,"The service name already exist",Toast.LENGTH_SHORT).show();
     }
 
     private void store(){
