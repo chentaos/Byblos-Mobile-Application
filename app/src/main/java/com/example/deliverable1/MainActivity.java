@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *  callback of the new register page.
+     *  this is a callback of the new register page.
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
