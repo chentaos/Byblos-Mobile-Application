@@ -1,5 +1,6 @@
 package com.example.deliverable1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -11,6 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import service.Service;
 
@@ -46,17 +53,33 @@ public class ServiceRequirementEdit extends AppCompatActivity {
 
             String type="";
             Service s=new Service(name.getText().toString(),Double.parseDouble(rate.getText().toString()), req);
-            boolean addedService = s.writeToDB();
-            if (!addedService){
-                Toast.makeText(this,"This service name already exist",Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this,"Added successfully",Toast.LENGTH_SHORT).show();
-            }
+
+            DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("Services");
+
+            myRef.child(s.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.hasChild(s.getName())) {
+                        errorMessage();
+                    } else {
+                        s.writeToDB();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
             Log.i("serviceCreate",s.toString());
-//                    finish();
+            finish();
         }
     }
 
+    private void errorMessage(){
+        Toast.makeText(this,"This service name already exist",Toast.LENGTH_SHORT).show();
+    }
     private boolean valid(){
         if(name.getText().toString().isEmpty()||rate.getText().toString().isEmpty()||Double.parseDouble(rate.getText().toString())==0){
             Toast.makeText(this,"name and rate must be filled",Toast.LENGTH_SHORT).show();

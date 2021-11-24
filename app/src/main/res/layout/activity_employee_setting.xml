@@ -18,25 +18,38 @@
             android:id="@+id/workTime"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:layout_marginBottom="50dp"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="50dp"
+            android:onClick="workTimeOnClick"
             android:text="Work TIme" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/openServices"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:layout_marginBottom="50dp"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="50dp"
+            android:onClick="openServicesOnClick"
             android:text="Services" />
 
         <Button
             android:id="@+id/profileBtn"
+            android:id="@+id/btnMyServices"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginBottom="50dp"
+            android:layout_marginHorizontal="20dp"
+            android:text="Your Services"
+            android:onClick="openBranchAccountOnClick" />
+
+        <Button
+            android:id="@+id/button3"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="50dp"
             android:onClick="openProfileOnClick"
             android:text="Profile" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

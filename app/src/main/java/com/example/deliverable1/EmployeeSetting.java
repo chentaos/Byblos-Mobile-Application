@@ -69,7 +69,23 @@ public class EmployeeSetting extends AppCompatActivity{
 
 
     }
+    public void openServicesOnClick(View view){
+        Intent intent;
+        intent = new Intent(EmployeeSetting.this, EmployeeServices.class);
+        intent.putExtra("username", getIntent().getStringExtra("username"));
+        startActivity(intent);
+    }
 
-
-
+    public void openBranchAccountOnClick(View view){
+        Intent intent;
+        intent = new Intent(EmployeeSetting.this, BranchAccount.class);
+        intent.putExtra("username", getIntent().getStringExtra("username"));
+        startActivity(intent);
+    }
+    public void workTimeOnClick(View view){
+        Intent intent;
+        intent = new Intent(EmployeeSetting.this, BranchWorkTime.class);
+        intent.putExtra("username", getIntent().getStringExtra("username"));
+        startActivity(intent);
+    }
 }

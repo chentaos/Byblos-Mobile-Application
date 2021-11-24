@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *  callback of the new register page.
+     *  this is a callback of the new register page.
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -201,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
         intent.putExtra("userName", user.getUserName());
         intent.putExtra("welcomeMSG", user.welcomeMSG());
+        intent.putExtra("username", user.getUserName());
         startActivity(intent);
     }
 

@@ -16,17 +16,21 @@ import service.Service;
 public class Branch {
     private DatabaseReference myRef;
     private String employee;
-    private List<Service> services;
-    private Date startHour;
-    private Date endHour;
+    private String service;
+//    private Date startHour;
+//    private Date endHour;
     private String name;
 
-    public Branch(String employee, List<Service> services, Date startHour, Date endHour){
-        myRef = FirebaseDatabase.getInstance().getReference().child("Branches");
+    public Branch(){}
+
+    //public Branch(String employee, String service, String name, Date startHour, Date endHour){
+    public Branch(String employee, String service, String name, Date startHour, Date endHour){
+        myRef = FirebaseDatabase.getInstance().getReference().child("Branch");
         this.employee = employee;
-        this.services = services;
-        this.startHour = startHour;
-        this.endHour = endHour;
+        this.service = service;
+        this.name = name;
+//        this.startHour = startHour;
+//        this.endHour = endHour;
     }
 
     public Boolean[] writeToDB() {
@@ -53,16 +57,16 @@ public class Branch {
         return name;
     }
 
-    public Date getEndHour() {
-        return endHour;
-    }
+//    public Date getEndHour() {
+//        return endHour;
+//    }
+//
+//    public Date getStartHour() {
+//        return startHour;
+//    }
 
-    public Date getStartHour() {
-        return startHour;
-    }
-
-    public List<Service> getServices() {
-        return services;
+    public String getService() {
+        return service;
     }
 
     public String getEmployee() {
@@ -77,27 +81,27 @@ public class Branch {
         this.employee = employee;
     }
 
-    public void setEndHour(Date endHour) {
-        this.endHour = endHour;
-    }
+//    public void setEndHour(Date endHour) {
+//        this.endHour = endHour;
+//    }
+//
+//    public void setStartHour(Date startHour) {
+//        this.startHour = startHour;
+//    }
 
-    public void setStartHour(Date startHour) {
-        this.startHour = startHour;
-    }
-
-    public void setServices(List<Service> services) {
-        this.services = services;
+    public void setService(String service) {
+        this.service = service;
     }
 
     @Override
     public String toString() {
-        return "Branches{" +
+        return "Branch{" +
                 ", name='" + name + '\'' +
                 ", myRef=" + myRef +
                 ", employee=" + employee +
-                ", services=" + services +
-                ", endHour=" + endHour +
-                ", startHour=" + startHour +
+                ", service=" + service +
+//                ", endHour=" + endHour +
+//                ", startHour=" + startHour +
                 '}';
     }
 }
