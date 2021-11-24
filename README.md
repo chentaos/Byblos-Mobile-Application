@@ -7,7 +7,7 @@ Kamara, Mikhail
 Kiri, Lootii   
 
 ## UML
-https://github.com/SEG2105-uottawa/seg2105f21-project-project_gr13/blob/main/UML_D1.pdf
+https://lucid.app/lucidchart/9c366b7d-482f-43f0-95e1-9379dfacc70f/edit?viewport_loc=-1515%2C-808%2C1109%2C526%2C0_0&invitationId=inv_a6fd0791-1a30-4bc2-b004-c3db08fca865
 ## Datastructure in Firebase  
 ![image](https://github.com/SEG2105-uottawa/seg2105f21-project-project_gr13/blob/main/datastructure2.png)
 
