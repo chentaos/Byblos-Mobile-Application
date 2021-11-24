@@ -37,8 +37,7 @@ import account.ListenerCallBack;
 
 public class BranchWorkTime extends AppCompatActivity {
 
-    String userName = "aaaa";
-    Employee e = new Employee(userName,null);
+    Employee e;
     TimeSlotAdapter[] ta = new TimeSlotAdapter[7];
     int[] listViewDayID = {R.id.R1,R.id.R2,R.id.R3,R.id.R4,R.id.R5,R.id.R6,R.id.R7};
 
@@ -57,6 +56,8 @@ public class BranchWorkTime extends AppCompatActivity {
 //
 //        ta[0] = new TimeSlotAdapter(BranchWorkTime.this, tl);
 //        ml.setAdapter(ta[0]);
+
+        e = new Employee(getIntent().getStringExtra("username"),null);
 
         Toast.makeText(getApplicationContext(), "press add button to add working time, long press time interval to delete", Toast.LENGTH_LONG).show();
         e.timeInitiate(new ListenerCallBack() {
