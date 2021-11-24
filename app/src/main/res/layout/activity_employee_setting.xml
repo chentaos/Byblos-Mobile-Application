@@ -33,7 +33,6 @@
             android:text="Services" />
 
         <Button
-            android:id="@+id/profileBtn"
             android:id="@+id/btnMyServices"
             android:layout_width="match_parent"
             android:layout_height="70dp"
@@ -43,7 +42,7 @@
             android:onClick="openBranchAccountOnClick" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/profileBtn"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginHorizontal="20dp"

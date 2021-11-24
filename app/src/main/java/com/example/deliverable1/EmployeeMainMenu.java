@@ -24,7 +24,7 @@ public class EmployeeMainMenu extends AppCompatActivity {
         Employee em = new Employee(userName,"");
         TextView eT = findViewById(R.id.welcomeText);
 
-        em.getMyEmRef().addValueEventListener(new ValueEventListener() {
+        em.getMyRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String address = snapshot.child(userName).child("address").getValue(String.class);

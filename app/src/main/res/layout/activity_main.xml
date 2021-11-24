@@ -81,7 +81,7 @@
         android:layout_width="152dp"
         android:layout_height="83dp"
         android:layout_marginTop="64dp"
-        android:text="Deliverable2"
+        android:text="Deliverable3"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/userName"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,5 +1,6 @@
 package com.example.deliverable1;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -24,7 +25,7 @@ public class EmployeeSetting extends AppCompatActivity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_setting);
-        userName = getIntent().getStringExtra("userName");
+        userName = getIntent().getStringExtra("username");
         Log.d("userName" ,userName);
 
 

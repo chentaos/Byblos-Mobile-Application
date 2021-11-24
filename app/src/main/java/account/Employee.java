@@ -26,7 +26,7 @@ public class Employee extends User {
 
     private String address;
     private String phoneNumber;
-    private DatabaseReference myEmRef = getMyRef().child("Users/Employee");
+    //private DatabaseReference myEmRef = getMyRef().child("Users/Employee");
     /**
      *  Constructor for Employee user account.
      */
@@ -267,8 +267,8 @@ public class Employee extends User {
         this.phoneNumber = phoneNumber;
     }
 
-    public DatabaseReference getMyEmRef() {
-        return myEmRef;
-    }
+//    public DatabaseReference getMyEmRef() {
+//        return myEmRef;
+//    }
 }
 
