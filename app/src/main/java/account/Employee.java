@@ -59,7 +59,7 @@ public class Employee extends User {
 //                    endT += "0";
 //                }
 //            }
-//            startT += String.valueOf(start);
+//            startT += String.valueOf(start);T
 //            endT += String.valueOf(end);
             for(int i=3;i>=0;i--){
                 endT += String.valueOf(0 + (int)(end/Math.pow(10,i)));
@@ -217,9 +217,6 @@ public class Employee extends User {
         ((LinkedList)dayTime).remove(index);
         toTimeString(day);
         timeUpdate();
-    }
-    public String timeToString(int time){
-        return String.valueOf(time/100) + ":" + String.valueOf(time%100);
     }
 
     public Employee(){
