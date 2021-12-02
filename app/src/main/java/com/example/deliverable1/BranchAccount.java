@@ -73,8 +73,6 @@ public class BranchAccount extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.activity_branch_dialog, null);
         dialogBuilder.setView(dialogView);
 
-//        final Button buttonUpdate = dialogView.findViewById(R.id.updateBtn);
-//        final Button buttonCreate = dialogView.findViewById(R.id.createBtn);
         final Button buttonDelete = dialogView.findViewById(R.id.deleteBtn);
         final Button buttonCancel = dialogView.findViewById(R.id.cancelBtn);
 
@@ -82,10 +80,6 @@ public class BranchAccount extends AppCompatActivity {
         String name = dr.getKey();
 
         dialogBuilder.setTitle(name);
-
-        if (services.contains(service)){
-            buttonDelete.setVisibility(View.GONE);
-        }
 
         final AlertDialog b = dialogBuilder.create();
         b.show();

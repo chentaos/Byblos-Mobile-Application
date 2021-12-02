@@ -39,11 +39,6 @@ public class EmployeeMainMenu extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
     }
 
     public void openSettingOnClick(View view){

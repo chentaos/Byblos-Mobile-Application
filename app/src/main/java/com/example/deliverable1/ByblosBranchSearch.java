@@ -36,6 +36,7 @@ import account.ListenerCallBack;
 import branch.Branch;
 import service.Service;
 import service.ServiceForm;
+import service.ServiceRequest;
 
 public class ByblosBranchSearch extends AppCompatActivity {
     EditText editAddress;
@@ -60,6 +61,24 @@ public class ByblosBranchSearch extends AppCompatActivity {
     ListView branchesList;
 
     String userName = "";
+
+    EditText editFirstName;
+    EditText editLastName;
+    EditText editDateOfBirth;
+
+    EditText editAddressForm;
+    EditText editEmail;
+    Spinner spinLicenses;
+
+    Spinner spinCars;
+    Spinner spinPickUpDate;
+    Spinner spinReturnDate;
+
+    EditText editNbKm;
+    EditText editTruckArea;
+    EditText editStartLocation;
+    EditText editEndLocation;
+    EditText editNbBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,14 +162,12 @@ public class ByblosBranchSearch extends AppCompatActivity {
             }
         });
 
-        branchesList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Branch branch = Branches.get(position);
-                showUpdateDeleteDialog(branch.getService(), branch.getEmployee(), branch.getName());
-                return false;
-            }
+        branchesList.setOnItemLongClickListener((parent, view, position, id) -> {
+            Branch branch = Branches.get(position);
+            showUpdateDeleteDialog(branch.getService(), branch.getEmployee(), branch.getName());
+            return false;
         });
+
         loadBranches();
         userName = getIntent().getStringExtra("userName");
     }
@@ -163,25 +180,175 @@ public class ByblosBranchSearch extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.activity_required_info_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText editFirstName = dialogView.findViewById(R.id.editFirstName);
-        final EditText editLastName = dialogView.findViewById(R.id.editLastName);
-        final EditText editDateOfBirth = dialogView.findViewById(R.id.editDateOfBirth);
 
-        final EditText editAddress = dialogView.findViewById(R.id.editAddress);
-        final EditText editEmail = dialogView.findViewById(R.id.editEmail);
-        final Spinner spinLicenses = dialogView.findViewById(R.id.spinLicenses);
+        int serviceIndex = services.indexOf(serviceId);
 
-        final Spinner spinCars = dialogView.findViewById(R.id.spinCars);
-        final Spinner spinPickUpDate = dialogView.findViewById(R.id.spinPickUpDate);
-        final Spinner spinReturnDate = dialogView.findViewById(R.id.spinReturnDate);
+        Service s = servicesList.get(serviceIndex);
+        handleTextView(dialogView, s);
+        setFormEdit(dialogView, s);
 
-        final EditText editNbKm = dialogView.findViewById(R.id.editNbKm);
-        final EditText editTruckArea = dialogView.findViewById(R.id.editTruckArea);
-        final EditText editStartLocation = dialogView.findViewById(R.id.editStartLocation);
-        final EditText editEndLocation = dialogView.findViewById(R.id.editEndLocation);
-        final EditText editNbBox = dialogView.findViewById(R.id.editNbBox);
+        setSpinners(s);
 
+        int employeeIndex = EmployeesUsername.indexOf(employeeId);
 
+        Employee e = Employees.get(employeeIndex);
+
+        if (s.getDnT()) defineDates(e);
+
+        final Button btnProfileSubmitBtn = dialogView.findViewById(R.id.profileSbmitBtn);
+        final Button buttonCancel = dialogView.findViewById(R.id.profileCancelBtn);
+
+        final androidx.appcompat.app.AlertDialog b = dialogBuilder.create();
+        b.show();
+
+        buttonCancel.setOnClickListener(view -> b.dismiss());
+
+        btnProfileSubmitBtn.setOnClickListener(view -> {
+            submitForm(branchId);
+            b.dismiss();
+        });
+
+    }
+
+    private void setSpinners(Service s) {
+        ArrayAdapter arrayAdapter;
+        String[] licenseType = { "G1", "G2", "G"};
+        String[] carType = { "compact", "intermediate", "SUV"};
+        if (s.getLicensetype()){
+            arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,licenseType);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinLicenses.setAdapter(arrayAdapter);
+            spinLicenses.setSelection(0);
+        }
+
+        if (s.getPreferredCar()){
+            arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,carType);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinCars.setAdapter(arrayAdapter);
+            spinCars.setSelection(0);
+        }
+    }
+
+    private void submitForm(String branchId) {
+        int nbKm = 0;
+        int nbBox = 0;
+        String license = "";
+        String car = "";
+        String pickUpDate = "";
+        String returnDate = "";
+
+        String firstName = editFirstName.getText().toString();
+        String lastName = editLastName.getText().toString();
+        String dateOfBirth = editDateOfBirth.getText().toString();
+        String address = editAddress.getText().toString();
+        String email = editEmail.getText().toString();
+
+        if (spinLicenses.getSelectedItem() != null)
+            license = spinLicenses.getSelectedItem().toString();
+
+        if (spinCars.getSelectedItem() != null)
+            car = spinCars.getSelectedItem().toString();
+
+        if (spinPickUpDate.getSelectedItem() != null)
+            pickUpDate = spinPickUpDate.getSelectedItem().toString();
+
+        if (spinReturnDate.getSelectedItem() != null)
+            returnDate = spinReturnDate.getSelectedItem().toString();
+
+        if (editNbKm.getText().toString().length() != 0)
+            nbKm = Integer.parseInt(editNbKm.getText().toString());
+
+        if (editNbBox.getText().toString().length() !=0){
+            nbBox = Integer.parseInt(editNbBox.getText().toString());
+        }
+
+        String truckArea = editTruckArea.getText().toString();
+
+        String startLocation = editStartLocation.getText().toString();
+        String endLocation = editEndLocation.getText().toString();
+
+        ServiceForm serviceForm = new ServiceForm(firstName, lastName, dateOfBirth,
+                address,email, license, car, pickUpDate,
+                returnDate, nbKm, truckArea, startLocation, endLocation, nbBox,false);
+
+        String key = FirebaseDatabase.getInstance().getReference().push().getKey();
+
+        ServiceRequest serviceRequest = new ServiceRequest(serviceForm, true, false, userName);
+
+        dbBranch.child(branchId).child("requests").child("submittedForms").child(key).setValue(serviceRequest);
+    }
+
+    private void defineDates(Employee e) {
+        ArrayAdapter arrayAdapter;
+        List<String> possibleDates = new ArrayList<>();
+        List<String> possibleReturnDates = new ArrayList<>();
+
+        for (int i = 0; i < days.length; i++) {
+            LinkedList<Employee.TimeInterval> dayTimeIntervals = e.getDayTimeIntervals(i + 1);
+            if (dayTimeIntervals != null)
+                for (Employee.TimeInterval timeInterval: dayTimeIntervals) {
+                    if (timeInterval.start != 0   && timeInterval.end != 0){
+                        StringBuilder startTime = new StringBuilder();
+                        startTime.append(timeInterval.toString().substring(0, timeInterval.toString().length() / 2));
+                        startTime.insert(startTime.length() / 2, ":");
+
+                        StringBuilder returnTime = new StringBuilder();
+                        returnTime.append(timeInterval.toString().substring(timeInterval.toString().length() / 2));
+                        returnTime.insert(returnTime.length() / 2, ":");
+
+                        possibleDates.add(days[i] + " between " + startTime.toString() + " - " + returnTime.toString());
+                        possibleReturnDates.add("Next " + possibleDates.get(possibleDates.size() -1));
+                    }
+                }
+        }
+
+        arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,possibleDates);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinPickUpDate.setAdapter(arrayAdapter);
+        spinPickUpDate.setSelection(0);
+
+        arrayAdapter = new ArrayAdapter(ByblosBranchSearch.this, android.R.layout.simple_spinner_item,possibleReturnDates);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinReturnDate.setAdapter(arrayAdapter);
+        spinReturnDate.setSelection(0);
+    }
+
+    private void setFormEdit(View dialogView, Service s) {
+        editFirstName = dialogView.findViewById(R.id.editFirstName);
+        editLastName = dialogView.findViewById(R.id.editLastName);
+        editDateOfBirth = dialogView.findViewById(R.id.editDateOfBirth);
+
+        editAddressForm = dialogView.findViewById(R.id.editAddress);
+        editEmail = dialogView.findViewById(R.id.editEmail);
+        spinLicenses = dialogView.findViewById(R.id.spinLicenses);
+
+        spinCars = dialogView.findViewById(R.id.spinCars);
+        spinPickUpDate = dialogView.findViewById(R.id.spinPickUpDate);
+        spinReturnDate = dialogView.findViewById(R.id.spinReturnDate);
+
+        editNbKm = dialogView.findViewById(R.id.editNbKm);
+        editTruckArea = dialogView.findViewById(R.id.editTruckArea);
+        editStartLocation = dialogView.findViewById(R.id.editStartLocation);
+        editEndLocation = dialogView.findViewById(R.id.editEndLocation);
+        editNbBox = dialogView.findViewById(R.id.editNbBox);
+
+        editFirstName.setVisibility(s.getCustomerName()?View.VISIBLE:View.GONE);
+        editLastName.setVisibility(s.getCustomerName()?View.VISIBLE:View.GONE);
+        editDateOfBirth.setVisibility(s.getDob()?View.VISIBLE:View.GONE);
+        editAddress.setVisibility(s.getAddress()?View.VISIBLE:View.GONE);
+        editEmail.setVisibility(s.getEmail()?View.VISIBLE:View.GONE);
+        spinLicenses.setVisibility(s.getLicensetype()?View.VISIBLE:View.GONE);
+        spinCars.setVisibility(s.getPreferredCar()?View.VISIBLE:View.GONE);
+        spinPickUpDate.setVisibility(s.getDnT()?View.VISIBLE:View.GONE);
+        spinReturnDate.setVisibility(s.getDnT()?View.VISIBLE:View.GONE);
+        editNbKm.setVisibility(s.getMaxKl()?View.VISIBLE:View.GONE);
+        editTruckArea.setVisibility(s.getArea()?View.VISIBLE:View.GONE);
+        editStartLocation.setVisibility(s.getMoving()?View.VISIBLE:View.GONE);
+        editEndLocation.setVisibility(s.getMoving()?View.VISIBLE:View.GONE);
+        editNbBox.setVisibility(s.getBox()?View.VISIBLE:View.GONE);
+    }
+
+    private void handleTextView(final View dialogView, Service s){
         final TextView txtFirstName = dialogView.findViewById(R.id.txtFirstName);
         final TextView txtLastName = dialogView.findViewById(R.id.txtLastName);
         final TextView txtDOB = dialogView.findViewById(R.id.txtDOB);
@@ -200,31 +367,6 @@ public class ByblosBranchSearch extends AppCompatActivity {
         final TextView txtMovingEnd = dialogView.findViewById(R.id.txtMovingEnd);
         final TextView txtNbBox = dialogView.findViewById(R.id.txtNbBox);
 
-        String[] licenseType = { "G1", "G2", "G"};
-        String[] carType = { "compact", "intermediate", "SUV"};
-
-
-
-        ArrayAdapter arrayAdapter;
-
-        int serviceIndex = services.indexOf(serviceId);
-
-        Service s = servicesList.get(serviceIndex);
-
-        if (s.getLicensetype()){
-            arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,licenseType);
-            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinLicenses.setAdapter(arrayAdapter);
-            spinLicenses.setSelection(0);
-        }
-
-        if (s.getPreferredCar()){
-            arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,carType);
-            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinCars.setAdapter(arrayAdapter);
-            spinCars.setSelection(0);
-        }
-
         txtFirstName.setVisibility(s.getCustomerName()?View.VISIBLE:View.GONE);
         txtLastName.setVisibility(s.getCustomerName()?View.VISIBLE:View.GONE);
         txtDOB.setVisibility(s.getDob()?View.VISIBLE:View.GONE);
@@ -239,137 +381,6 @@ public class ByblosBranchSearch extends AppCompatActivity {
         txtMovingStart.setVisibility(s.getMoving()?View.VISIBLE:View.GONE);
         txtMovingEnd.setVisibility(s.getMoving()?View.VISIBLE:View.GONE);
         txtNbBox.setVisibility(s.getBox()?View.VISIBLE:View.GONE);
-
-        editFirstName.setVisibility(s.getCustomerName()?View.VISIBLE:View.GONE);
-        editLastName.setVisibility(s.getCustomerName()?View.VISIBLE:View.GONE);
-        editDateOfBirth.setVisibility(s.getDob()?View.VISIBLE:View.GONE);
-        editAddress.setVisibility(s.getAddress()?View.VISIBLE:View.GONE);
-        editEmail.setVisibility(s.getEmail()?View.VISIBLE:View.GONE);
-        spinLicenses.setVisibility(s.getLicensetype()?View.VISIBLE:View.GONE);
-        spinCars.setVisibility(s.getPreferredCar()?View.VISIBLE:View.GONE);
-        spinPickUpDate.setVisibility(s.getDnT()?View.VISIBLE:View.GONE);
-        spinReturnDate.setVisibility(s.getDnT()?View.VISIBLE:View.GONE);
-        editNbKm.setVisibility(s.getMaxKl()?View.VISIBLE:View.GONE);
-        editTruckArea.setVisibility(s.getArea()?View.VISIBLE:View.GONE);
-        editStartLocation.setVisibility(s.getMoving()?View.VISIBLE:View.GONE);
-        editEndLocation.setVisibility(s.getMoving()?View.VISIBLE:View.GONE);
-        editNbBox.setVisibility(s.getBox()?View.VISIBLE:View.GONE);
-
-        int employeeIndex = EmployeesUsername.indexOf(employeeId);
-
-        Employee e = Employees.get(employeeIndex);
-
-        if (s.getDnT()){
-            List<String> possibleDates = new ArrayList<>();
-            List<String> possibleReturnDates = new ArrayList<>();
-
-            for (int i = 0; i < days.length; i++) {
-                LinkedList<Employee.TimeInterval> dayTimeIntervals = e.getDayTimeIntervals(i + 1);
-                if (dayTimeIntervals != null)
-                    for (Employee.TimeInterval timeInterval: dayTimeIntervals) {
-                        if (timeInterval.start != 0   && timeInterval.end != 0){
-                            StringBuilder startTime = new StringBuilder();
-                            startTime.append(timeInterval.toString().substring(0, timeInterval.toString().length() / 2));
-                            startTime.insert(startTime.length() / 2, ":");
-
-                            StringBuilder returnTime = new StringBuilder();
-                            returnTime.append(timeInterval.toString().substring(timeInterval.toString().length() / 2));
-                            returnTime.insert(returnTime.length() / 2, ":");
-
-                            possibleDates.add(days[i] + " between " + startTime.toString() + " - " + returnTime.toString());
-                            possibleReturnDates.add("Next " + possibleDates.get(possibleDates.size() -1));
-                        }
-                    }
-            }
-
-            arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,possibleDates);
-            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinPickUpDate.setAdapter(arrayAdapter);
-            spinPickUpDate.setSelection(0);
-
-            arrayAdapter = new ArrayAdapter(ByblosBranchSearch.this, android.R.layout.simple_spinner_item,possibleReturnDates);
-            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinReturnDate.setAdapter(arrayAdapter);
-            spinReturnDate.setSelection(0);
-        }
-
-
-//        spinPickUpDate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                List<String> possibleReturnDates = new ArrayList<>(possibleDates);
-//                possibleReturnDates.remove(position);
-//                ArrayAdapter arrayAdapter = new ArrayAdapter(ByblosBranchSearch.this, android.R.layout.simple_spinner_item,possibleReturnDates);
-//                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                spinReturnDate.setAdapter(arrayAdapter);
-//                spinReturnDate.setSelection(0);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-
-        final Button btnProfileSubmitBtn = dialogView.findViewById(R.id.profileSbmitBtn);
-        final Button buttonCancel = dialogView.findViewById(R.id.profileCancelBtn);
-
-//        DatabaseReference dr = database1.child(productId);
-//        String name = dr.getKey();
-
-//        dialogBuilder.setTitle(name);
-        final androidx.appcompat.app.AlertDialog b = dialogBuilder.create();
-        b.show();
-//        buttonUpdate.setVisibility(View.GONE);
-//        buttonDelete.setVisibility(View.GONE);
-        buttonCancel.setOnClickListener(view -> b.dismiss());
-//
-        btnProfileSubmitBtn.setOnClickListener(view -> {
-            int nbKm = 0;
-            int nbBox = 0;
-            String license = "";
-            String car = "";
-            String pickUpDate = "";
-            String returnDate = "";
-
-            String firstName = editFirstName.getText().toString();
-            String lastName = editLastName.getText().toString();
-            String dateOfBirth = editDateOfBirth.getText().toString();
-            String address = editAddress.getText().toString();
-            String email = editEmail.getText().toString();
-
-            if (spinLicenses.getSelectedItem() != null)
-                license = spinLicenses.getSelectedItem().toString();
-
-            if (spinCars.getSelectedItem() != null)
-                car = spinCars.getSelectedItem().toString();
-
-            if (spinPickUpDate.getSelectedItem() != null)
-                pickUpDate = spinPickUpDate.getSelectedItem().toString();
-
-            if (spinReturnDate.getSelectedItem() != null)
-                returnDate = spinReturnDate.getSelectedItem().toString();
-
-            if (editNbKm.getText().toString().length() != 0)
-                nbKm = Integer.parseInt(editNbKm.getText().toString());
-
-            if (editNbBox.getText().toString().length() !=0){
-                nbBox = Integer.parseInt(editNbBox.getText().toString());
-            }
-
-            String truckArea = editTruckArea.getText().toString();
-
-            String startLocation = editStartLocation.getText().toString();
-            String endLocation = editEndLocation.getText().toString();
-
-            ServiceForm serviceForm = new ServiceForm(firstName, lastName, dateOfBirth,
-                    address,email, license, car, pickUpDate,
-                    returnDate, nbKm, truckArea, startLocation, endLocation, nbBox,false);
-
-            dbBranch.child(branchId).child(userName).setValue(serviceForm);
-            b.dismiss();
-        });
-
     }
 
     public void setSpinnerService(){
@@ -388,7 +399,7 @@ public class ByblosBranchSearch extends AppCompatActivity {
                 startTime = hourOfDay*100+minute;
                 editEndTime.setText("");
                 endTime = 0;
-                editStartTime.setText(df.format(hourOfDay) + ":" + df.format(minute));
+                editStartTime.setText(new StringBuilder().append(df.format(hourOfDay)).append(":").append(df.format(minute)).toString());
             }
         },0,0,true).show();
     }

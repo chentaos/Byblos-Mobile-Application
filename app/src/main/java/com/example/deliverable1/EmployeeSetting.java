@@ -83,6 +83,7 @@ public class EmployeeSetting extends AppCompatActivity{
         intent.putExtra("username", getIntent().getStringExtra("username"));
         startActivity(intent);
     }
+
     public void workTimeOnClick(View view){
         Intent intent;
         intent = new Intent(EmployeeSetting.this, BranchWorkTime.class);

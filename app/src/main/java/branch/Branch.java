@@ -18,8 +18,6 @@ public class Branch {
     private DatabaseReference myRef;
     private String employee;
     private String service;
-//    private Date startHour;
-//    private Date endHour;
     private String name;
     public List<ServiceForm> serviceForms;
 
@@ -106,7 +104,7 @@ public class Branch {
                 "myRef=" + myRef +
                 ", employee='" + employee + '\'' +
                 ", service='" + service + '\'' +
-                ", name='" + name + '\'' +
+//                ", name='" + name + '\'' +
                 '}';
     }
 }

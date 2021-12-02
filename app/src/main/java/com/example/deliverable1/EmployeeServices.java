@@ -41,59 +41,49 @@ public class EmployeeServices extends AppCompatActivity {
         list = findViewById(R.id.services);
         employeeName = getIntent().getStringExtra("username");
         store();
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                String idService = services.get(position).getName();
-                showUpdateDeleteDialog(idService);
-                return false;
-            }
+        list.setOnItemLongClickListener((parent, view, position, id) -> {
+            String idService = services.get(position).getName();
+            showUpdateDeleteDialog(idService);
+            return false;
         });
     }
-    private void showUpdateDeleteDialog(final String productId){
+    private void showUpdateDeleteDialog(final String idService){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.activity_service_manage_employee_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText editNewBranchName = dialogView.findViewById(R.id.editNewBranchName);
-        final Button buttonUpdate = dialogView.findViewById(R.id.updateBtn);
-        final Button buttonCreate = dialogView.findViewById(R.id.createBtn);
-        final Button buttonDelete = dialogView.findViewById(R.id.deleteBtn);
+        final Button buttonAdd = dialogView.findViewById(R.id.addBtn);
         final Button buttonCancel = dialogView.findViewById(R.id.cancelBtn);
 
-        DatabaseReference dr = database1.child(productId);
+        DatabaseReference dr = database1.child(idService);
         String name = dr.getKey();
 
         dialogBuilder.setTitle(name);
         final AlertDialog b = dialogBuilder.create();
         b.show();
-        buttonUpdate.setVisibility(View.GONE);
-        buttonDelete.setVisibility(View.GONE);
+
         buttonCancel.setOnClickListener(view -> b.dismiss());
 
-        buttonCreate.setOnClickListener(view -> {
-            String serviceName = editNewBranchName.getText().toString();
-            if (TextUtils.isEmpty(serviceName)) {
-                errorEmptyService();
-            } else {
-                database2.child(serviceName).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            errorNameAlreadyExist();
-                        } else{
-                            Branch branch = new Branch(employeeName, name, serviceName, null, null);
-                            database2.child(serviceName).setValue(branch);
-                        }
+        buttonAdd.setOnClickListener(view -> {
+            String serviceName = idService + "_" + employeeName;
+            database2.child(serviceName).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        errorNameAlreadyExist();
+                    } else{
+                        Branch branch = new Branch(employeeName, name, serviceName, null, null);
+                        database2.child(serviceName).setValue(branch);
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
-            }
+                }
+            });
+
             b.dismiss();
         });
 
@@ -104,7 +94,7 @@ public class EmployeeServices extends AppCompatActivity {
     }
 
     private void errorNameAlreadyExist(){
-        Toast.makeText(this,"The service name already exist",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"The service already exist",Toast.LENGTH_SHORT).show();
     }
 
     private void store(){
