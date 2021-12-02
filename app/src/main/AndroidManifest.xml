@@ -56,6 +56,9 @@
         <activity
             android:name=".BranchAccount"
             android:exported="true" />
+        <activity
+            android:name=".ByblosBranchSearch"
+            android:exported="true" />
     </application>
 
 </manifest>

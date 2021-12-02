@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import service.Service;
+import service.ServiceForm;
 
 public class Branch {
     private DatabaseReference myRef;
@@ -20,8 +21,16 @@ public class Branch {
 //    private Date startHour;
 //    private Date endHour;
     private String name;
+    public List<ServiceForm> serviceForms;
 
     public Branch(){}
+
+    public Branch(String employee, String service, String name){
+        myRef = FirebaseDatabase.getInstance().getReference().child("Branch");
+        this.employee = employee;
+        this.service = service;
+        this.name = name;
+    }
 
     //public Branch(String employee, String service, String name, Date startHour, Date endHour){
     public Branch(String employee, String service, String name, Date startHour, Date endHour){
@@ -29,8 +38,6 @@ public class Branch {
         this.employee = employee;
         this.service = service;
         this.name = name;
-//        this.startHour = startHour;
-//        this.endHour = endHour;
     }
 
     public Boolean[] writeToDB() {
@@ -96,12 +103,10 @@ public class Branch {
     @Override
     public String toString() {
         return "Branch{" +
+                "myRef=" + myRef +
+                ", employee='" + employee + '\'' +
+                ", service='" + service + '\'' +
                 ", name='" + name + '\'' +
-                ", myRef=" + myRef +
-                ", employee=" + employee +
-                ", service=" + service +
-//                ", endHour=" + endHour +
-//                ", startHour=" + startHour +
                 '}';
     }
 }

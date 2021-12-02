@@ -26,7 +26,7 @@ public class Employee extends User {
     private ArrayList<String> workingTime = new ArrayList<>();
     private Deque<TimeInterval> dayTime = new LinkedList<>();
 
-    private static class TimeInterval{
+    public class TimeInterval{
         public int start;
         public int end;
         public TimeInterval(int s, int e){
@@ -38,6 +38,8 @@ public class Employee extends User {
 
             String startT = "";
             String endT = "";
+            int endCopy = end;
+            int startCopy = start;
 //            if(start/100<10){
 //                startT += "0";
 //                if(start/100 == 0){
@@ -53,10 +55,10 @@ public class Employee extends User {
 //            startT += String.valueOf(start);T
 //            endT += String.valueOf(end);
             for(int i=3;i>=0;i--){
-                endT += String.valueOf(0 + (int)(end/Math.pow(10,i)));
-                end = end % (int)Math.pow(10,i);
-                startT += String.valueOf(0 + (int)(start/Math.pow(10,i)));
-                start = start % (int)Math.pow(10,i);
+                endT += String.valueOf(0 + (int)(endCopy/Math.pow(10,i)));
+                endCopy = endCopy % (int)Math.pow(10,i);
+                startT += String.valueOf(0 + (int)(startCopy/Math.pow(10,i)));
+                startCopy = startCopy % (int)Math.pow(10,i);
             }
             //Log.d("ww",startT+endT);
 
