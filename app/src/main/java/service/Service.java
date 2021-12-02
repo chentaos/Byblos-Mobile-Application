@@ -16,39 +16,39 @@ public class Service {
     private DatabaseReference myRef;
     private double hourlyRate=0;
     private String name;
-    private boolean customerName,DOB,address,email,licensetype,preferredCar,DnT,maxKl,area,moving,mover,box;
+    private boolean customerName, dob,address,email,licensetype,preferredCar, dnT,maxKl,area,moving,mover,box;
 
     public Service(){}
 
-//    public Service(String name,double rate, boolean customerName, boolean DOB, boolean address, boolean email,
-//                   boolean licensetype, boolean preferredCar, boolean DnT,
-//                   boolean maxKl, boolean area, boolean moving, boolean mover, boolean box){
-//        myRef = FirebaseDatabase.getInstance().getReference().child("Services");
-//        this.customerName=customerName;
-//        this.DOB=DOB;
-//        this.address=address;
-//        this.email=email;
-//        this.licensetype=licensetype;
-//        this.preferredCar=preferredCar;
-//        this.DnT=DnT;
-//        this.maxKl=maxKl;
-//        this.area=area;
-//        this.moving=moving;
-//        this.mover=mover;
-//        this.box=box;
-//        this.name = name;
-//        this.hourlyRate=rate;
-//     }
+    public Service(String name, double rate, boolean customerName, boolean dob, boolean address, boolean email,
+                   boolean licensetype, boolean preferredCar, boolean DnT,
+                   boolean maxKl, boolean area, boolean moving, boolean mover, boolean box){
+        myRef = FirebaseDatabase.getInstance().getReference().child("Services");
+        this.customerName=customerName;
+        this.dob = dob;
+        this.address=address;
+        this.email=email;
+        this.licensetype=licensetype;
+        this.preferredCar=preferredCar;
+        this.dnT = DnT;
+        this.maxKl=maxKl;
+        this.area=area;
+        this.moving=moving;
+        this.mover=mover;
+        this.box=box;
+        this.name = name;
+        this.hourlyRate=rate;
+     }
 
     public Service(String name,double rate, boolean[] req){
         myRef = FirebaseDatabase.getInstance().getReference().child("Services");
         this.customerName=req[0];
-        this.DOB=req[1];
+        this.dob =req[1];
         this.address=req[2];
         this.email=req[3];
         this.licensetype=req[4];
         this.preferredCar=req[5];
-        this.DnT=req[6];
+        this.dnT =req[6];
         this.maxKl=req[7];
         this.area=req[8];
         this.moving=req[9];
@@ -98,12 +98,12 @@ public class Service {
         return name;
     }
     public boolean getCustomerName(){return  customerName;}
-    public boolean getDOB(){return   DOB;}
+    public boolean getDob(){return dob;}
     public boolean getAddress(){return  address;}
     public boolean getEmail(){return  email;}
     public boolean getLicensetype(){return  licensetype;}
     public boolean getPreferredCar(){return  preferredCar;}
-    public boolean getDnT(){return  DnT;}
+    public boolean getDnT(){return dnT;}
     public boolean getMaxKl(){return  maxKl;}
     public boolean getArea(){return  area;}
     public boolean getMoving(){return  moving;}
@@ -121,12 +121,12 @@ public class Service {
                 ", name='" + name + '\'' +
                 ", myRef=" + myRef +
                 ", customerName=" + customerName +
-                ", DOB=" + DOB +
+                ", dob=" + dob +
                 ", address=" + address +
                 ", email=" + email +
                 ", licensetype=" + licensetype +
                 ", preferredCar=" + preferredCar +
-                ", DnT=" + DnT +
+                ", dnT=" + dnT +
                 ", maxKl=" + maxKl +
                 ", area=" + area +
                 ", moving=" + moving +
