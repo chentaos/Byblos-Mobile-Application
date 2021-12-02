@@ -47,6 +47,10 @@
         <entry key="..\:/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_register_page.xml" value="0.25" />
         <entry key="..\:/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_user_main_menu.xml" value="0.23097826086956522" />
         <entry key="app/src/main/res/layout/activity_admin_dashboard.xml" value="0.17572463768115942" />
+        <entry key="app/src/main/res/layout/activity_branch_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_branch_search_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_byblos_branch_search.xml" value="0.1766304347826087" />
+        <entry key="app/src/main/res/layout/activity_required_info_dialog.xml" value="0.1766304347826087" />
         <entry key="app/src/main/res/layout/actvity_admin_service_dashboard.xml" value="0.17572463768115942" />
       </map>
     </option>
