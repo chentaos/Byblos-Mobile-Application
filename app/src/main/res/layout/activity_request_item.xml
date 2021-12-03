@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/txtServiceName"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".ServiceItem">
@@ -12,14 +13,17 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textColor="#000000" />
 
     <TextView
-        android:id="@+id/ServiceName"
+        android:id="@+id/txtService"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textColor="#000000" />
+
 
 </LinearLayout>

@@ -6,21 +6,25 @@ import android.widget.Spinner;
 import com.example.deliverable1.R;
 
 public class ServiceForm {
-    String firstName;
-    String lastName;
-    String dateOfBirth;
-    String address;
-    String email;
-    String license;
-    String car;
-    String pickUpDate;
-    String returnDate;
-    int nbKm;
-    String truckArea;
-    String startLocation;
-    String endLocation;
-    int nbBox;
-    boolean isAccepted;
+    String firstName = "";
+    String lastName = "";
+    String dateOfBirth = "";
+    String address = "";
+    String email = "";
+    String license = "";
+    String car = "";
+    String pickUpDate = "";
+    String returnDate = "";
+    int nbKm = 0;
+    String truckArea = "";
+    String startLocation = "";
+    String endLocation = "";
+    int nbBox = 0;
+    boolean isAccepted = false;
+
+    public ServiceForm(){
+
+    }
 
     public ServiceForm(String firstName, String lastName, String dateOfBirth, String address,
                        String email, String license, String car, String pickUpDate,

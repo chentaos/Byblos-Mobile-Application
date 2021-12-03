@@ -8,19 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import branch.Branch;
-import service.Service;
 
 public class BranchItem extends ArrayAdapter<Branch> {
     private Activity context;
@@ -57,7 +50,7 @@ public class BranchItem extends ArrayAdapter<Branch> {
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.activity_branch_item, null, true);
 
-        TextView textViewName = (TextView) listViewItem.findViewById(R.id.BranchName);
+        TextView textViewName = (TextView) listViewItem.findViewById(R.id.txtCustomerName);
         TextView textViewService = (TextView) listViewItem.findViewById(R.id.ServiceName);
 
 

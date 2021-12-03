@@ -1,7 +1,6 @@
 package com.example.deliverable1;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 import branch.Branch;
-import service.Service;
 
 public class BranchSearchItem extends ArrayAdapter<Branch> {
     private Activity context;
@@ -38,7 +36,7 @@ public class BranchSearchItem extends ArrayAdapter<Branch> {
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.activity_branch_search_item, null, true);
 
-        TextView textViewName = (TextView) listViewItem.findViewById(R.id.BranchName);
+        TextView textViewName = (TextView) listViewItem.findViewById(R.id.txtCustomerName);
         TextView textViewEmployeeName= (TextView) listViewItem.findViewById(R.id.EmployeeName);
         TextView textViewPrice = (TextView) listViewItem.findViewById(R.id.Price);
 

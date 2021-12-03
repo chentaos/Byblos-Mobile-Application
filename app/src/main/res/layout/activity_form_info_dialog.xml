@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:fillViewport="true"
+    android:orientation="vertical">
+
+
+    <!-- everything you already have -->
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="First name"
+                    android:textColor="#D81B60"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/editFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:textSize="20sp"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <TextView
+                    android:id="@+id/txtLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Last name"
+                    android:textColor="#D81B60"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/editLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:textSize="20sp"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <TextView
+                    android:id="@+id/txtDOB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date of birth"
+                    android:textColor="#D81B60"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/editDateOfBirth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Address"
+                    android:textColor="#D81B60"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/editAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="#D81B60"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/editEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textEmailAddress"
+                    android:textSize="20sp"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <TextView
+                    android:id="@+id/txtLicenseType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="License type"
+                    android:textColor="#D81B60"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtLicense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtCarType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Car type"
+                    android:textColor="#D81B60"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtCar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtPoD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pick up date and time"
+                    android:textColor="#D81B60"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtPickUpDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtRPOD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Return date and time"
+                    android:textColor="#D81B60"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtReturnDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtMaxKm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Maximum number of km"
+                    android:textColor="#D81B60"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/editNbKm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtTruckArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Area where the truck will be used"
+                    android:textColor="#D81B60"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/editTruckArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtMovingStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Moving start location"
+                    android:textColor="#D81B60"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/editStartLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtMovingEnd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Moving end location"
+                    android:textColor="#D81B60"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/editEndLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtNbBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Expected number of box"
+                    android:textColor="#D81B60"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/editNbBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="20sp" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/acceptBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="Accept" />
+
+                <Button
+                    android:id="@+id/rejectBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="Reject" />
+
+                <Button
+                    android:id="@+id/cancelBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="cancel" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+</ScrollView>

@@ -42,8 +42,8 @@
             android:id="@+id/setting"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginBottom="80dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="40dp"
             android:text="setting"
             android:onClick="openSettingOnClick"/>
 
@@ -51,6 +51,15 @@
             android:id="@+id/requireList"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:text="require List" />
+            android:layout_marginBottom="40dp"
+            android:onClick="pendingServiceOnClick"
+            android:text="Request list" />
+
+        <Button
+            android:id="@+id/requireList3"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:onClick="pendingServiceOnClick"
+            android:text="Offered services" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

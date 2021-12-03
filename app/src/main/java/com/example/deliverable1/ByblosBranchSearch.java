@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -68,7 +67,7 @@ public class ByblosBranchSearch extends AppCompatActivity {
 
     EditText editAddressForm;
     EditText editEmail;
-    Spinner spinLicenses;
+    Spinner  spinLicenses;
 
     Spinner spinCars;
     Spinner spinPickUpDate;

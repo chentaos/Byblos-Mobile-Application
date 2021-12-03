@@ -5,6 +5,13 @@ public class ServiceRequest {
     boolean isPending;
     boolean isAccepted;
     String customerName;
+    String key;
+    String parentId;
+    String service;
+
+    public ServiceRequest(){
+
+    }
 
     public ServiceRequest(ServiceForm serviceForm, boolean isPending, boolean isAccepted, String customerName) {
         this.serviceForm = serviceForm;
@@ -43,6 +50,30 @@ public class ServiceRequest {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getService() {
+        return service;
+    }
+
+    public void setService(String service) {
+        this.service = service;
     }
 
     @Override

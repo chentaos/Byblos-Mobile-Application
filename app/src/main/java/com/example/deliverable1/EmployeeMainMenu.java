@@ -15,12 +15,12 @@ import com.google.firebase.database.ValueEventListener;
 import account.Employee;
 
 public class EmployeeMainMenu extends AppCompatActivity {
-
+    String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.avtivty_employee_main_menu);
-        String userName = getIntent().getStringExtra("userName");
+        userName = getIntent().getStringExtra("userName");
         Employee em = new Employee(userName,"");
         TextView eT = findViewById(R.id.welcomeText);
 
@@ -49,5 +49,10 @@ public class EmployeeMainMenu extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void pendingServiceOnClick(View view){
+        Intent intent = new Intent(EmployeeMainMenu.this, EmployeeServiceRequest.class);
+        intent.putExtra("userName", userName);
+        startActivity(intent);
+    }
 
 }

@@ -38,10 +38,13 @@
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_branch_search_item.xml" value="0.47056159420289856" />
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_branch_work_time.xml" value="0.3734375" />
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_byblos_branch_search.xml" value="0.3734375" />
+        <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_employee_request.xml" value="0.3296875" />
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_employee_services.xml" value="0.3734375" />
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_employee_setting.xml" value="0.3392210144927536" />
+        <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_form_info_dialog.xml" value="0.4492635024549918" />
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_main.xml" value="0.18229166666666666" />
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_register_page.xml" value="0.18229166666666666" />
+        <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_request_item.xml" value="0.3296875" />
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_required_info_dialog.xml" value="0.24427083333333333" />
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_service_item.xml" value="0.14166666666666666" />
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_service_manage.xml" value="0.20364583333333333" />
@@ -51,6 +54,7 @@
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/activity_user_main_menu.xml" value="0.18229166666666666" />
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/actvity_admin_service_dashboard.xml" value="0.2115085536547434" />
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/avtivity_employee_profile_dialog.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/avtivty_employee_main_menu.xml" value="0.3296875" />
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/layout_service_list.xml" value="0.20364583333333333" />
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/layout_time_interval_item.xml" value="0.3734375" />
         <entry key="..\:/Users/kamar/AndroidStudioProjects/seg2105f21-project-project_gr13/app/src/main/res/layout/services_employee_info.xml" value="0.3392210144927536" />
