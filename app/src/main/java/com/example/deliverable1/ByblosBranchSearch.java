@@ -273,7 +273,7 @@ public class ByblosBranchSearch extends AppCompatActivity {
         String firstName = editFirstName.getText().toString();
         String lastName = editLastName.getText().toString();
         String dateOfBirth = editDateOfBirth.getText().toString();
-        String address = editAddress.getText().toString();
+        String address = editAddressForm.getText().toString();
         String email = editEmail.getText().toString();
 
         if (s.getCustomerName() && firstName.isEmpty() || lastName.isEmpty()){
