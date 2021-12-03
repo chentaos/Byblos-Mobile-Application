@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,18 +62,17 @@ public class ByblosBranchSearch extends AppCompatActivity {
 
     String userName = "";
 
+
+    // View elements
     EditText editFirstName;
     EditText editLastName;
     EditText editDateOfBirth;
-
     EditText editAddressForm;
     EditText editEmail;
     Spinner  spinLicenses;
-
     Spinner spinCars;
     Spinner spinPickUpDate;
     Spinner spinReturnDate;
-
     EditText editNbKm;
     EditText editTruckArea;
     EditText editStartLocation;
@@ -108,6 +108,22 @@ public class ByblosBranchSearch extends AppCompatActivity {
         editEndTime.setEnabled(false);
         editEndTime.setTextColor(Color.BLACK);
 
+        spinDays.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 7){
+                    editStartTime.setText("");
+                    editEndTime.setText("");
+                    startTime = 0;
+                    endTime = 0;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         dbServices.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -172,8 +188,6 @@ public class ByblosBranchSearch extends AppCompatActivity {
     }
 
     private void showUpdateDeleteDialog(final String serviceId, final String employeeId, final String branchId){
-        Toast.makeText(getApplicationContext(), "If you select an existing request it will be erased ", Toast.LENGTH_SHORT).show();
-
         androidx.appcompat.app.AlertDialog.Builder dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.activity_required_info_dialog, null);
@@ -184,7 +198,8 @@ public class ByblosBranchSearch extends AppCompatActivity {
 
         Service s = servicesList.get(serviceIndex);
         handleTextView(dialogView, s);
-        setFormEdit(dialogView, s);
+        setEditText(dialogView);
+        setFormEdit( s);
 
         setSpinners(s);
 
@@ -203,8 +218,27 @@ public class ByblosBranchSearch extends AppCompatActivity {
         buttonCancel.setOnClickListener(view -> b.dismiss());
 
         btnProfileSubmitBtn.setOnClickListener(view -> {
-            submitForm(branchId);
-            b.dismiss();
+            dbBranch.child(branchId).child("requests")
+                    .child("submittedForms").orderByChild("customerName")
+                    .equalTo(userName).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.getValue() == null){
+                        if (submitForm(branchId, s))
+                            b.dismiss();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "You already have a request for this service ", Toast.LENGTH_SHORT).show();
+                        b.dismiss();
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
         });
 
     }
@@ -228,7 +262,7 @@ public class ByblosBranchSearch extends AppCompatActivity {
         }
     }
 
-    private void submitForm(String branchId) {
+    private boolean submitForm(String branchId, Service s) {
         int nbKm = 0;
         int nbBox = 0;
         String license = "";
@@ -241,6 +275,28 @@ public class ByblosBranchSearch extends AppCompatActivity {
         String dateOfBirth = editDateOfBirth.getText().toString();
         String address = editAddress.getText().toString();
         String email = editEmail.getText().toString();
+
+        if (s.getCustomerName() && firstName.isEmpty() || lastName.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Field first and last name can't be empty ", Toast.LENGTH_SHORT).show();
+            return  false;
+        }
+
+        if (s.getAddress() && address.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Field address can't be empty ", Toast.LENGTH_SHORT).show();
+            return  false;
+        }
+
+        if (s.getDob() && (dateOfBirth.isEmpty() || !dateOfBirth.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})"))){
+            Toast.makeText(getApplicationContext(), "Field date of birth can't be empty and need " +
+                    "to respect date format MM/MM/YYYY", Toast.LENGTH_SHORT).show();
+            return  false;
+        }
+
+        if (s.getEmail() && (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())){
+            Toast.makeText(getApplicationContext(), "Field email can't be empty and need " +
+                    "to respect email format", Toast.LENGTH_SHORT).show();
+            return  false;
+        }
 
         if (spinLicenses.getSelectedItem() != null)
             license = spinLicenses.getSelectedItem().toString();
@@ -261,10 +317,32 @@ public class ByblosBranchSearch extends AppCompatActivity {
             nbBox = Integer.parseInt(editNbBox.getText().toString());
         }
 
-        String truckArea = editTruckArea.getText().toString();
+        if (s.getBox() && nbBox <= 0){
+            Toast.makeText(getApplicationContext(), "Field number of box can't be empty " +
+                    "and need a value superior to 0", Toast.LENGTH_SHORT).show();
+            return  false;
+        }
 
+        if (s.getMaxKl() && nbBox <= 0){
+            Toast.makeText(getApplicationContext(), "Field max number of km can't be empty " +
+                    "and need a value superior to 0", Toast.LENGTH_SHORT).show();
+            return  false;
+        }
+
+
+        String truckArea = editTruckArea.getText().toString();
+        if (s.getArea() && truckArea.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Field truck area can't be empty ", Toast.LENGTH_SHORT).show();
+            return  false;
+        }
         String startLocation = editStartLocation.getText().toString();
         String endLocation = editEndLocation.getText().toString();
+
+        if (s.getMoving() && (startLocation.isEmpty() || endLocation.isEmpty())) {
+            Toast.makeText(getApplicationContext(), "Field start and end Location " +
+                    "can't be empty ", Toast.LENGTH_SHORT).show();
+            return  false;
+        }
 
         ServiceForm serviceForm = new ServiceForm(firstName, lastName, dateOfBirth,
                 address,email, license, car, pickUpDate,
@@ -275,6 +353,8 @@ public class ByblosBranchSearch extends AppCompatActivity {
         ServiceRequest serviceRequest = new ServiceRequest(serviceForm, true, false, userName);
 
         dbBranch.child(branchId).child("requests").child("submittedForms").child(key).setValue(serviceRequest);
+
+        return true;
     }
 
     private void defineDates(Employee e) {
@@ -312,25 +392,7 @@ public class ByblosBranchSearch extends AppCompatActivity {
         spinReturnDate.setSelection(0);
     }
 
-    private void setFormEdit(View dialogView, Service s) {
-        editFirstName = dialogView.findViewById(R.id.editFirstName);
-        editLastName = dialogView.findViewById(R.id.editLastName);
-        editDateOfBirth = dialogView.findViewById(R.id.editDateOfBirth);
-
-        editAddressForm = dialogView.findViewById(R.id.editAddress);
-        editEmail = dialogView.findViewById(R.id.editEmail);
-        spinLicenses = dialogView.findViewById(R.id.spinLicenses);
-
-        spinCars = dialogView.findViewById(R.id.spinCars);
-        spinPickUpDate = dialogView.findViewById(R.id.spinPickUpDate);
-        spinReturnDate = dialogView.findViewById(R.id.spinReturnDate);
-
-        editNbKm = dialogView.findViewById(R.id.editNbKm);
-        editTruckArea = dialogView.findViewById(R.id.editTruckArea);
-        editStartLocation = dialogView.findViewById(R.id.editStartLocation);
-        editEndLocation = dialogView.findViewById(R.id.editEndLocation);
-        editNbBox = dialogView.findViewById(R.id.editNbBox);
-
+    private void setFormEdit(Service s) {
         editFirstName.setVisibility(s.getCustomerName()?View.VISIBLE:View.GONE);
         editLastName.setVisibility(s.getCustomerName()?View.VISIBLE:View.GONE);
         editDateOfBirth.setVisibility(s.getDob()?View.VISIBLE:View.GONE);
@@ -347,39 +409,38 @@ public class ByblosBranchSearch extends AppCompatActivity {
         editNbBox.setVisibility(s.getBox()?View.VISIBLE:View.GONE);
     }
 
+    private void setEditText(View dialogView) {
+        editFirstName = dialogView.findViewById(R.id.editFirstName);
+        editLastName = dialogView.findViewById(R.id.editLastName);
+        editDateOfBirth = dialogView.findViewById(R.id.editDateOfBirth);
+        editAddressForm = dialogView.findViewById(R.id.editAddress);
+        editEmail = dialogView.findViewById(R.id.editEmail);
+        spinLicenses = dialogView.findViewById(R.id.spinLicenses);
+        spinCars = dialogView.findViewById(R.id.spinCars);
+        spinPickUpDate = dialogView.findViewById(R.id.spinPickUpDate);
+        spinReturnDate = dialogView.findViewById(R.id.spinReturnDate);
+        editNbKm = dialogView.findViewById(R.id.editNbKm);
+        editTruckArea = dialogView.findViewById(R.id.editTruckArea);
+        editStartLocation = dialogView.findViewById(R.id.editStartLocation);
+        editEndLocation = dialogView.findViewById(R.id.editEndLocation);
+        editNbBox = dialogView.findViewById(R.id.editNbBox);
+    }
+
     private void handleTextView(final View dialogView, Service s){
-        final TextView txtFirstName = dialogView.findViewById(R.id.txtFirstName);
-        final TextView txtLastName = dialogView.findViewById(R.id.txtLastName);
-        final TextView txtDOB = dialogView.findViewById(R.id.txtDOB);
-
-        final TextView txtAddress = dialogView.findViewById(R.id.txtAddress);
-        final TextView txtEmail = dialogView.findViewById(R.id.txtEmail);
-        final TextView txtLicenseType = dialogView.findViewById(R.id.txtLicenseType);
-
-        final TextView txtCarType = dialogView.findViewById(R.id.txtCarType);
-        final TextView txtPoD = dialogView.findViewById(R.id.txtPoD);
-        final TextView txtRPOD = dialogView.findViewById(R.id.txtRPOD);
-
-        final TextView txtMaxKm = dialogView.findViewById(R.id.txtMaxKm);
-        final TextView txtTruckArea = dialogView.findViewById(R.id.txtTruckArea);
-        final TextView txtMovingStart = dialogView.findViewById(R.id.txtMovingStart);
-        final TextView txtMovingEnd = dialogView.findViewById(R.id.txtMovingEnd);
-        final TextView txtNbBox = dialogView.findViewById(R.id.txtNbBox);
-
-        txtFirstName.setVisibility(s.getCustomerName()?View.VISIBLE:View.GONE);
-        txtLastName.setVisibility(s.getCustomerName()?View.VISIBLE:View.GONE);
-        txtDOB.setVisibility(s.getDob()?View.VISIBLE:View.GONE);
-        txtAddress.setVisibility(s.getAddress()?View.VISIBLE:View.GONE);
-        txtEmail.setVisibility(s.getEmail()?View.VISIBLE:View.GONE);
-        txtLicenseType.setVisibility(s.getLicensetype()?View.VISIBLE:View.GONE);
-        txtCarType.setVisibility(s.getPreferredCar()?View.VISIBLE:View.GONE);
-        txtPoD.setVisibility(s.getDnT()?View.VISIBLE:View.GONE);
-        txtRPOD.setVisibility(s.getDnT()?View.VISIBLE:View.GONE);
-        txtMaxKm.setVisibility(s.getMaxKl()?View.VISIBLE:View.GONE);
-        txtTruckArea.setVisibility(s.getArea()?View.VISIBLE:View.GONE);
-        txtMovingStart.setVisibility(s.getMoving()?View.VISIBLE:View.GONE);
-        txtMovingEnd.setVisibility(s.getMoving()?View.VISIBLE:View.GONE);
-        txtNbBox.setVisibility(s.getBox()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtFirstName).setVisibility(s.getCustomerName()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtLastName).setVisibility(s.getCustomerName()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtDOB).setVisibility(s.getDob()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtAddress).setVisibility(s.getAddress()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtEmail).setVisibility(s.getEmail()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtLicenseType).setVisibility(s.getLicensetype()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtCarType).setVisibility(s.getPreferredCar()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtPoD).setVisibility(s.getDnT()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtMaxKm).setVisibility(s.getDnT()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtMaxKm).setVisibility(s.getMaxKl()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtTruckArea).setVisibility(s.getArea()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtMovingEnd).setVisibility(s.getMoving()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtMovingEnd).setVisibility(s.getMoving()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtNbBox).setVisibility(s.getBox()?View.VISIBLE:View.GONE);
     }
 
     public void setSpinnerService(){
@@ -453,22 +514,30 @@ public class ByblosBranchSearch extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Branches.clear();
 
-                String dayNb = String.valueOf(spinDays.getSelectedItemPosition());
-
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    Branch b= postSnapshot.getValue(Branch.class);
+                    Branch b = postSnapshot.getValue(Branch.class);
+
                     int employeeIndex = EmployeesUsername.indexOf(b.getEmployee());
 
                     Employee e = Employees.get(employeeIndex);
-                    int dayPos = spinDays.getSelectedItemPosition();
-                    LinkedList<Employee.TimeInterval> dayTimeIntervals = e.getDayTimeIntervals(dayPos + 1);
 
-                    for (Employee.TimeInterval timeInterval: dayTimeIntervals) {
-                        if (startTime >= timeInterval.start   && endTime <= timeInterval.end){
-                            Branches.add(b);
+                    if (e.getAddress() == null || e.getAddress().contains(editAddress.getText())){
+                        int dayPos = spinDays.getSelectedItemPosition();
+
+                        LinkedList<Employee.TimeInterval> dayTimeIntervals = e.getDayTimeIntervals(dayPos + 1);
+
+                        if (dayTimeIntervals != null){
+                            for (Employee.TimeInterval timeInterval: dayTimeIntervals) {
+                                if ((startTime >= timeInterval.start   && endTime <= timeInterval.end)
+                                        || (startTime == -1 && endTime == -1)){
+                                    if (!Branches.contains(b))
+                                        Branches.add(b);
+                                }
+                            }
+                            dayTimeIntervals.clear();
                         }
                     }
-                    dayTimeIntervals.clear();
+
                     BranchSearchItem p = new BranchSearchItem(ByblosBranchSearch.this, Branches, services);
                     branchesList.setAdapter(p);
                 }
@@ -487,8 +556,8 @@ public class ByblosBranchSearch extends AppCompatActivity {
         spinDays.setSelection(0);
         spinServices.setSelection(0);
         editAddress.setText("");
-        startTime = 0;
-        endTime = 0;
+        startTime = -1;
+        endTime = -1;
         loadBranches();
     }
 
