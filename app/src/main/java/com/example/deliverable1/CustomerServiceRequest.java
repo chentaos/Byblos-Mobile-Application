@@ -53,6 +53,7 @@ public class CustomerServiceRequest extends AppCompatActivity {
     DatabaseReference dbServices = FirebaseDatabase.getInstance().getReference().child("Services");
     TextView txtInfoService;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +74,11 @@ public class CustomerServiceRequest extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 ServiceRequest sR = serviceRequest.get(position);
                 Service s = servicesList.get(services.indexOf(sR.getService()));
-                showUpdateDeleteDialog(s, userName, sR.getParentId(), sR);
+
+                if(sR.isPending())
+                    showUpdateDeleteDialog(s, userName, sR.getParentId(), sR);
+                else
+                    showRateDialog(s, userName, sR.getParentId(), sR);
                 return false;
             }
         });
@@ -179,6 +184,52 @@ public class CustomerServiceRequest extends AppCompatActivity {
             b.dismiss();
 //            refrechListView();
         });
+    }
+
+    private void showRateDialog(final Service s, final String employeeId, final String branchId, ServiceRequest sR){
+        androidx.appcompat.app.AlertDialog.Builder dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.activity_rate_form_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+
+//        setFormEdit(dialogView, s);
+//        handleTextView(dialogView, s);
+//        setText(sR.getServiceForm());
+//
+        final Button cancelButton = dialogView.findViewById(R.id.button_rate_cancel);
+        final Button rate1 = dialogView.findViewById(R.id.button_rate_1);
+        final Button rate2 = dialogView.findViewById(R.id.button_rate_2);
+        final Button rate3 = dialogView.findViewById(R.id.button_rate_3);
+        final Button rate4 = dialogView.findViewById(R.id.button_rate_4);
+        final Button rate5 = dialogView.findViewById(R.id.button_rate_5);
+        final Button sm = dialogView.findViewById(R.id.button_rate_submit);
+
+        TextView t =dialogView.findViewById(R.id.rated);
+        t.setText("default rate: 3");
+
+        final androidx.appcompat.app.AlertDialog b = dialogBuilder.create();
+        b.show();
+
+        cancelButton.setOnClickListener(view -> b.dismiss());
+        rate1.setOnClickListener(view -> {t.setText("You rated: 1");});
+        rate2.setOnClickListener(view -> {t.setText("You rated: 2");});
+        rate3.setOnClickListener(view -> {t.setText("You rated: 3");});
+        rate4.setOnClickListener(view -> {t.setText("You rated: 4");});
+        rate5.setOnClickListener(view -> {t.setText("You rated: 5");});
+        sm.setOnClickListener(view -> b.dismiss());
+//
+//        buttonCancel.setOnClickListener(view -> b.dismiss());
+//
+//        btnDelete.setOnClickListener(view -> {
+////            String key = sR.getKey();
+////            String parentId = sR.getParentId();
+//
+//            dbBranch.child(sR.getParentId()).child("requests")
+//                    .child("submittedForms").child(sR.getKey()).removeValue();
+//            b.dismiss();
+////            refrechListView();
+//        });
     }
 
     private void setFormEdit(View dialogView, Service s) {
