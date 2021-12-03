@@ -89,7 +89,8 @@ public class ServiceManage extends AppCompatActivity {
         });
 
         buttonDelete.setOnClickListener(v -> {
-            if (services.size() > 3) {
+
+            if (deletable(productId)) {
                 deleteService(productId);
                 store();
             } else {
@@ -98,6 +99,20 @@ public class ServiceManage extends AppCompatActivity {
             b.dismiss();
         });
     }
+
+    private boolean deletable(String id){
+    if(id.contentEquals("Car Rental"))
+        return false;
+
+    if(id.contentEquals("Truck Rental"))
+            return false;
+
+    if(id.contentEquals("Moving Assistant"))
+            return false;
+
+        return true;
+    }
+
 
     private void updateService(String id, double rate) {
         DatabaseReference dr = database1.child(id);
@@ -125,7 +140,7 @@ public class ServiceManage extends AppCompatActivity {
     }
 
     private void showNbRequiredServices(){
-        Toast.makeText(this,"Need to always have 3 services",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Need to always have 3 default services",Toast.LENGTH_SHORT).show();
     }
 
     private void store(){
