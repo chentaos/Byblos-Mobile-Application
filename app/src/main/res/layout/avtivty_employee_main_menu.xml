@@ -59,7 +59,7 @@
             android:id="@+id/requireList3"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:onClick="pendingServiceOnClick"
+            android:onClick="offeredServiceOnClick"
             android:text="Offered services" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

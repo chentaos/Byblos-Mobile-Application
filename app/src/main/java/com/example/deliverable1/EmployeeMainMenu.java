@@ -55,4 +55,9 @@ public class EmployeeMainMenu extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void offeredServiceOnClick(View view){
+        Intent intent = new Intent(EmployeeMainMenu.this, EmployeeServiceOffered.class);
+        intent.putExtra("userName", userName);
+        startActivity(intent);
+    }
 }
