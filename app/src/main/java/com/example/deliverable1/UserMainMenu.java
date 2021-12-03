@@ -29,4 +29,10 @@ public class UserMainMenu extends AppCompatActivity {
         intent.putExtra("userName", userName);
         startActivity(intent);
     }
+
+    public void requestedServiceOnClick(View view){
+        Intent intent = new Intent(UserMainMenu.this, CustomerServiceRequest.class);
+        intent.putExtra("userName", userName);
+        startActivity(intent);
+    }
 }

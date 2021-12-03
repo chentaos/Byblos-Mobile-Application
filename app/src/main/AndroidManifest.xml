@@ -67,6 +67,10 @@
         <activity
         android:name=".EmployeeServiceOffered"
         android:exported="true" />
+
+        <activity
+            android:name=".CustomerServiceRequest"
+            android:exported="true" />
     </application>
 
 </manifest>
