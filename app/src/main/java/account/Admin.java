@@ -192,29 +192,12 @@ public class Admin extends User {
             }
 
             if (user instanceof Customer) {
-                mdbBranch.child("requests")
-                        .child("submittedForms").orderByChild("customerName")
-                        .equalTo(user.getUserName()).addListenerForSingleValueEvent(new ValueEventListener() {
+                mdbBranch.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                             Branch b = postSnapshot.getValue(Branch.class);
-
-                            mdbBranch.child(b.getName()).child("requests")
-                                    .child("submittedForms").orderByChild("customerName")
-                                    .equalTo(user.getUserName()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                        mdbBranch.child(b.getName()).child("requests")
-                                                .child("submittedForms").child(postSnapshot.getKey()).removeValue();
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-                                }
-                            });
+                            b.removeCustomer(user.getUserName());
                         }
                     }
 

@@ -21,18 +21,19 @@ public class Branch {
     private String name;
     public List<ServiceForm> serviceForms;
 
-    public Branch(){}
+    public Branch() {
+    }
 
-    public Branch(String employee, String service, String name){
-        myRef = FirebaseDatabase.getInstance().getReference().child("Branch");
+    public Branch(String employee, String service, String name) {
+        myRef = FirebaseDatabase.getInstance().getReference().child("Branch").child(name);
         this.employee = employee;
         this.service = service;
         this.name = name;
     }
 
     //public Branch(String employee, String service, String name, Date startHour, Date endHour){
-    public Branch(String employee, String service, String name, Date startHour, Date endHour){
-        myRef = FirebaseDatabase.getInstance().getReference().child("Branch");
+    public Branch(String employee, String service, String name, Date startHour, Date endHour) {
+        myRef = FirebaseDatabase.getInstance().getReference().child("Branch").child(name);
         this.employee = employee;
         this.service = service;
         this.name = name;
@@ -57,6 +58,29 @@ public class Branch {
         });
         return addedElement;
     }
+
+    public void removeCustomer(String username) {
+        if (myRef == null)
+            myRef = FirebaseDatabase.getInstance().getReference().child("Branch").child(name);
+
+        myRef.child("requests")
+                .child("submittedForms").orderByChild("customerName")
+                .equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    postSnapshot.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+
+
 
     public String getName() {
         return name;
