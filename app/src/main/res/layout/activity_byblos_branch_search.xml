@@ -34,7 +34,7 @@
                 android:id="@+id/inputAddress"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="textPostalAddress"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
         </LinearLayout>
 

@@ -435,10 +435,10 @@ public class ByblosBranchSearch extends AppCompatActivity {
         dialogView.findViewById(R.id.txtLicenseType).setVisibility(s.getLicensetype()?View.VISIBLE:View.GONE);
         dialogView.findViewById(R.id.txtCarType).setVisibility(s.getPreferredCar()?View.VISIBLE:View.GONE);
         dialogView.findViewById(R.id.txtPoD).setVisibility(s.getDnT()?View.VISIBLE:View.GONE);
-        dialogView.findViewById(R.id.txtMaxKm).setVisibility(s.getDnT()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtRPOD).setVisibility(s.getDnT()?View.VISIBLE:View.GONE);
         dialogView.findViewById(R.id.txtMaxKm).setVisibility(s.getMaxKl()?View.VISIBLE:View.GONE);
         dialogView.findViewById(R.id.txtTruckArea).setVisibility(s.getArea()?View.VISIBLE:View.GONE);
-        dialogView.findViewById(R.id.txtMovingEnd).setVisibility(s.getMoving()?View.VISIBLE:View.GONE);
+        dialogView.findViewById(R.id.txtMovingStart).setVisibility(s.getMoving()?View.VISIBLE:View.GONE);
         dialogView.findViewById(R.id.txtMovingEnd).setVisibility(s.getMoving()?View.VISIBLE:View.GONE);
         dialogView.findViewById(R.id.txtNbBox).setVisibility(s.getBox()?View.VISIBLE:View.GONE);
     }
@@ -521,7 +521,7 @@ public class ByblosBranchSearch extends AppCompatActivity {
 
                     Employee e = Employees.get(employeeIndex);
 
-                    if (e.getAddress() == null || e.getAddress().contains(editAddress.getText())){
+                    if (e.getAddress() != null && e.getAddress().contains(editAddress.getText())){
                         int dayPos = spinDays.getSelectedItemPosition();
 
                         LinkedList<Employee.TimeInterval> dayTimeIntervals = e.getDayTimeIntervals(dayPos + 1);
