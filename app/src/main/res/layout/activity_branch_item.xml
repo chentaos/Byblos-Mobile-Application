@@ -6,13 +6,6 @@
     android:layout_height="wrap_content"
     tools:context=".ServiceItem">
 
-    <TextView
-        android:id="@+id/txtCustomerName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="TextView" />
 
     <TextView
         android:id="@+id/ServiceName"
@@ -21,5 +14,22 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="TextView" />
+
+    <TextView
+        android:id="@+id/txtHourlyRate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/txtCurrentRate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="TextView"
+        android:gravity="center"
+        android:visibility="gone" />
 
 </LinearLayout>

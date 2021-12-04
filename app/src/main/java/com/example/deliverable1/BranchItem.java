@@ -14,18 +14,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
 
 import branch.Branch;
+import service.Service;
 
 public class BranchItem extends ArrayAdapter<Branch> {
     private Activity context;
     List<Branch> branches;
     DatabaseReference database1 = FirebaseDatabase.getInstance().getReference().child("Services");
     List<String> services;
+    List<Service> servicesList;
 
-    public BranchItem(Activity context, List<Branch> branches, List<String> services) {
+    public BranchItem(Activity context, List<Branch> branches, List<String> services, List<Service> servicesList) {
         super(context, R.layout.activity_branch_item, branches);
         this.context = context;
         this.branches = branches;
         this.services = services;
+        this.servicesList = servicesList;
 
 //        database1.addListenerForSingleValueEvent(new ValueEventListener() {
 //            @Override
@@ -50,11 +53,13 @@ public class BranchItem extends ArrayAdapter<Branch> {
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.activity_branch_item, null, true);
 
-        TextView textViewName = (TextView) listViewItem.findViewById(R.id.txtCustomerName);
+        TextView txtHourlyRate = (TextView) listViewItem.findViewById(R.id.txtHourlyRate);
         TextView textViewService = (TextView) listViewItem.findViewById(R.id.ServiceName);
-
+        TextView txtCurrentRate = listViewItem.findViewById(R.id.txtCurrentRate);
+        txtCurrentRate.setVisibility(View.VISIBLE);
 
         Branch branch = branches.get(position);
+        Service s = servicesList.get(services.indexOf(branch.getService()));
 
         if (!services.contains(branch.getService())){
             textViewService.setTextColor(Color.RED);
@@ -63,7 +68,14 @@ public class BranchItem extends ArrayAdapter<Branch> {
             textViewService.setText(branch.getService());
         }
 
-        textViewName.setText(branch.getName());
+        txtHourlyRate.setText("Hourly Rate: "  + s.getRate());
+
+        if(branch.getRate() != 0){
+            txtCurrentRate.setText(branch.getRate() + "/5");
+        } else {
+            txtCurrentRate.setText("no rate");
+        }
+
         return listViewItem;
     }
 }

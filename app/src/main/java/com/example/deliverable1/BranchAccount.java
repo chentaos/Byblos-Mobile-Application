@@ -31,6 +31,7 @@ public class BranchAccount extends AppCompatActivity {
     ListView list;
     List<Branch> branches;
     List<String> services;
+    List<Service> serviceList;
     DatabaseReference database1 = FirebaseDatabase.getInstance().getReference().child("Branch");
     DatabaseReference database2 = FirebaseDatabase.getInstance().getReference().child("Services");
     String employeeName = "";
@@ -44,6 +45,8 @@ public class BranchAccount extends AppCompatActivity {
 
         branches = new ArrayList<>();
         services = new ArrayList<>();
+        serviceList = new ArrayList<>();
+
         list = findViewById(R.id.services);
         employeeName = getIntent().getStringExtra("username");
 
@@ -57,10 +60,12 @@ public class BranchAccount extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 services.clear();
+                serviceList.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
 
                     Service s= postSnapshot.getValue(Service.class);
                     services.add(s.getName());
+                    serviceList.add(s);
                     store();
                 }
             }
@@ -112,7 +117,7 @@ public class BranchAccount extends AppCompatActivity {
                     Branch s= postSnapshot.getValue(Branch.class);
                     branches.add(s);
                 }
-                BranchItem p = new BranchItem(BranchAccount.this, branches, services);
+                BranchItem p = new BranchItem(BranchAccount.this, branches, services, serviceList);
                 list.setAdapter(p);
             }
 
