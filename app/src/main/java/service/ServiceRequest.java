@@ -8,16 +8,20 @@ public class ServiceRequest {
     String key;
     String parentId;
     String service;
+    boolean rated;
+    int currentRate;
 
     public ServiceRequest(){
 
     }
 
-    public ServiceRequest(ServiceForm serviceForm, boolean isPending, boolean isAccepted, String customerName) {
+    public ServiceRequest(ServiceForm serviceForm, boolean isPending, boolean isAccepted, String customerName, boolean rated, int currentRate) {
         this.serviceForm = serviceForm;
         this.isPending = isPending;
         this.isAccepted = isAccepted;
         this.customerName = customerName;
+        this.rated = rated;
+        this.currentRate = currentRate;
     }
 
     public ServiceForm getServiceForm() {
@@ -76,6 +80,22 @@ public class ServiceRequest {
         this.service = service;
     }
 
+    public boolean isRated() {
+        return rated;
+    }
+
+    public void setRated(boolean rated) {
+        this.rated = rated;
+    }
+
+    public int getCurrentRate() {
+        return currentRate;
+    }
+
+    public void setCurrentRate(int currentRate) {
+        this.currentRate = currentRate;
+    }
+
     @Override
     public String toString() {
         return "ServiceRequest{" +
@@ -83,6 +103,9 @@ public class ServiceRequest {
                 ", isPending=" + isPending +
                 ", isAccepted=" + isAccepted +
                 ", customerName='" + customerName + '\'' +
+                ", service='" + service + '\'' +
+                ", rated=" + rated +
+                ", currentRate=" + currentRate +
                 '}';
     }
 }

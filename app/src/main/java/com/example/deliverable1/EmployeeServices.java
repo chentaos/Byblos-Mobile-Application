@@ -40,7 +40,7 @@ public class EmployeeServices extends AppCompatActivity {
 
         services = new ArrayList<>();
         list = findViewById(R.id.services);
-        employeeName = getIntent().getStringExtra("userName");
+        employeeName = getIntent().getStringExtra("username");
         store();
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             String idService = services.get(position).getName();
@@ -75,7 +75,7 @@ public class EmployeeServices extends AppCompatActivity {
                     if (snapshot.exists()) {
                         errorNameAlreadyExist();
                     } else{
-                        database2.child(serviceName).setValue(new Branch(employeeName, name, serviceName, null, null));
+                        database2.child(serviceName).setValue(new Branch(employeeName, name, serviceName, 0, 0, 0));
                     }
                 }
 

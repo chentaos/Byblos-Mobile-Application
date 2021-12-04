@@ -20,7 +20,7 @@
             android:text="Leave a comment" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName2"
+            android:id="@+id/editComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"

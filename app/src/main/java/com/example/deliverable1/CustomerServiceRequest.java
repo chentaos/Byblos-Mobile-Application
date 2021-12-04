@@ -83,7 +83,7 @@ public class CustomerServiceRequest extends AppCompatActivity {
             }
         });
 
-        refrechListView();
+        refreshListView();
 
         dbServices.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -104,7 +104,12 @@ public class CustomerServiceRequest extends AppCompatActivity {
         });
     }
 
-    private void refrechListView(){
+    private void refreshListView(){
+        branchList.clear();
+        serviceRequest.clear();
+        CustomerRequestItem p = new CustomerRequestItem(CustomerServiceRequest.this, serviceRequest);
+        lstPendingReq.setAdapter(p);
+
         dbBranch.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -176,13 +181,9 @@ public class CustomerServiceRequest extends AppCompatActivity {
         buttonCancel.setOnClickListener(view -> b.dismiss());
 
         btnDelete.setOnClickListener(view -> {
-//            String key = sR.getKey();
-//            String parentId = sR.getParentId();
-
             dbBranch.child(sR.getParentId()).child("requests")
                     .child("submittedForms").child(sR.getKey()).removeValue();
             b.dismiss();
-//            refrechListView();
         });
     }
 
@@ -192,11 +193,6 @@ public class CustomerServiceRequest extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.activity_rate_form_dialog, null);
         dialogBuilder.setView(dialogView);
 
-
-//        setFormEdit(dialogView, s);
-//        handleTextView(dialogView, s);
-//        setText(sR.getServiceForm());
-//
         final Button cancelButton = dialogView.findViewById(R.id.button_rate_cancel);
         final Button rate1 = dialogView.findViewById(R.id.button_rate_1);
         final Button rate2 = dialogView.findViewById(R.id.button_rate_2);
@@ -204,6 +200,8 @@ public class CustomerServiceRequest extends AppCompatActivity {
         final Button rate4 = dialogView.findViewById(R.id.button_rate_4);
         final Button rate5 = dialogView.findViewById(R.id.button_rate_5);
         final Button sm = dialogView.findViewById(R.id.button_rate_submit);
+        final TextView txtComment = dialogView.findViewById(R.id.editComment);
+        final int[] rate = {0};
 
         TextView t =dialogView.findViewById(R.id.rated);
         t.setText("default rate: 3");
@@ -212,12 +210,47 @@ public class CustomerServiceRequest extends AppCompatActivity {
         b.show();
 
         cancelButton.setOnClickListener(view -> b.dismiss());
-        rate1.setOnClickListener(view -> {t.setText("You rated: 1");});
-        rate2.setOnClickListener(view -> {t.setText("You rated: 2");});
-        rate3.setOnClickListener(view -> {t.setText("You rated: 3");});
-        rate4.setOnClickListener(view -> {t.setText("You rated: 4");});
-        rate5.setOnClickListener(view -> {t.setText("You rated: 5");});
-        sm.setOnClickListener(view -> b.dismiss());
+
+        rate1.setOnClickListener(v -> {
+            rate[0] = 1;
+            t.setText("You rated: 1");
+        });
+
+        rate2.setOnClickListener(v -> {
+            rate[0] = 2;
+            t.setText("You rated: 2");
+        });
+
+        rate3.setOnClickListener(v -> {
+            rate[0] = 3;
+            t.setText("You rated: 3");
+        });
+
+        rate4.setOnClickListener(v -> {
+            rate[0] = 3;
+            t.setText("You rated: 4");
+        });
+
+        rate5.setOnClickListener(v -> {
+            rate[0] = 5;
+            t.setText("You rated: 5");
+        });
+
+        sm.setOnClickListener(v -> {
+            for(Branch b1 : branchList){
+                if (rate[0] == 0){
+                    Toast.makeText(getApplicationContext(), "Please select rate ", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (b1.getName().equals(branchId)) {
+                        b1.giveRate(rate[0], sR);
+                        if (!txtComment.getText().toString().isEmpty())
+                            b1.addComment(userName + " said: " + txtComment.getText().toString());
+                    }
+
+                }
+            }
+            b.dismiss();
+        });
 //
 //        buttonCancel.setOnClickListener(view -> b.dismiss());
 //

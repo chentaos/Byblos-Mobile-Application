@@ -40,7 +40,7 @@ import service.ServiceRequest;
 
 public class ByblosBranchSearch extends AppCompatActivity {
     EditText editAddress;
-//    EditText editAddress;
+
     int startTime;
     int endTime;
     String[] days = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
@@ -62,7 +62,6 @@ public class ByblosBranchSearch extends AppCompatActivity {
 
     String userName = "";
 
-
     // View elements
     EditText editFirstName;
     EditText editLastName;
@@ -79,34 +78,27 @@ public class ByblosBranchSearch extends AppCompatActivity {
     EditText editEndLocation;
     EditText editNbBox;
 
+    // Field form
+    int nbKm = 0;
+    int nbBox = 0;
+    String license = "";
+    String car = "";
+    String pickUpDate = "";
+    String returnDate = "";
+    String firstName = "";
+    String lastName = "";
+    String dateOfBirth = "";
+    String address = "";
+    String email = "";
+    String truckArea = "";
+    String startLocation = "";
+    String endLocation = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_byblos_branch_search);
-        startTime = -1;
-        endTime = -1;
-        spinDays = findViewById(R.id.spinDays);
-        spinServices = findViewById(R.id.spinServices);
-        editStartTime = findViewById(R.id.editStartTime);
-        editEndTime = findViewById(R.id.editEndTime);
-        editAddress = findViewById(R.id.inputAddress);
-
-        servicesList = new ArrayList<>();
-        services = new ArrayList<>();
-        Branches = new ArrayList<>();
-        Employees = new ArrayList<>();
-        EmployeesUsername = new ArrayList<>();
-        branchesList = findViewById(R.id.branchesList);
-
-        ArrayAdapter arrayAdapterDays = new ArrayAdapter(this,android.R.layout.simple_spinner_item,days);
-        arrayAdapterDays.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinDays.setAdapter(arrayAdapterDays);
-        spinDays.setSelection(0);
-
-        editStartTime.setEnabled(false);
-        editStartTime.setTextColor(Color.BLACK);
-        editEndTime.setEnabled(false);
-        editEndTime.setTextColor(Color.BLACK);
+        loadData();
 
         spinDays.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -124,6 +116,7 @@ public class ByblosBranchSearch extends AppCompatActivity {
 
             }
         });
+
         dbServices.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -185,6 +178,34 @@ public class ByblosBranchSearch extends AppCompatActivity {
 
         loadBranches();
         userName = getIntent().getStringExtra("userName");
+    }
+
+    private void loadData() {
+        startTime = -1;
+        endTime = -1;
+        spinDays = findViewById(R.id.spinDays);
+        spinServices = findViewById(R.id.spinServices);
+        editStartTime = findViewById(R.id.editStartTime);
+        editEndTime = findViewById(R.id.editEndTime);
+        editAddress = findViewById(R.id.inputAddress);
+
+        servicesList = new ArrayList<>();
+        services = new ArrayList<>();
+        Branches = new ArrayList<>();
+        Employees = new ArrayList<>();
+        EmployeesUsername = new ArrayList<>();
+        branchesList = findViewById(R.id.branchesList);
+
+        ArrayAdapter arrayAdapterDays = new ArrayAdapter(this,android.R.layout.simple_spinner_item,days);
+        arrayAdapterDays.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinDays.setAdapter(arrayAdapterDays);
+        spinDays.setSelection(0);
+
+        editStartTime.setEnabled(false);
+        editStartTime.setTextColor(Color.BLACK);
+        editEndTime.setEnabled(false);
+        editEndTime.setTextColor(Color.BLACK);
+
     }
 
     private void showUpdateDeleteDialog(final String serviceId, final String employeeId, final String branchId){
@@ -263,40 +284,32 @@ public class ByblosBranchSearch extends AppCompatActivity {
     }
 
     private boolean submitForm(String branchId, Service s) {
-        int nbKm = 0;
-        int nbBox = 0;
-        String license = "";
-        String car = "";
-        String pickUpDate = "";
-        String returnDate = "";
+        getInformation();
 
-        String firstName = editFirstName.getText().toString();
-        String lastName = editLastName.getText().toString();
-        String dateOfBirth = editDateOfBirth.getText().toString();
-        String address = editAddressForm.getText().toString();
-        String email = editEmail.getText().toString();
+        if (wrongForm(s)) return false;
 
-        if (s.getCustomerName() && firstName.isEmpty() || lastName.isEmpty()){
-            Toast.makeText(getApplicationContext(), "Field first and last name can't be empty ", Toast.LENGTH_SHORT).show();
-            return  false;
-        }
+        ServiceForm serviceForm = new ServiceForm(firstName, lastName, dateOfBirth,
+                address,email, license, car, pickUpDate,
+                returnDate, nbKm, truckArea, startLocation, endLocation, nbBox,false);
 
-        if (s.getAddress() && address.isEmpty()){
-            Toast.makeText(getApplicationContext(), "Field address can't be empty ", Toast.LENGTH_SHORT).show();
-            return  false;
-        }
+        String key = FirebaseDatabase.getInstance().getReference().push().getKey();
 
-        if (s.getDob() && (dateOfBirth.isEmpty() || !dateOfBirth.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})"))){
-            Toast.makeText(getApplicationContext(), "Field date of birth can't be empty and need " +
-                    "to respect date format MM/MM/YYYY", Toast.LENGTH_SHORT).show();
-            return  false;
-        }
+        ServiceRequest serviceRequest = new ServiceRequest(serviceForm, true, false, userName, false, 0);
 
-        if (s.getEmail() && (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())){
-            Toast.makeText(getApplicationContext(), "Field email can't be empty and need " +
-                    "to respect email format", Toast.LENGTH_SHORT).show();
-            return  false;
-        }
+        dbBranch.child(branchId).child("requests").child("submittedForms").child(key).setValue(serviceRequest);
+
+        return true;
+    }
+
+    private void getInformation() {
+        firstName = editFirstName.getText().toString();
+        lastName = editLastName.getText().toString();
+        dateOfBirth = editDateOfBirth.getText().toString();
+        address = editAddressForm.getText().toString();
+        email = editEmail.getText().toString();
+        truckArea = editTruckArea.getText().toString();
+        startLocation = editStartLocation.getText().toString();
+        endLocation = editEndLocation.getText().toString();
 
         if (spinLicenses.getSelectedItem() != null)
             license = spinLicenses.getSelectedItem().toString();
@@ -316,45 +329,55 @@ public class ByblosBranchSearch extends AppCompatActivity {
         if (editNbBox.getText().toString().length() !=0){
             nbBox = Integer.parseInt(editNbBox.getText().toString());
         }
+    }
+
+    private boolean wrongForm(Service s) {
+        if (s.getCustomerName() && firstName.isEmpty() || lastName.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Field first and last name can't be empty ", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        if (s.getAddress() && address.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Field address can't be empty ", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        if (s.getDob() && (dateOfBirth.isEmpty() || !dateOfBirth.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})"))){
+            Toast.makeText(getApplicationContext(), "Field date of birth can't be empty and need " +
+                    "to respect date format MM/MM/YYYY", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        if (s.getEmail() && (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())){
+            Toast.makeText(getApplicationContext(), "Field email can't be empty and need " +
+                    "to respect email format", Toast.LENGTH_SHORT).show();
+            return true;
+        }
 
         if (s.getBox() && nbBox <= 0){
             Toast.makeText(getApplicationContext(), "Field number of box can't be empty " +
                     "and need a value superior to 0", Toast.LENGTH_SHORT).show();
-            return  false;
+            return  true;
         }
 
-        if (s.getMaxKl() && nbBox <= 0){
+        if (s.getMaxKl() && nbKm <= 0){
             Toast.makeText(getApplicationContext(), "Field max number of km can't be empty " +
                     "and need a value superior to 0", Toast.LENGTH_SHORT).show();
-            return  false;
+            return  true;
         }
 
-
-        String truckArea = editTruckArea.getText().toString();
         if (s.getArea() && truckArea.isEmpty()){
             Toast.makeText(getApplicationContext(), "Field truck area can't be empty ", Toast.LENGTH_SHORT).show();
-            return  false;
+            return  true;
         }
-        String startLocation = editStartLocation.getText().toString();
-        String endLocation = editEndLocation.getText().toString();
 
         if (s.getMoving() && (startLocation.isEmpty() || endLocation.isEmpty())) {
             Toast.makeText(getApplicationContext(), "Field start and end Location " +
                     "can't be empty ", Toast.LENGTH_SHORT).show();
-            return  false;
+            return  true;
         }
 
-        ServiceForm serviceForm = new ServiceForm(firstName, lastName, dateOfBirth,
-                address,email, license, car, pickUpDate,
-                returnDate, nbKm, truckArea, startLocation, endLocation, nbBox,false);
-
-        String key = FirebaseDatabase.getInstance().getReference().push().getKey();
-
-        ServiceRequest serviceRequest = new ServiceRequest(serviceForm, true, false, userName);
-
-        dbBranch.child(branchId).child("requests").child("submittedForms").child(key).setValue(serviceRequest);
-
-        return true;
+        return false;
     }
 
     private void defineDates(Employee e) {
@@ -492,7 +515,7 @@ public class ByblosBranchSearch extends AppCompatActivity {
                     Branches.add(b);
                 }
 
-                BranchSearchItem p = new BranchSearchItem(ByblosBranchSearch.this, Branches, services);
+                BranchSearchItem p = new BranchSearchItem(ByblosBranchSearch.this, Branches, EmployeesUsername, Employees);
                 branchesList.setAdapter(p);
             }
 
@@ -506,7 +529,7 @@ public class ByblosBranchSearch extends AppCompatActivity {
     public void searchOnClick(View view){
         String serviceSelected = spinServices.getSelectedItem().toString();
         Branches.clear();
-        BranchSearchItem p = new BranchSearchItem(ByblosBranchSearch.this, Branches, services);
+        BranchSearchItem p = new BranchSearchItem(ByblosBranchSearch.this, Branches, EmployeesUsername, Employees);
         branchesList.setAdapter(p);
 
         dbBranch.orderByChild("service").equalTo(serviceSelected).addValueEventListener(new ValueEventListener() {
@@ -538,7 +561,7 @@ public class ByblosBranchSearch extends AppCompatActivity {
                         }
                     }
 
-                    BranchSearchItem p = new BranchSearchItem(ByblosBranchSearch.this, Branches, services);
+                    BranchSearchItem p = new BranchSearchItem(ByblosBranchSearch.this, Branches, EmployeesUsername, Employees);
                     branchesList.setAdapter(p);
                 }
             }
