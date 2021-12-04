@@ -1,6 +1,8 @@
 package account;
 
 import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -11,6 +13,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import branch.Branch;
 
 public class Admin extends User {
 
@@ -46,6 +50,7 @@ public class Admin extends User {
 
         private ArrayList<User> userlist;
         private DatabaseReference mdb;
+        private DatabaseReference mdbBranch;
         private String currentUserNamePointer;
 
         private final Class<E> c;
@@ -75,7 +80,7 @@ public class Admin extends User {
                         }
 
                         callBack.onSuccess();
-                        if(userlist.size() == 0){
+                        if (userlist.size() == 0) {
                             callBack.onFail("no user data");
                             return;
                         }
@@ -97,9 +102,9 @@ public class Admin extends User {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                    if(snapshot.hasChildren()){
+                    if (snapshot.hasChildren()) {
                         userlist.clear();
-                    }else{
+                    } else {
                         callBack.onFail("on the last page");
                         return;
                     }
@@ -125,7 +130,7 @@ public class Admin extends User {
         @Override
         public void getPrevPage(ListenerCallBack callBack) {
             //get the first element of the psaklsgjslkdajgdm data and clear the list.
-            if(userlist.size() == 0 && currentUserNamePointer == null){
+            if (userlist.size() == 0 && currentUserNamePointer == null) {
                 callBack.onFail("First page");
                 return;
             }
@@ -136,9 +141,9 @@ public class Admin extends User {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                    if(snapshot.hasChildren()){
+                    if (snapshot.hasChildren()) {
                         userlist.clear();
-                    }else{
+                    } else {
                         callBack.onFail("already the first page.");
                         return;
                     }
@@ -168,10 +173,62 @@ public class Admin extends User {
 
         @Override
         public void delete(User user) {
+            mdbBranch = FirebaseDatabase.getInstance().getReference().child("Branch");
+
+            if (user instanceof Employee) {
+                mdbBranch.orderByChild("employee").equalTo(user.getUserName()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            postSnapshot.getRef().removeValue();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
+            if (user instanceof Customer) {
+                mdbBranch.child("requests")
+                        .child("submittedForms").orderByChild("customerName")
+                        .equalTo(user.getUserName()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            Branch b = postSnapshot.getValue(Branch.class);
+
+                            mdbBranch.child(b.getName()).child("requests")
+                                    .child("submittedForms").orderByChild("customerName")
+                                    .equalTo(user.getUserName()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                        mdbBranch.child(b.getName()).child("requests")
+                                                .child("submittedForms").child(postSnapshot.getKey()).removeValue();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
             mdb.child(user.getUserName()).removeValue();
             userlist.remove(user);
 
-            if(userlist.size() == 0){
+            if (userlist.size() == 0) {
                 currentUserNamePointer = null;
             }
             //also delete the array list.

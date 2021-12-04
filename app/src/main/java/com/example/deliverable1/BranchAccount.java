@@ -46,11 +46,13 @@ public class BranchAccount extends AppCompatActivity {
         services = new ArrayList<>();
         list = findViewById(R.id.services);
         employeeName = getIntent().getStringExtra("username");
+
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             String idService = branches.get(position).getName();
             showUpdateDeleteDialog(idService, branches.get(position).getService());
             return false;
         });
+
         database2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -96,19 +98,8 @@ public class BranchAccount extends AppCompatActivity {
     }
 
     private void deleteBranch(String id) {
-        database1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                DatabaseReference dr = database1.child(id);
-                dr.removeValue();
-                store();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        database1.child(id).removeValue();
+        store();
     }
 
     private void store(){
@@ -118,7 +109,6 @@ public class BranchAccount extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 branches.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-
                     Branch s= postSnapshot.getValue(Branch.class);
                     branches.add(s);
                 }

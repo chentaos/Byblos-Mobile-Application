@@ -61,15 +61,10 @@ public class AdminAccountManager extends AppCompatActivity {
         });
 
 
-
-        userlistVIew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ArrayList<User> userList = u.getList();
-                User user = userList.get(i);
-                showDeleteDialog(user);
-            }
+        userlistVIew.setOnItemClickListener((adapterView, view, i, l) -> {
+            ArrayList<User> userList = u.getList();
+            User user = userList.get(i);
+            showDeleteDialog(user);
         });
     }
 
@@ -90,33 +85,25 @@ public class AdminAccountManager extends AppCompatActivity {
         final AlertDialog b = dialogBuilder.create();
         b.show();
 
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    b.dismiss();
+        buttonCancel.setOnClickListener(view -> b.dismiss());
+
+        buttonDelete.setOnClickListener(view -> {
+            u.delete(user);
+            if(u.getList().size() == 0){
+                u.getNextpage(new ListenerCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        showList();
+                    }
+
+                    @Override
+                    public void onFail(String errInfo) {
+
+                    }
+                });
             }
-        });
-
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                u.delete(user);
-                if(u.getList().size() == 0){
-                    u.getNextpage(new ListenerCallBack() {
-                        @Override
-                        public void onSuccess() {
-                            showList();
-                        }
-
-                        @Override
-                        public void onFail(String errInfo) {
-
-                        }
-                    });
-                }
-                showList();
-                b.dismiss();
-            }
+            showList();
+            b.dismiss();
         });
     }
 
@@ -136,7 +123,6 @@ public class AdminAccountManager extends AppCompatActivity {
 
 
     }
-
 
     public void preOnClick(View view){
         u.getPrevPage(new ListenerCallBack() {

@@ -40,7 +40,7 @@ public class EmployeeServices extends AppCompatActivity {
 
         services = new ArrayList<>();
         list = findViewById(R.id.services);
-        employeeName = getIntent().getStringExtra("username");
+        employeeName = getIntent().getStringExtra("userName");
         store();
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             String idService = services.get(position).getName();
@@ -48,6 +48,7 @@ public class EmployeeServices extends AppCompatActivity {
             return false;
         });
     }
+
     private void showUpdateDeleteDialog(final String idService){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -74,8 +75,7 @@ public class EmployeeServices extends AppCompatActivity {
                     if (snapshot.exists()) {
                         errorNameAlreadyExist();
                     } else{
-                        Branch branch = new Branch(employeeName, name, serviceName, null, null);
-                        database2.child(serviceName).setValue(branch);
+                        database2.child(serviceName).setValue(new Branch(employeeName, name, serviceName, null, null));
                     }
                 }
 
@@ -88,10 +88,6 @@ public class EmployeeServices extends AppCompatActivity {
             b.dismiss();
         });
 
-    }
-
-    private void errorEmptyService(){
-        Toast.makeText(this,"Service name can't be empty",Toast.LENGTH_SHORT).show();
     }
 
     private void errorNameAlreadyExist(){
