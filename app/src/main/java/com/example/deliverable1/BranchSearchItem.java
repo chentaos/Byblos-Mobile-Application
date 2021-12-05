@@ -53,7 +53,7 @@ public class BranchSearchItem extends ArrayAdapter<Branch> {
         database1.child(branch.getService()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                for (DataSnapshot ignored : snapshot.getChildren()) {
                     textViewPrice.setText(snapshot.child("rate").getValue(int.class) + "$");
                 }
             }
@@ -64,7 +64,7 @@ public class BranchSearchItem extends ArrayAdapter<Branch> {
             }
         });
 
-        textViewName.setText(branch.getName());
+        textViewName.setText(branch.getService());
         textViewEmployeeName.setText(branch.getEmployee());
 
         if (branch.getRate() != 0)
