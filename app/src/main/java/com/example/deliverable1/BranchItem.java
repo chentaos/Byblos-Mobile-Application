@@ -70,8 +70,8 @@ public class BranchItem extends ArrayAdapter<Branch> {
 
         txtHourlyRate.setText("Hourly Rate: "  + s.getRate());
 
-        if(branch.getRate() != 0){
-            txtCurrentRate.setText(branch.getRate() + "/5");
+        if(branch.getRate() != null && branch.getRate().getAverageRate() != 0){
+            txtCurrentRate.setText(branch.getRate().getAverageRate() + "/5");
         } else {
             txtCurrentRate.setText("no rate");
         }

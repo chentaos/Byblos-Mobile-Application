@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import branch.Branch;
+import rate.Rate;
 import service.Service;
 
 public class EmployeeServices extends AppCompatActivity {
@@ -75,7 +76,7 @@ public class EmployeeServices extends AppCompatActivity {
                     if (snapshot.exists()) {
                         errorNameAlreadyExist();
                     } else{
-                        database2.child(serviceName).setValue(new Branch(employeeName, name, serviceName, 0, 0, 0));
+                        database2.child(serviceName).setValue(new Branch(employeeName, name, serviceName, new Rate(0, 0, 0)));
                     }
                 }
 

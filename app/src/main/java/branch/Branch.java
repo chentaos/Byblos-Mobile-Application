@@ -11,6 +11,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Date;
 import java.util.List;
 
+import rate.Rate;
 import service.Service;
 import service.ServiceForm;
 import service.ServiceRequest;
@@ -20,23 +21,19 @@ public class Branch {
     private String employee;
     private String service;
     private String name;
-    int nbRate;
-    int rate;
-    int sumRate;
+    private Rate rate;
 
     public List<ServiceForm> serviceForms;
 
     public Branch() {
     }
 
-    public Branch(String employee, String service, String name, int nbRate, int rate, int sumRate) {
+    public Branch(String employee, String service, String name, Rate rate) {
         myRef = FirebaseDatabase.getInstance().getReference().child("Branch").child(name);
         this.employee = employee;
         this.service = service;
         this.name = name;
-        this.nbRate = nbRate;
         this.rate = rate;
-        this.sumRate = sumRate;
     }
 
     //public Branch(String employee, String service, String name, Date startHour, Date endHour){
@@ -90,24 +87,32 @@ public class Branch {
         });
     }
 
-    public void giveRate(int rate, ServiceRequest sR){
+    public void giveRate(int newRate, ServiceRequest sR){
         if (myRef == null)
             myRef = FirebaseDatabase.getInstance().getReference().child("Branch").child(name);
 
-        if (!sR.isRated()){
-            sumRate += rate;
-            sR.setCurrentRate(rate);
-            sR.setRated(true);
-            nbRate++;
-        } else {
-            sumRate -= sR.getCurrentRate();
-            sumRate += rate;
-        }
+        if (rate == null)
+            rate = new Rate(0,0,0);
 
-        this.rate = sumRate / nbRate;
+        if (!sR.isRated()){
+            rate.setSumRate(newRate);
+            sR.setCurrentRate(newRate);
+            sR.setRated(true);
+            rate.setNbRate();
+        } else {
+            rate.setSumRate(sR.getCurrentRate() * - 1);
+            sR.setCurrentRate(newRate);
+            rate.setSumRate(newRate);
+        }
+        rate.setRate();
+
+//        newRate = sumRate / nbRate;
+//        myRef.child("rate").setValue(rate);
+//        myRef.child("sumRate").setValue(sumRate);
+//        myRef.child("nbRate").setValue(newRate);
+
         myRef.child("rate").setValue(rate);
-        myRef.child("sumRate").setValue(sumRate);
-        myRef.child("nbRate").setValue(nbRate);
+
         myRef.child("requests").child("submittedForms").child(sR.getKey())
                 .setValue(new ServiceRequest(sR.getServiceForm(), sR.isPending(),
                         sR.isAccepted(), sR.getCustomerName(), sR.isRated(), sR.getCurrentRate()));
@@ -151,29 +156,37 @@ public class Branch {
         this.employee = employee;
     }
 
-    public int getRate() {
+    public Rate getRate() {
         return rate;
     }
 
-    public int getNbRate() {
-        return nbRate;
-    }
-
-    public void setNbRate(int nbRate) {
-        this.nbRate = nbRate;
-    }
-
-    public void setRate(int rate) {
+    public void setRate(Rate rate) {
         this.rate = rate;
     }
 
-    public int getSumRate() {
-        return sumRate;
-    }
+    //    public int getRate() {
+//        return rate;
+//    }
 
-    public void setSumRate(int sumRate) {
-        this.sumRate = sumRate;
-    }
+//    public int getNbRate() {
+//        return nbRate;
+//    }
+//
+//    public void setNbRate(int nbRate) {
+//        this.nbRate = nbRate;
+//    }
+//
+//    public void setRate(int rate) {
+//        this.rate = rate;
+//    }
+//
+//    public int getSumRate() {
+//        return sumRate;
+//    }
+//
+//    public void setSumRate(int sumRate) {
+//        this.sumRate = sumRate;
+//    }
 
     //    public void setEndHour(Date endHour) {
 //        this.endHour = endHour;
@@ -194,9 +207,7 @@ public class Branch {
                 ", employee='" + employee + '\'' +
                 ", service='" + service + '\'' +
                 ", name='" + name + '\'' +
-                ", nbRate=" + nbRate +
                 ", rate=" + rate +
-                ", sumRate=" + sumRate +
                 '}';
     }
 }

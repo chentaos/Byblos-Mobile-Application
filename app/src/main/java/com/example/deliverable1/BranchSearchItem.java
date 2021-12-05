@@ -67,8 +67,8 @@ public class BranchSearchItem extends ArrayAdapter<Branch> {
         textViewName.setText(branch.getService());
         textViewEmployeeName.setText(branch.getEmployee());
 
-        if (branch.getRate() != 0)
-            txtRate.setText(branch.getRate() + "/5");
+        if (branch.getRate() != null && branch.getRate().getAverageRate() != 0)
+            txtRate.setText(branch.getRate().getAverageRate() + "/5");
         if (employee.getAddress() != null)
             txtEmployeeAddress.setText(employee.getAddress());
 

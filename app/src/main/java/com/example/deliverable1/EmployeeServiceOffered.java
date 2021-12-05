@@ -117,7 +117,6 @@ public class EmployeeServiceOffered extends AppCompatActivity {
                             for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                                 ServiceRequest sR = postSnapshot.getValue(ServiceRequest.class);
                                 if (!sR.isPending() && sR.isAccepted()){
-                                    sR.setCustomerName(userName);
                                     sR.setKey(postSnapshot.getKey());
                                     sR.setParentId(b.getName());
                                     sR.setService(b.getService());

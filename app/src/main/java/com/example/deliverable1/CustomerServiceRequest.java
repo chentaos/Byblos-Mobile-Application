@@ -110,19 +110,18 @@ public class CustomerServiceRequest extends AppCompatActivity {
         CustomerRequestItem p = new CustomerRequestItem(CustomerServiceRequest.this, serviceRequest);
         lstPendingReq.setAdapter(p);
 
-        dbBranch.addValueEventListener(new ValueEventListener() {
+        dbBranch.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 branchList.clear();
                 serviceRequest.clear();
-
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Branch b = postSnapshot.getValue(Branch.class);
                     branchList.add(b);
                 }
 
                 for (Branch b : branchList) {
-                    dbBranch.child(b.getName()).child("requests").child("submittedForms").addValueEventListener(new ValueEventListener() {
+                    dbBranch.child(b.getName()).child("requests").child("submittedForms").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -133,7 +132,8 @@ public class CustomerServiceRequest extends AppCompatActivity {
                                     sR.setKey(postSnapshot.getKey());
                                     sR.setParentId(b.getName());
                                     sR.setService(b.getService());
-                                    serviceRequest.add(sR);
+                                    if (!serviceRequest.contains(sR))
+                                        serviceRequest.add(sR);
                                 }
 
                             }
@@ -227,7 +227,7 @@ public class CustomerServiceRequest extends AppCompatActivity {
         });
 
         rate4.setOnClickListener(v -> {
-            rate[0] = 3;
+            rate[0] = 4;
             t.setText("You rated: 4");
         });
 
@@ -251,18 +251,7 @@ public class CustomerServiceRequest extends AppCompatActivity {
             }
             b.dismiss();
         });
-//
-//        buttonCancel.setOnClickListener(view -> b.dismiss());
-//
-//        btnDelete.setOnClickListener(view -> {
-////            String key = sR.getKey();
-////            String parentId = sR.getParentId();
-//
-//            dbBranch.child(sR.getParentId()).child("requests")
-//                    .child("submittedForms").child(sR.getKey()).removeValue();
-//            b.dismiss();
-////            refrechListView();
-//        });
+
     }
 
     private void setFormEdit(View dialogView, Service s) {

@@ -344,7 +344,7 @@ public class ByblosBranchSearch extends AppCompatActivity {
 
         if (s.getDob() && (dateOfBirth.isEmpty() || !dateOfBirth.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})"))){
             Toast.makeText(getApplicationContext(), "Field date of birth can't be empty and need " +
-                    "to respect date format MM/MM/YYYY", Toast.LENGTH_SHORT).show();
+                    "to respect date format MM/DD/YYYY", Toast.LENGTH_SHORT).show();
             return true;
         }
 
